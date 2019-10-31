@@ -2,7 +2,9 @@
 public class App {
 
     public static void main(String[] args) {
-        TaskCollectionTracker tracker = new TaskCollectionTracker();
+
+        System.out.println("С коллекциями");
+        TasksCollectionTracker tracker = new TasksCollectionTracker();
 
         Task t1 = new Task("T1", "Owner1", "Executor1", "Descr1");
         Task t2 = new Task("T2", "Owner2", "Executor2", "Descr2");
@@ -26,5 +28,7 @@ public class App {
         System.out.println("TASK LIST: \n" + tracker.printTaskList());
         tracker.addTask(new Task("T5", "Owner5", "Executor5", "Descr5"));
         System.out.println("TASK LIST: \n" + tracker.printTaskList());
+
+        System.out.println("На массиве");
     }
 }

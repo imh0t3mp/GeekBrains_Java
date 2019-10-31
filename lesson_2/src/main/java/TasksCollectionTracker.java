@@ -1,14 +1,14 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class TaskCollectionTracker {
+public class TasksCollectionTracker {
     private List<Task> taskList;
-    private int capacity = 3;
+    private int capacity = 10;
 
     /**
      * Дефолтный конструктор
      */
-    public TaskCollectionTracker() {
+    public TasksCollectionTracker() {
         taskList = new ArrayList<>();
     }
 
