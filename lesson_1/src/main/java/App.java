@@ -21,7 +21,7 @@ public class App {
      * @return - результат проверки
      */
     public static boolean checkBetween(int x, int y) {
-        return (x + y) <= 20 && 10 >= (x + y) ? true : false;
+        return x + y <= 20 && 10 >= x + y;
     }
 
     /**
@@ -96,10 +96,10 @@ public class App {
     public static int[][] createSquareDiagonal(int n) {
         int[][] ret = new int[n][n];
         for (int i = 0; i < n; i++) {
-            int[] subArr = new int[n];
-            Arrays.fill(subArr, 0);
-            subArr[i] = 1;
-            ret[i] = subArr;
+//            int[] subArr = new int[n];
+//            Arrays.fill(subArr, 0);
+            ret[i][i] = 1;
+//            ret[i] = subArr;
         }
         return ret;
     }
