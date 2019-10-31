@@ -7,6 +7,9 @@
     <groupId>name.imh0t3mp.geekbrains</groupId>
     <artifactId>JavaCouse</artifactId>
     <version>0.1</version>
+    <modules>
+        <module>lesson_2</module>
+    </modules>
     <packaging>pom</packaging>
     <developers>
         <developer>
