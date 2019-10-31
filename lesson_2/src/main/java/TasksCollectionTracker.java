@@ -3,7 +3,7 @@ import java.util.List;
 
 public class TasksCollectionTracker {
     private List<Task> taskList;
-    private int capacity = 10;
+    private final static int CAPACITY = 10;
 
     /**
      * Дефолтный конструктор
@@ -18,7 +18,7 @@ public class TasksCollectionTracker {
      * @param task
      */
     public void addTask(Task task) {
-        if (taskList.size() == capacity) {
+        if (taskList.size() == CAPACITY) {
             System.err.println("ERROR: Список задач заполнен");
         } else if (taskList.contains(task)) {
             System.err.printf("ERROR: Задача " + task.getShortDescription() + " уже есть в списке");
