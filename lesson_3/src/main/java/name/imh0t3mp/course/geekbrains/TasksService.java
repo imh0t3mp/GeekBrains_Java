@@ -5,21 +5,21 @@ import name.imh0t3mp.course.geekbrains.repository.impl.TaskArrayRepositoryImpl;
 
 /**
  * Унифицированный класс для работы с разными типами репозиториев
- * <p>
- * TODO: Здеь напрашивается FrontController
  */
 public class TasksService {
 
     private TaskRepository repository;
 
     /**
-     * Дефолтный конструктор
+     * Инициализация сервиса определённым типом репозитория
      */
     TasksService(TaskRepository repository) {
         this.repository = repository;
     }
 
     /**
+     * Дефолтный конструктор
+     *
      * По умолчанию будем считать, что данные храним в репозитории массива
      */
     TasksService() {
