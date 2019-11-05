@@ -32,7 +32,7 @@ public class TaskArrayRepositoryImpl implements TaskRepository {
     public void addTask(Task task) throws RepositoryIsFull, TaskAlreadyExists {
         if (this.getUsedCapacity() == CAPACITY) {
             throw new RepositoryIsFull("Репозиторий заполнен. " +
-                    "Уже есть " + CAPACITY + " записей в хранилище");
+                    " Максимально допустимое количество записей: " + CAPACITY);
         } else if (this.hasTask(task)) {
             throw new TaskAlreadyExists("Задача " + task.getShortDescription() + " уже есть в списке");
         } else {

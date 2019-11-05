@@ -120,7 +120,7 @@ public class TasksService {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         for (Task task : repository.getAllTasks()) {
-            sb.append(task.toString()).append("\n");
+            sb.append(task).append("\n");
         }
         return sb.toString();
     }
