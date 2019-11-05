@@ -1,6 +1,9 @@
 package name.imh0t3mp.course.geekbrains.repository.impl;
 
 import name.imh0t3mp.course.geekbrains.Task;
+import name.imh0t3mp.course.geekbrains.errors.RepositoryIsFull;
+import name.imh0t3mp.course.geekbrains.errors.TaskAlreadyExists;
+import name.imh0t3mp.course.geekbrains.errors.TaskNotFound;
 import name.imh0t3mp.course.geekbrains.repository.TaskRepository;
 
 /**
@@ -26,16 +29,14 @@ public class TaskArrayRepositoryImpl implements TaskRepository {
      * @param task - задача для добавления в список
      */
     @Override
-    public void addTask(Task task) {
+    public void addTask(Task task) throws RepositoryIsFull, TaskAlreadyExists {
         if (this.getUsedCapacity() == CAPACITY) {
-            System.err.println("ERROR: Список задач заполнен");
+            throw new RepositoryIsFull("Репозиторий заполнен. " +
+                    "Уже есть " + CAPACITY + " записей в хранилище");
         } else if (this.hasTask(task)) {
-            System.err.println("ERROR: Задача " + task.getShortDescription() + " уже есть в списке");
+            throw new TaskAlreadyExists("Задача " + task.getShortDescription() + " уже есть в списке");
         } else {
             freePos = this.getFreePos();
-            if (-1 == freePos) {
-                System.err.println("ERR: Ошибка вставки. Нет свободных ячеек");
-            }
             taskList[freePos] = task;
             freePos = this.getFreePos();
         }
@@ -47,13 +48,13 @@ public class TaskArrayRepositoryImpl implements TaskRepository {
      * @param task - Задача для удаления
      */
     @Override
-    public void deleteTask(Task task) {
+    public void deleteTask(Task task) throws TaskNotFound {
         int index = this.getIndex(task);
         if (-1 != index) {
             taskList[index] = null;
             freePos = this.getFreePos();
         } else {
-            System.err.println("ERROR: Задача " + task.getShortDescription() + " не найдена в списке");
+            throw new TaskNotFound("Задача " + task.getShortDescription() + " не найдена в списке");
         }
     }
 
@@ -63,13 +64,13 @@ public class TaskArrayRepositoryImpl implements TaskRepository {
      * @param taskId - ID задачи
      */
     @Override
-    public void deleteTask(int taskId) {
+    public void deleteTask(int taskId) throws TaskNotFound {
         int index = this.getIndex(taskId);
         if (-1 != index) {
             taskList[index] = null;
             freePos = this.getFreePos();
         } else {
-            System.err.println("ERROR: Задача с ID:" + taskId + " не найдена в списке");
+            throw new TaskNotFound("Задача с ID:" + taskId + " не найдена в списке");
         }
     }
 
@@ -79,13 +80,13 @@ public class TaskArrayRepositoryImpl implements TaskRepository {
      * @param taskName - название задачи
      */
     @Override
-    public void deleteTask(String taskName) {
+    public void deleteTask(String taskName) throws TaskNotFound {
         int index = this.getIndex(taskName);
         if (-1 != index) {
             taskList[index] = null;
             freePos = this.getFreePos();
         } else {
-            System.err.println("ERROR: Задача с именем:" + taskName + " не найдена в списке");
+            throw new TaskNotFound("Задача с именем:" + taskName + " не найдена в списке");
         }
     }
 
@@ -96,13 +97,11 @@ public class TaskArrayRepositoryImpl implements TaskRepository {
      * @return - найденная задача или null
      */
     @Override
-    public Task getTask(int taskId) {
+    public Task getTask(int taskId) throws TaskNotFound {
         int index = this.getIndex(taskId);
-        if (-1 != index) {
-            return taskList[index];
-        }
-        System.err.println("ERROR: Задача с ID:" + taskId + " не найдена в списке");
-        return null;
+        if (0 > index)
+            throw new TaskNotFound("Задача с ID:" + taskId + " не найдена в списке");
+        return taskList[index];
     }
 
     /**
@@ -112,13 +111,12 @@ public class TaskArrayRepositoryImpl implements TaskRepository {
      * @return - найденная задача или null
      */
     @Override
-    public Task getTask(String taskName) {
+    public Task getTask(String taskName) throws TaskNotFound {
         int index = this.getIndex(taskName);
-        if (-1 != index) {
-            return taskList[index];
-        }
-        System.err.println("ERROR: Задача с имемен:" + taskName + " не найдена в списке");
-        return null;
+        if (0 > index)
+            throw new TaskNotFound("Задача с имемен:" + taskName + " не найдена в списке");
+        return taskList[index];
+
     }
 
 
@@ -156,22 +154,13 @@ public class TaskArrayRepositoryImpl implements TaskRepository {
     }
 
     /**
-     * Вывести список задач в строку
+     * Вернёт список задач в репозитории
      *
-     * @return - строка со списком задач
+     * @return - массив со списком задач
      */
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-//        В дейчствительности, NPE здесь не получим, в конструкторе массив уже
-//        прединициализирован
-        for (Task task : taskList) {
-            if (null != task)
-                sb.append(task).append("\n");
-        }
-        return sb.toString();
+    public Task[] getAllTasks() {
+        return this.taskList;
     }
-
     // ***************************************************************************************** //
 
     /**
