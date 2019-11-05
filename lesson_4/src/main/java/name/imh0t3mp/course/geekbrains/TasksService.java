@@ -1,5 +1,8 @@
 package name.imh0t3mp.course.geekbrains;
 
+import name.imh0t3mp.course.geekbrains.errors.RepositoryIsFull;
+import name.imh0t3mp.course.geekbrains.errors.TaskAlreadyExists;
+import name.imh0t3mp.course.geekbrains.errors.TaskNotFound;
 import name.imh0t3mp.course.geekbrains.repository.TaskRepository;
 import name.imh0t3mp.course.geekbrains.repository.impl.TaskArrayRepositoryImpl;
 
@@ -19,39 +22,106 @@ public class TasksService {
 
     /**
      * Дефолтный конструктор
-     *
+     * <p>
      * По умолчанию будем считать, что данные храним в репозитории массива
      */
     TasksService() {
         this.repository = new TaskArrayRepositoryImpl();
     }
 
-
+    /**
+     * Добавить задачу в список
+     *
+     * @param task - задача для добавления
+     */
     public void addTask(Task task) {
-        this.repository.addTask(task);
+        try {
+            this.repository.addTask(task);
+        } catch (RepositoryIsFull | TaskAlreadyExists err) {
+            System.err.println(err.toString());
+        }
+
     }
 
+    /**
+     * Получить задачу по ID
+     *
+     * @param id - ID задачи
+     * @return - найденная задача или NULL
+     */
     public Task getTask(int id) {
-        return this.repository.getTask(id);
+        try {
+            return this.repository.getTask(id);
+        } catch (TaskNotFound err) {
+            System.err.println(err.toString());
+            return null;
+        }
     }
 
+    /**
+     * Получить задачу по её имени
+     *
+     * @param taskName - имя задачи
+     * @return - найдненная задача или NULL
+     */
     public Task getTask(String taskName) {
-        return this.repository.getTask(taskName);
+        try {
+            return this.repository.getTask(taskName);
+        } catch (TaskNotFound err) {
+            System.err.println(err.toString());
+            return null;
+        }
     }
 
+    /**
+     * Удалить задачу из списка
+     *
+     * @param task - объект задачи для удаления
+     */
     public void deleteTask(Task task) {
-        this.repository.deleteTask(task);
+        try {
+            this.repository.deleteTask(task);
+        } catch (TaskNotFound err) {
+            System.err.println(err.toString());
+        }
     }
 
+    /**
+     * Удалить задачу по её ID
+     *
+     * @param id - ID удаляемой задачи
+     */
     public void deleteTask(int id) {
-        this.repository.deleteTask(id);
+        try {
+            this.repository.deleteTask(id);
+        } catch (TaskNotFound err) {
+            System.err.println(err.toString());
+        }
     }
 
+    /**
+     * Удалить задачу по её имени
+     *
+     * @param taskName - имя задачи для удаления
+     */
     public void deleteTask(String taskName) {
-        this.repository.deleteTask(taskName);
+        try {
+            this.repository.deleteTask(taskName);
+        } catch (TaskNotFound err) {
+            System.err.println(err.toString());
+        }
     }
 
+    /**
+     * Преобразовать список задач в репозитории в строку.
+     *
+     * @return - строковое представление списка задач
+     */
     public String toString() {
-        return this.repository.toString();
+        StringBuilder sb = new StringBuilder();
+        for (Task task : repository.getAllTasks()) {
+            sb.append(task.toString()).append("\n");
+        }
+        return sb.toString();
     }
 }
