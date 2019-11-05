@@ -1,8 +1,12 @@
 package name.imh0t3mp.course.geekbrains;
 
+import name.imh0t3mp.course.geekbrains.errors.MyArrayDataException;
+import name.imh0t3mp.course.geekbrains.errors.MyArraySizeException;
+
 public class App {
 
     public static void main(String[] args) {
+
         try {
             String[][] arr = new String[][]{
                     {"1", "s", "1", "1",},
