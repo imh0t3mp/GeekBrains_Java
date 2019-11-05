@@ -6,17 +6,17 @@ import name.imh0t3mp.course.geekbrains.errors.MyArraySizeException;
 public class App {
 
     public static void main(String[] args) {
-//        System.out.println("Тест работы с \"неправильным\" массивом:");
-//        try {
-//            String[][] arr = new String[][]{
-//                    {"1", "s", "1", "1",},
-//                    {"1", "1", "1", "1",},
-//                    {"1", "1", "1", "1",},
-//                    {"1", "1", "1", "1",}};
-//            System.out.println("Сумма значений: " + summArrayElems(arr));
-//        } catch (MyArrayDataException | MyArraySizeException e) {
-//            System.err.println(e.getMessage());
-//        }
+        System.out.println("Тест работы с \"неправильным\" массивом:");
+        try {
+            String[][] arr = new String[][]{
+                    {"1", "s", "1", "1",},
+                    {"1", "1", "1", "1",},
+                    {"1", "1", "1", "1",},
+                    {"1", "1", "1", "1",}};
+            System.out.println("Сумма значений: " + summArrayElems(arr));
+        } catch (MyArrayDataException | MyArraySizeException e) {
+            System.err.println(e.getMessage());
+        }
 
         System.out.println("Трекер задач на массиве с исключениями и обрабокой оныхъ");
         TasksService tasksServiceTracker = new TasksService();
