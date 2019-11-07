@@ -52,30 +52,6 @@ public class Box<T extends Fruit> {
         return fruitsInBox.get(0);
     }
 
-
-    /**
-     * Переместить содержимое коробки box и очистить её
-     *
-     * <i><b>Ммм, на мой взгляд, этому методу здесь не место.
-     * Не должны объекты одного типа влиять друг на друга на прямую иначе это нарушает
-     * Single Responsibility Principle - принцип единственной ответсвенности.
-     * </b></i>
-     *
-     * @param box - коробка, из которой нужно переместить содержимое
-     * @throws NoFreeSpaceInBox - в корбке не достаточно свободного места
-     * @throws ShiftToSameBox   - перемещаем содержимое в ту же корбку (коробка Кляйна!?)
-     */
-    @Deprecated
-    public void shiftItems(Box<T> box) throws NoFreeSpaceInBox, ShiftToSameBox {
-//        Пересыпать содержимое коробки в себя не имеет смыслаё
-        if (this.equals(box)) throw new ShiftToSameBox();
-        if (box.getItemsCount() > getCapacity() ||
-                box.getItemsCount() > (getCapacity() - getItemsCount()))
-            throw new NoFreeSpaceInBox("Недостаточно свободного места в коробке");
-        fruitsInBox.addAll(box.getAllItems());
-        box.cleanBox();
-    }
-
     /**
      * Положить один фрукт в ящик
      *
