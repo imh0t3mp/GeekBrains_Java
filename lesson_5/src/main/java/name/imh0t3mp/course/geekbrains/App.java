@@ -1,5 +1,7 @@
 package name.imh0t3mp.course.geekbrains;
 
+import name.imh0t3mp.course.geekbrains.fruit_stock.Apple;
+import name.imh0t3mp.course.geekbrains.fruit_stock.Box;
 import name.imh0t3mp.course.geekbrains.task_tracker.Task;
 import name.imh0t3mp.course.geekbrains.task_tracker.TaskStatus;
 import name.imh0t3mp.course.geekbrains.task_tracker.TasksService;
@@ -8,8 +10,33 @@ import name.imh0t3mp.course.geekbrains.task_tracker.repository.impl.TaskArrayLis
 public class App {
 
     public static void main(String[] args) {
-        testRepository();
+//        testRepository();
+        testFruitsBoxes();
     }
+
+    private static void testFruitsBoxes() {
+        System.out.println("Склад с ящиками фруктов");
+        try {
+            System.out.println("Ящик для двух яблок");
+            Box<Apple> appleBox = new Box<>(2);
+            System.out.println("Добавим два яблока");
+            Apple a0 = new Apple();
+            appleBox.putOneItem(a0);
+            appleBox.putOneItem(new Apple());
+            System.out.println("Что у нас есть в ящике?");
+            System.out.println(appleBox.getAllItems());
+            System.out.println("Заберём яблоко из ящика");
+            appleBox.getOneItem();
+            System.out.println("Что у нас есть в ящике?");
+            System.out.println(appleBox.getAllItems());
+            System.out.println("Попробуем добавить в ящик ещё два яблока");
+            appleBox.putOneItem(new Apple());
+            appleBox.putOneItem(new Apple());
+        } catch (Exception err) {
+            err.printStackTrace();
+        }
+    }
+
 
     private static void testRepository() {
         System.out.println("Трекер задач на массиве с исключениями и обрабокой оныхъ");
