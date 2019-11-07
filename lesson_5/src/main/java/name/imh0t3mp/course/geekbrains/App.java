@@ -28,16 +28,17 @@ public class App {
             appleBox.putOneItem(new Apple());
             Box<Orange> orangeBox = new Box<>(2);
             orangeBox.putOneItem(new Orange());
-            System.out.println("Ящик яблок:" + appleBox);
-            System.out.println("Ящик апельсинов:" + orangeBox);
+            System.out.println("Ящик яблок:" + appleBox+" вес: "+appleBox.getNetto());
+            System.out.println("Ящик апельсинов:" + orangeBox+" вес:"+orangeBox.getNetto());
+
             System.out.println("/************************************************************/");
             System.out.println("Сравнить вес двух ящиков:");
             if (orangeBox.compareTo(orangeBox))
                 System.out.println("Ящики имеют одинаковый вес");
             else
                 System.out.println("Ящики имеют разный вес");
+//            System.out.println("/************************************************************/");
 //
-        } catch (Exception err) {System.out.println("/************************************************************/");
 //            System.out.println("Поместить ящики на склад:");
 //            StockService stockService = new StockService();
 //            stockService.addBoxToStock(appleBox);
@@ -59,6 +60,7 @@ public class App {
 //            } catch (BoxNotFound err) {
 //                System.err.println(err.getMessage());
 //            }
+        } catch (Exception err) {
             err.printStackTrace();
         }
     }

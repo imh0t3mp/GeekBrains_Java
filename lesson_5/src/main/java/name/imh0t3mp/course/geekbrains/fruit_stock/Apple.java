@@ -7,4 +7,14 @@ public class Apple extends Fruit {
         this.commonType = "Яблоки";
         this.concreteType = this.commonType + " #" + fruitGenome;
     }
+
+    @Override
+    public float getWeight() {
+        return this.weight;
+    }
+
+    @Override
+    public String getCommonType() {
+        return this.commonType;
+    }
 }

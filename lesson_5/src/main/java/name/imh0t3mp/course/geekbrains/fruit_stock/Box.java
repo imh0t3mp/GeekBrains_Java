@@ -129,11 +129,10 @@ public class Box<T extends Fruit> {
      * @return - вес НЕТТО ящика
      */
     public float getNetto() {
-        try {
-            return 0 == getCapacity() ? 0.0f : (float) getCapacity() * getOneItem().getWeight();
-        } catch (BoxIsEmpty boxIsEmpty) {
-            return 0.0f;
-        }
+        System.out.println(getItemsCount());
+        System.out.println(getCapacity());
+        System.out.println(fruitsInBox.peek().getWeight());
+        return 0 == getCapacity() ? 0.0f : getItemsCount() * fruitsInBox.peek().getWeight();
     }
 
     /**
