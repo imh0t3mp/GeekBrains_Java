@@ -1,11 +1,17 @@
 package name.imh0t3mp.course.geekbrains.fruit_stock;
 
+import java.util.UUID;
+
 /**
  * Абстрактный класс для создания всех последующих фруктов
+ * Просто некий абстрактный фрукт.
+ * Думаю что создавать интерфейс не имеет смысла, потому что сами фрукты меняться не будут но все
+ * фрукты будут обладать неким общим набором свойств
  */
 public abstract class AbstractFruit {
     float weight;
     String type;
+    String fruitGenome = UUID.randomUUID().toString();
 
     AbstractFruit() {
         this.weight = Float.MIN_VALUE;
@@ -16,10 +22,6 @@ public abstract class AbstractFruit {
 
     public float getWeight() {
         return weight;
-    }
-
-    public String getType() {
-        return type;
     }
 
     @Override

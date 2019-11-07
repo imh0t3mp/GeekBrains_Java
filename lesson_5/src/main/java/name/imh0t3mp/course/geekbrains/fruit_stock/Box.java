@@ -3,14 +3,12 @@ package name.imh0t3mp.course.geekbrains.fruit_stock;
 import name.imh0t3mp.course.geekbrains.fruit_stock.errors.BoxIsEmpty;
 import name.imh0t3mp.course.geekbrains.fruit_stock.errors.BoxIsFull;
 
-import java.util.ArrayDeque;
-import java.util.Collection;
-import java.util.Deque;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 public class Box<T extends Fruit> {
     private Deque<T> fruitsInBox;
     private int capacity;
+    private String boxID = UUID.randomUUID().toString();
 
     /**
      * Ящик определённой ёмкости
@@ -38,7 +36,7 @@ public class Box<T extends Fruit> {
      */
     public T getOneItem() throws BoxIsEmpty {
         try {
-            return fruitsInBox.poll();
+            return fruitsInBox.pop();
         } catch (NoSuchElementException err) {
             throw new BoxIsEmpty("Коробка пустая");
         }
@@ -75,4 +73,58 @@ public class Box<T extends Fruit> {
     public Collection<T> getAllItems() {
         return fruitsInBox;
     }
+
+    /**
+     * Получить ID коробки
+     *
+     * @return - ID коробки
+     */
+    public String getBoxID() {
+        return boxID;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Box<?> box = (Box<?>) o;
+
+        if (capacity != box.capacity) return false;
+        return boxID.equals(box.boxID);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = capacity;
+        result = 31 * result + boxID.hashCode();
+        return result;
+    }
+
+    /**
+     * Получить количество фруктов в коробке
+     *
+     * @return - количество фруктов в коробке
+     */
+    public int getItemsCount() {
+        return fruitsInBox.size();
+    }
+
+    /**
+     * Узнать ёмкость коробки
+     *
+     * @return - ёмкость коробки
+     */
+    public int getCapacity() {
+        return capacity;
+    }
+
+    @Override
+    public String toString() {
+        return "Box #" + boxID + "\n" +
+                "ёмкость:" + capacity + "\n" +
+                "фруктов в корбке:" + fruitsInBox.size();
+    }
+
+
 }
