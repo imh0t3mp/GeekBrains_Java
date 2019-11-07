@@ -3,6 +3,7 @@ package name.imh0t3mp.course.geekbrains.fruit_stock.impl;
 
 import name.imh0t3mp.course.geekbrains.fruit_stock.Box;
 import name.imh0t3mp.course.geekbrains.fruit_stock.Stock;
+import name.imh0t3mp.course.geekbrains.fruit_stock.errors.BoxInStock;
 import name.imh0t3mp.course.geekbrains.fruit_stock.errors.BoxNotFound;
 import name.imh0t3mp.course.geekbrains.fruit_stock.errors.StockIsFull;
 
@@ -109,7 +110,8 @@ public class ArrayStockImpl implements Stock {
      * @throws StockIsFull - если склад уже полный
      */
     @Override
-    public void addBox(Box box) throws StockIsFull {
+    public void addBox(Box box) throws StockIsFull, BoxInStock {
+        if (hasBox(box)) throw new BoxInStock("Ящик #" + box.getBoxID() + " уже есть на складе");
         if (stockCapacity == stockBoxes.size()) throw new StockIsFull("Склад заполнен");
         stockBoxes.add(box);
     }
@@ -166,7 +168,7 @@ public class ArrayStockImpl implements Stock {
      * @return - список всех ящиков
      */
     @Override
-    public Collection getBoxes() {
+    public Collection<Box> getBoxes() {
         return stockBoxes;
     }
 

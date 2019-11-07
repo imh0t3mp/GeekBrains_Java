@@ -1,5 +1,6 @@
 package name.imh0t3mp.course.geekbrains.fruit_stock;
 
+import name.imh0t3mp.course.geekbrains.fruit_stock.errors.BoxInStock;
 import name.imh0t3mp.course.geekbrains.fruit_stock.errors.BoxNotFound;
 import name.imh0t3mp.course.geekbrains.fruit_stock.errors.StockIsFull;
 
@@ -12,7 +13,7 @@ public interface Stock {
 
     public Box getBox(String boxId) throws BoxNotFound;
 
-    public void addBox(Box box) throws StockIsFull;
+    public void addBox(Box box) throws StockIsFull, BoxInStock;
 
     public void removeBox(Box box) throws BoxNotFound;
 
@@ -28,7 +29,7 @@ public interface Stock {
 
     public int getTotalBoxes();
 
-    public Collection getBoxes();
+    public Collection<Box> getBoxes();
 
     public void burnThemAll();
 

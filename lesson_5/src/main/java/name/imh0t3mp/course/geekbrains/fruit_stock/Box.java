@@ -42,6 +42,10 @@ public class Box<T extends Fruit> {
         }
     }
 
+    public void addAllItems(Collection<T> items) {
+        fruitsInBox.addAll(items);
+    }
+
     /**
      * Положить один фрукт в ящик
      *
@@ -119,11 +123,37 @@ public class Box<T extends Fruit> {
         return capacity;
     }
 
+    /**
+     * Получить вес НЕТТО ящика
+     *
+     * @return - вес НЕТТО ящика
+     */
+    public float getNetto() {
+        try {
+            return 0 == getCapacity() ? 0.0f : (float) getCapacity() * getOneItem().getWeight();
+        } catch (BoxIsEmpty boxIsEmpty) {
+            return 0.0f;
+        }
+    }
+
+    /**
+     * Сравнить вес двух ящиков безотностительно содержимого
+     * Будем сравнивать вес фруктов как таковых
+     *
+     * @param box - ящик для сравнения
+     * @return - Одинаковы ли ящики по весу
+     */
+    public boolean compareTo(Box<T> box) {
+        return box.getNetto() == getNetto();
+    }
+
     @Override
     public String toString() {
-        return "Box #" + boxID + "\n" +
-                "ёмкость:" + capacity + "\n" +
-                "фруктов в корбке:" + fruitsInBox.size();
+        return "Ящик #" + boxID + "\n" +
+                "содержит: " +
+                (0 != fruitsInBox.size() ? fruitsInBox.peek().getCommonType() : "пустоту") + "\n" +
+                "ёмкость ящика:" + capacity + "\n" +
+                "фруктов в коробке:" + fruitsInBox.size();
     }
 
 

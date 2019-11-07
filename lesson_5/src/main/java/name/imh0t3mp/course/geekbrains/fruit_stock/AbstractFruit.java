@@ -10,22 +10,31 @@ import java.util.UUID;
  */
 public abstract class AbstractFruit {
     float weight;
-    String type;
+    String commonType;
+    String concreteType;
     String fruitGenome = UUID.randomUUID().toString();
 
     AbstractFruit() {
         this.weight = Float.MIN_VALUE;
-        this.type = "I'm a some kind of fruit or maybe not, i'm not sure. May be i'm poisoned or " +
+        this.commonType = "I'm a some kind of fruit or maybe not, i'm not sure. May be i'm " +
+                "poisoned or " +
                 "may be not. You can eat me and we'll check it. Or, may be, i will eat you. " +
                 "Mua-ha-ha-ha-ha!!!";
     }
 
-    public float getWeight() {
-        return weight;
-    }
+    /**
+     * Абстрактный метод для получения веса фрукта.
+     * Ведь фрукты могут усыхать.
+     *
+     * @return - вес фрукта
+     */
+    abstract public float getWeight();
+
+    abstract public String getCommonType();
 
     @Override
     public String toString() {
-        return String.format("%s and weight %.02f", type, weight);
+        return String.format("%s and weight %.02f", concreteType, weight);
     }
+
 }
