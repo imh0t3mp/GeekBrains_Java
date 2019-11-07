@@ -1,9 +1,9 @@
-package name.imh0t3mp.course.geekbrains.repository;
+package name.imh0t3mp.course.geekbrains.task_tracker.repository;
 
-import name.imh0t3mp.course.geekbrains.Task;
-import name.imh0t3mp.course.geekbrains.errors.RepositoryIsFull;
-import name.imh0t3mp.course.geekbrains.errors.TaskAlreadyExists;
-import name.imh0t3mp.course.geekbrains.errors.TaskNotFound;
+import name.imh0t3mp.course.geekbrains.task_tracker.Task;
+import name.imh0t3mp.course.geekbrains.task_tracker.errors.RepositoryIsFull;
+import name.imh0t3mp.course.geekbrains.task_tracker.errors.TaskAlreadyExists;
+import name.imh0t3mp.course.geekbrains.task_tracker.errors.TaskNotFound;
 
 /**
  * Унифицированный интерфейс для работы с репозиторием

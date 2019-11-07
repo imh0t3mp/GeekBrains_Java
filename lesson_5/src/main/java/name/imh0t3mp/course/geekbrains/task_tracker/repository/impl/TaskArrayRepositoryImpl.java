@@ -1,28 +1,26 @@
-package name.imh0t3mp.course.geekbrains.repository.impl;
+package name.imh0t3mp.course.geekbrains.task_tracker.repository.impl;
 
-import name.imh0t3mp.course.geekbrains.Task;
-import name.imh0t3mp.course.geekbrains.errors.RepositoryIsFull;
-import name.imh0t3mp.course.geekbrains.errors.TaskAlreadyExists;
-import name.imh0t3mp.course.geekbrains.errors.TaskNotFound;
-import name.imh0t3mp.course.geekbrains.repository.TaskRepository;
-
-import java.util.ArrayList;
-import java.util.List;
+import name.imh0t3mp.course.geekbrains.task_tracker.Task;
+import name.imh0t3mp.course.geekbrains.task_tracker.errors.RepositoryIsFull;
+import name.imh0t3mp.course.geekbrains.task_tracker.errors.TaskAlreadyExists;
+import name.imh0t3mp.course.geekbrains.task_tracker.errors.TaskNotFound;
+import name.imh0t3mp.course.geekbrains.task_tracker.repository.TaskRepository;
 
 /**
- * Реализация репозитория задач на коллекции List
+ * Реализация репозитория задач на массиве
  */
-public class TaskArrayListRepositoryImpl implements TaskRepository {
+public class TaskArrayRepositoryImpl implements TaskRepository {
 
-    private List<Task> taskList;
+    private Task[] taskList;
     private final static int CAPACITY = 10;
     private int freePos;
 
     /**
      * Конструктор класса
      */
-    public TaskArrayListRepositoryImpl() {
-        this.taskList = new ArrayList<>();
+    public TaskArrayRepositoryImpl() {
+        this.freePos = 0;
+        this.taskList = new Task[CAPACITY];
     }
 
     /**
@@ -32,13 +30,15 @@ public class TaskArrayListRepositoryImpl implements TaskRepository {
      */
     @Override
     public void addTask(Task task) throws RepositoryIsFull, TaskAlreadyExists {
-        if (taskList.size() == CAPACITY) {
+        if (this.getUsedCapacity() == CAPACITY) {
             throw new RepositoryIsFull("Репозиторий заполнен. " +
                     " Максимально допустимое количество записей: " + CAPACITY);
-        } else if (this.taskList.contains(task)) {
+        } else if (this.hasTask(task)) {
             throw new TaskAlreadyExists("Задача " + task.getShortDescription() + " уже есть в списке");
         } else {
-            taskList.add(task);
+            freePos = this.getFreePos();
+            taskList[freePos] = task;
+            freePos = this.getFreePos();
         }
     }
 
@@ -49,8 +49,10 @@ public class TaskArrayListRepositoryImpl implements TaskRepository {
      */
     @Override
     public void deleteTask(Task task) throws TaskNotFound {
-        if (taskList.contains(task)) {
-            taskList.remove(task);
+        int index = this.getIndex(task);
+        if (-1 != index) {
+            taskList[index] = null;
+            freePos = this.getFreePos();
         } else {
             throw new TaskNotFound("Задача " + task.getShortDescription() + " не найдена в списке");
         }
@@ -65,7 +67,8 @@ public class TaskArrayListRepositoryImpl implements TaskRepository {
     public void deleteTask(int taskId) throws TaskNotFound {
         int index = this.getIndex(taskId);
         if (-1 != index) {
-            taskList.remove(index);
+            taskList[index] = null;
+            freePos = this.getFreePos();
         } else {
             throw new TaskNotFound("Задача с ID:" + taskId + " не найдена в списке");
         }
@@ -80,7 +83,8 @@ public class TaskArrayListRepositoryImpl implements TaskRepository {
     public void deleteTask(String taskName) throws TaskNotFound {
         int index = this.getIndex(taskName);
         if (-1 != index) {
-            taskList.remove(index);
+            taskList[index] = null;
+            freePos = this.getFreePos();
         } else {
             throw new TaskNotFound("Задача с именем:" + taskName + " не найдена в списке");
         }
@@ -97,7 +101,7 @@ public class TaskArrayListRepositoryImpl implements TaskRepository {
         int index = this.getIndex(taskId);
         if (0 > index)
             throw new TaskNotFound("Задача с ID:" + taskId + " не найдена в списке");
-        return taskList.get(index);
+        return taskList[index];
     }
 
     /**
@@ -111,7 +115,7 @@ public class TaskArrayListRepositoryImpl implements TaskRepository {
         int index = this.getIndex(taskName);
         if (0 > index)
             throw new TaskNotFound("Задача с имемен:" + taskName + " не найдена в списке");
-        return taskList.get(index);
+        return taskList[index];
 
     }
 
@@ -146,7 +150,7 @@ public class TaskArrayListRepositoryImpl implements TaskRepository {
      */
     @Override
     public boolean hasTask(Task task) {
-        return taskList.contains(task);
+        return -1 != this.getIndex(task);
     }
 
     /**
@@ -155,20 +159,63 @@ public class TaskArrayListRepositoryImpl implements TaskRepository {
      * @return - массив со списком задач
      */
     public Task[] getAllTasks() {
-        return taskList.toArray(Task[]::new);
+        return this.taskList;
     }
     // ***************************************************************************************** //
 
     /**
-     * Получить индекс задачи в списке по её ID
+     * Получить первую свободную ячейку в списке
+     *
+     * @return - индекс первой свободной ячейки
+     */
+    private int getFreePos() {
+        for (int i = 0; i < CAPACITY; i++) {
+            if (null == taskList[i]) return i;
+        }
+        return -1;
+    }
+
+    /**
+     * Получить количество занятых ячеек в списке
+     *
+     * @return - количество занятых ячеек
+     */
+    private int getUsedCapacity() {
+        int capacity = 0;
+        for (Task t : taskList) {
+            if (null != t) {
+                capacity++;
+            }
+        }
+        return capacity;
+    }
+
+    /**
+     * Получить индекс записи задачи в списке
+     *
+     * @param task - искомая задача
+     * @return - индекс ячейки где хранится искомая задача
+     */
+    private int getIndex(Task task) {
+        for (int index = 0; index < CAPACITY; index++) {
+            Task inList = taskList[index];
+            if (null != inList && inList.equals(task)) {
+                return index;
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * Получить индекс задачи вс писке по её ID
      *
      * @param taskId - ID искомой задачи
      * @return - индекс ячейки где хранится задача
      */
     private int getIndex(int taskId) {
-        for (int index = 0; index < taskList.size(); index++) {
-            Task task = taskList.get(index);
-            if (null != task && task.getId() == taskId) {
+        for (int index = 0; index < CAPACITY; index++) {
+            Task inList = taskList[index];
+            if (null != inList && inList.getId() == taskId) {
                 return index;
             }
         }
@@ -182,9 +229,9 @@ public class TaskArrayListRepositoryImpl implements TaskRepository {
      * @return - индекс ячейки в которой хранится запись задаи
      */
     private int getIndex(String taskName) {
-        for (int index = 0; index < taskList.size(); index++) {
-            Task task = taskList.get(index);
-            if (null != task && task.getName().equals(taskName)) {
+        for (int index = 0; index < CAPACITY; index++) {
+            Task inList = taskList[index];
+            if (null != inList && inList.getName().equals(taskName)) {
                 return index;
             }
         }

@@ -1,13 +1,17 @@
 package name.imh0t3mp.course.geekbrains;
 
-import name.imh0t3mp.course.geekbrains.errors.MyArrayDataException;
-import name.imh0t3mp.course.geekbrains.errors.MyArraySizeException;
-import name.imh0t3mp.course.geekbrains.repository.impl.TaskArrayListRepositoryImpl;
+import name.imh0t3mp.course.geekbrains.task_tracker.Task;
+import name.imh0t3mp.course.geekbrains.task_tracker.TaskStatus;
+import name.imh0t3mp.course.geekbrains.task_tracker.TasksService;
+import name.imh0t3mp.course.geekbrains.task_tracker.repository.impl.TaskArrayListRepositoryImpl;
 
 public class App {
 
     public static void main(String[] args) {
+        testRepository();
+    }
 
+    private static void testRepository() {
         System.out.println("Трекер задач на массиве с исключениями и обрабокой оныхъ");
         TasksService tasksServiceTracker = new TasksService(new TaskArrayListRepositoryImpl());
 
@@ -34,4 +38,5 @@ public class App {
         tasksServiceTracker.addTask(new Task("T5", "Owner5", "Executor5", "Descr5"));
         System.out.println("TASK LIST: \n" + tasksServiceTracker);
     }
+
 }

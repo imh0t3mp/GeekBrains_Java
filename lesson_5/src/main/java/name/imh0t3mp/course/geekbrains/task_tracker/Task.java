@@ -1,4 +1,4 @@
-package name.imh0t3mp.course.geekbrains;
+package name.imh0t3mp.course.geekbrains.task_tracker;
 
 public class Task {
 
@@ -18,7 +18,7 @@ public class Task {
      * @param ownerName    - имя владельца задачи
      * @param executorName - имя исполнителя задачи
      */
-    Task(String name, String description, String ownerName, String executorName) {
+    public Task(String name, String description, String ownerName, String executorName) {
         this.name = name;
         this.ownerName = ownerName;
         this.executorName = executorName;

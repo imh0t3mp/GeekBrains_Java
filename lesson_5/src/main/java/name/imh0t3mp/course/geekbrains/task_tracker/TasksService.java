@@ -1,10 +1,10 @@
-package name.imh0t3mp.course.geekbrains;
+package name.imh0t3mp.course.geekbrains.task_tracker;
 
-import name.imh0t3mp.course.geekbrains.errors.RepositoryIsFull;
-import name.imh0t3mp.course.geekbrains.errors.TaskAlreadyExists;
-import name.imh0t3mp.course.geekbrains.errors.TaskNotFound;
-import name.imh0t3mp.course.geekbrains.repository.TaskRepository;
-import name.imh0t3mp.course.geekbrains.repository.impl.TaskArrayRepositoryImpl;
+import name.imh0t3mp.course.geekbrains.task_tracker.errors.RepositoryIsFull;
+import name.imh0t3mp.course.geekbrains.task_tracker.errors.TaskAlreadyExists;
+import name.imh0t3mp.course.geekbrains.task_tracker.errors.TaskNotFound;
+import name.imh0t3mp.course.geekbrains.task_tracker.repository.TaskRepository;
+import name.imh0t3mp.course.geekbrains.task_tracker.repository.impl.TaskArrayRepositoryImpl;
 
 /**
  * Унифицированный класс для работы с разными типами репозиториев
@@ -16,7 +16,7 @@ public class TasksService {
     /**
      * Инициализация сервиса определённым типом репозитория
      */
-    TasksService(TaskRepository repository) {
+    public TasksService(TaskRepository repository) {
         this.repository = repository;
     }
 
