@@ -71,7 +71,7 @@ public class ArrayStockImpl implements Stock {
      *
      * @param boxId - ID коробки
      * @return - Нужная коробка
-     * @throws BoxNotFound
+     * @throws BoxNotFound - если корбка не найдена в списках
      */
     public Box getBox(String boxId) throws BoxNotFound {
         if (hasBox(boxId)) {
@@ -148,6 +148,7 @@ public class ArrayStockImpl implements Stock {
 
     /**
      * Забрать ящик со склада
+     * Возвращает содержимое ящика и удаляет объект из списка ящиков склада
      *
      * @param boxId - ID ящика
      * @return - нужный ящик
@@ -178,5 +179,23 @@ public class ArrayStockImpl implements Stock {
     @Override
     public void burnThemAll() {
         stockBoxes.clear();
+    }
+
+    /**
+     * Получить описание склада
+     *
+     * @return - строковое описание склада
+     */
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        if (0 == this.getTotalBoxes()) {
+            sb.append("Склад пуст");
+        } else {
+            for (Box box : this.getBoxes()) {
+                sb.append(box).append("\n");
+            }
+        }
+        return sb.toString();
     }
 }

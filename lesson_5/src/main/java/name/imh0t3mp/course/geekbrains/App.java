@@ -1,20 +1,19 @@
 package name.imh0t3mp.course.geekbrains;
 
-import name.imh0t3mp.course.geekbrains.fruit_stock.Apple;
-import name.imh0t3mp.course.geekbrains.fruit_stock.Box;
-import name.imh0t3mp.course.geekbrains.fruit_stock.Orange;
-import name.imh0t3mp.course.geekbrains.fruit_stock.StockService;
+import name.imh0t3mp.course.geekbrains.fruit_stock.*;
 import name.imh0t3mp.course.geekbrains.fruit_stock.errors.BoxNotFound;
-import name.imh0t3mp.course.geekbrains.fruit_stock.errors.WrongTypeOfFruitInBox;
 import name.imh0t3mp.course.geekbrains.task_tracker.Task;
 import name.imh0t3mp.course.geekbrains.task_tracker.TaskStatus;
 import name.imh0t3mp.course.geekbrains.task_tracker.TasksService;
 import name.imh0t3mp.course.geekbrains.task_tracker.repository.impl.TaskArrayListRepositoryImpl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class App {
 
     public static void main(String[] args) {
-//        testRepository();
+        testRepository();
         testFruitsBoxes();
     }
 
@@ -23,43 +22,75 @@ public class App {
         try {
             System.out.println("/************************************************************/");
             System.out.println("Заполним два ящика:");
-            Box<Apple> appleBox = new Box<>(2);
-            appleBox.putOneItem(new Apple());
-            appleBox.putOneItem(new Apple());
-            Box<Orange> orangeBox = new Box<>(2);
-            orangeBox.putOneItem(new Orange());
-            System.out.println("Ящик яблок:" + appleBox+" вес: "+appleBox.getNetto());
-            System.out.println("Ящик апельсинов:" + orangeBox+" вес:"+orangeBox.getNetto());
-
+            Box<Apple> appleBox = new Box<>(3);
+            appleBox.putItem(new Apple());
+            appleBox.putItem(new Apple());
+            Box<Orange> orangeBox = new Box<>(3);
+            orangeBox.putItem(new Orange());
+            System.out.println("Ящик яблок:" + appleBox + " вес: " + appleBox.getWeight());
+            System.out.println("Ящик апельсинов:" + orangeBox + " вес:" + orangeBox.getWeight());
+            System.out.println("/************************************************************/");
+            System.out.println("Показать содержимое ящика с яблоками");
+            for (Fruit fruit : appleBox.getAllItems()) {
+                System.out.println(fruit);
+            }
+            System.out.println("Показать содержимое ящика с апельсинами");
+            for (Fruit fruit : orangeBox.getAllItems()) {
+                System.out.println(fruit);
+            }
             System.out.println("/************************************************************/");
             System.out.println("Сравнить вес двух ящиков:");
+            Box<Orange> newOrangeBox = new Box<>(2);
+            newOrangeBox.putItem(new Orange());
             if (orangeBox.compareTo(orangeBox))
                 System.out.println("Ящики имеют одинаковый вес");
             else
                 System.out.println("Ящики имеют разный вес");
-//            System.out.println("/************************************************************/");
-//
-//            System.out.println("Поместить ящики на склад:");
-//            StockService stockService = new StockService();
-//            stockService.addBoxToStock(appleBox);
-//            stockService.addBoxToStock(orangeBox);
-//            System.out.println("Ящики на складе:\n" + stockService.getStock());
-//            try {
-//                System.out.println("/************************************************************/");
-//                System.out.println("Пересыпать содержимое одного ящика в другой");
-//                stockService.shiftBoxes(appleBox, orangeBox);
-//            } catch (WrongTypeOfFruitInBox err) {
-//                System.err.println(err.getMessage());
-//            }
-//            try {
-//                System.out.println("/************************************************************/");
-//                System.out.println("Получить вес ящика #" + appleBox.getBoxID());
-//                System.out.println(stockService.getNetto(appleBox));
-//                System.out.println("Получить вес ящика #" + appleBox.getBoxID());
-//                System.out.println(stockService.getNetto(orangeBox));
-//            } catch (BoxNotFound err) {
-//                System.err.println(err.getMessage());
-//            }
+            System.out.println("/************************************************************/");
+            System.out.println("Поместить ящики на склад:");
+            StockService stockService = new StockService();
+            stockService.addBoxToStock(appleBox);
+            stockService.addBoxToStock(orangeBox);
+            System.out.println("Ящики на складе:\n" + stockService.getStock());
+
+            try {
+                System.out.println("/************************************************************/");
+                System.out.println("Пересыпать содержимое ящика яблок в пустой другой ящик яблок");
+                Box<Apple> newAppleBox = new Box<>(2);
+                System.out.println("Содержимое ранее нового ящика:" + newAppleBox +
+                        " вес:" + newAppleBox.getWeight());
+                stockService.shiftBoxes(appleBox, newAppleBox);
+                System.out.println("Новоес содержимое нового ящика:" + newAppleBox +
+                        " вес:" + newAppleBox.getWeight());
+                System.out.println("Новое содержимое ящика с яблоками:" + appleBox +
+                        " вес:" + appleBox.getWeight());
+            } catch (Exception err) {
+                System.err.println(err.getMessage());
+            }
+            try {
+                System.out.println("/************************************************************/");
+                System.out.println("Получить вес ящика #" + appleBox.getBoxID());
+                System.out.println(stockService.getWeight(appleBox));
+                System.out.println("Получить вес ящика #" + appleBox.getBoxID());
+                System.out.println(stockService.getWeight(orangeBox));
+            } catch (BoxNotFound err) {
+                System.err.println(err.getMessage());
+            }
+            System.out.println("/************************************************************/");
+            System.out.println("Зачистить ящик с апельсинами:");
+            orangeBox.cleanBox();
+            System.out.println("Показать содержимое ящика с апельсинами");
+            for (Fruit fruit : orangeBox.getAllItems()) {
+                System.out.println(fruit);
+            }
+            System.out.println("/************************************************************/");
+            System.out.println("Показать содержимое склада");
+            System.out.println("Ящики на складе:\n" + stockService.getStock());
+            System.out.println("/************************************************************/");
+            System.out.println("Упс, неприятности! Склад сгорел!");
+            stockService.getStock().burnThemAll();
+            System.out.println("Ящики на складе:\n" + stockService.getStock());
+
         } catch (Exception err) {
             err.printStackTrace();
         }

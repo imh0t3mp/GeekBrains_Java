@@ -34,53 +34,40 @@ public class StockService {
     }
 
 
-
     /**
      * Пересыпать фрукты из коробки b1 в коробку b2
      * Если коробка b2 имеет ёмкосмть меньше чем b1, будет выброшено исключение
-     * Если в коробке b2 уже есть фрукты другого типа что и в b1 или если в b2 не достаточно
-     * места для пересыпания фрутов, будет выброшего исключение.
+     * Если в коробке b2 не достаточно места для пересыпания фрутов, будет выброшего исключение.
      * Во всех прочих случаях, фрукты будут перемещены из b1 в b2 и b1 будет освобождена.
      *
      * @param b1 - коробка из которой нужно переложить фрукты
      * @param b2 - коробка в которую нужно переложить фрукты
-     * @throws WrongTypeOfFruitInBox - если в коробке уже есть фрукты другого типа
-     * @throws WrongBoxCapacity      - если еёмкости коробки не достаточно
-     * @throws NoFreeSpaceInBox      - если в коробке есть фрукты и места не достаточно
+     * @throws WrongBoxCapacity - если еёмкости коробки не достаточно
+     * @throws NoFreeSpaceInBox - если в коробке есть фрукты и места не достаточно
      */
-    public void shiftBoxes(Box b1, Box b2)
-            throws WrongTypeOfFruitInBox, WrongBoxCapacity, NoFreeSpaceInBox, BoxIsEmpty { System.out.println(b2.getClass());
+    public <T extends Fruit> void shiftBoxes(Box<T> b1, Box<T> b2)
+            throws WrongBoxCapacity, NoFreeSpaceInBox, BoxIsFull {
         if (b1.getItemsCount() > b2.getCapacity())
             throw new WrongBoxCapacity("В коробке #" + b2.getBoxID() + " не достаточно места для " +
                     "размещения " + b1.getItemsCount() + " элементов из ящика #" + b1.getBoxID());
         if (0 != b2.getItemsCount() && b1.getItemsCount() > (b2.getCapacity() - b2.getItemsCount()))
             throw new NoFreeSpaceInBox("В ящике #" + b2.getBoxID() + " не хватает места для " +
                     "добавления " + b1.getItemsCount() + " элементов ящика #" + b1.getBoxID());
-        try {
-            b2.shiftItems(b1);
-        } catch (ClassCastException err) {
-            throw new WrongTypeOfFruitInBox("Ящики содержат разные типы фруктов.");//\n" +
-//                    "Ящик 1 содержит " + b1.getOneItem().getCommonType() + "\n" +
-//                    "Ящик 2 содержит " + b2.getOneItem().getCommonType() + "\n"
-//            );
+//        перемещение содержимого ящика в тот же ящик не имеет смысла
+        if(b1.equals(b2)) return;
+        for(T item: b1.getAllItems()){
+            b2.putItem(item);
         }
+        b1.cleanBox();
     }
 
     /**
-     * Получить строковое описание склада
+     * Получить склад
      *
-     * @return - описание склада.
+     * @return - склад для операций
      */
-    public String getStock() {
-        StringBuilder sb = new StringBuilder();
-        if (0 == stock.getTotalBoxes()) {
-            sb.append("Склад пуст");
-        } else {
-            for (Box box : stock.getBoxes()) {
-                sb.append(box).append("\n");
-            }
-        }
-        return sb.toString();
+    public Stock getStock() {
+        return stock;
     }
 
     /**
@@ -88,7 +75,7 @@ public class StockService {
      *
      * @param box - ящик для добавления
      */
-    public void addBoxToStock(Box<?> box) {
+    public <T extends Fruit> void addBoxToStock(Box<T> box) {
         try {
             stock.addBox(box);
         } catch (StockIsFull | BoxInStock err) {
@@ -112,7 +99,7 @@ public class StockService {
      * @param box - искомый ящик
      * @return - TRUE|FALSE
      */
-    public boolean hasBoxAtStock(Box<?> box) {
+    public <T extends Fruit> boolean hasBoxAtStock(Box<T> box) {
         return stock.hasBox(box);
     }
 
@@ -123,7 +110,7 @@ public class StockService {
      * @return - вес НЕТТО ящика
      * @throws BoxNotFound - ящик не найден на складе
      */
-    public float getWeight(Box<?> box) throws BoxNotFound {
+    public <T extends Fruit> float getWeight(Box<T> box) throws BoxNotFound {
         if (!stock.hasBox(box))
             throw new BoxNotFound("На складе не найден ящик #" + box.getBoxID() + "\n Возможно на " +
                     "складе ошибка сортамента");
