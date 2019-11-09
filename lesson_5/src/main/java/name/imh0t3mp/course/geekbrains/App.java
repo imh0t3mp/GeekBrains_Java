@@ -7,9 +7,6 @@ import name.imh0t3mp.course.geekbrains.task_tracker.TaskStatus;
 import name.imh0t3mp.course.geekbrains.task_tracker.TasksService;
 import name.imh0t3mp.course.geekbrains.task_tracker.repository.impl.TaskArrayListRepositoryImpl;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class App {
 
     public static void main(String[] args) {
@@ -25,7 +22,9 @@ public class App {
             Box<Apple> appleBox = new Box<>(3);
             appleBox.putItem(new Apple());
             appleBox.putItem(new Apple());
+            appleBox.putItem(new Apple());
             Box<Orange> orangeBox = new Box<>(3);
+            orangeBox.putItem(new Orange());
             orangeBox.putItem(new Orange());
             System.out.println("Ящик яблок:" + appleBox + " вес: " + appleBox.getWeight());
             System.out.println("Ящик апельсинов:" + orangeBox + " вес:" + orangeBox.getWeight());
@@ -39,13 +38,22 @@ public class App {
                 System.out.println(fruit);
             }
             System.out.println("/************************************************************/");
-            System.out.println("Сравнить вес двух ящиков:");
-            Box<Orange> newOrangeBox = new Box<>(2);
-            newOrangeBox.putItem(new Orange());
-            if (orangeBox.compareTo(orangeBox))
+            System.out.println("Сравнить вес двух ящиков #" +
+                    orangeBox.getBoxID() +
+                    " и #" +
+                    appleBox.getBoxID() + " :");
+            if (orangeBox.compareTo(appleBox))
                 System.out.println("Ящики имеют одинаковый вес");
             else
                 System.out.println("Ящики имеют разный вес");
+            System.out.println("Добавим апельсин и снова сравним вес");
+            orangeBox.putItem(new Orange());
+            if (orangeBox.compareTo(appleBox))
+                System.out.println("Ящики имеют одинаковый вес");
+            else
+                System.out.println("Ящики имеют разный вес");
+            System.out.println("Вес ящика апельсинов #" + orangeBox.getBoxID() + " = " + orangeBox.getWeight());
+            System.out.println("Вес ящика яблок #" + appleBox.getBoxID() + " = " + appleBox.getWeight());
             System.out.println("/************************************************************/");
             System.out.println("Поместить ящики на склад:");
             StockService stockService = new StockService();
@@ -56,7 +64,7 @@ public class App {
             try {
                 System.out.println("/************************************************************/");
                 System.out.println("Пересыпать содержимое ящика яблок в пустой другой ящик яблок");
-                Box<Apple> newAppleBox = new Box<>(2);
+                Box<Apple> newAppleBox = new Box<>(5);
                 System.out.println("Содержимое ранее нового ящика:" + newAppleBox +
                         " вес:" + newAppleBox.getWeight());
                 stockService.shiftBoxes(appleBox, newAppleBox);
@@ -69,17 +77,23 @@ public class App {
             }
             try {
                 System.out.println("/************************************************************/");
-                System.out.println("Получить вес ящика #" + appleBox.getBoxID());
+                System.out.println("Получить вес ящика яблок #" + appleBox.getBoxID());
                 System.out.println(stockService.getWeight(appleBox));
-                System.out.println("Получить вес ящика #" + appleBox.getBoxID());
+                System.out.println("Получить вес другого ящика яблок #" + appleBox.getBoxID());
+                System.out.println(stockService.getWeight(appleBox));
+                System.out.println("Получить вес ящика апельсинов#" + orangeBox.getBoxID());
                 System.out.println(stockService.getWeight(orangeBox));
             } catch (BoxNotFound err) {
                 System.err.println(err.getMessage());
             }
             System.out.println("/************************************************************/");
+            System.out.println("Показать содержимое ящика с апельсинами:");
+            for (Fruit fruit : orangeBox.getAllItems()) {
+                System.out.println(fruit);
+            }
             System.out.println("Зачистить ящик с апельсинами:");
             orangeBox.cleanBox();
-            System.out.println("Показать содержимое ящика с апельсинами");
+            System.out.println("Показать содержимое ящика с апельсинами:");
             for (Fruit fruit : orangeBox.getAllItems()) {
                 System.out.println(fruit);
             }

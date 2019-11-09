@@ -1,10 +1,17 @@
 package name.imh0t3mp.course.geekbrains.fruit_stock;
 
-import name.imh0t3mp.course.geekbrains.fruit_stock.errors.*;
+import name.imh0t3mp.course.geekbrains.fruit_stock.errors.BoxIsEmpty;
+import name.imh0t3mp.course.geekbrains.fruit_stock.errors.BoxIsFull;
+import name.imh0t3mp.course.geekbrains.fruit_stock.errors.NoItemInBox;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.UUID;
 
 public class Box<T extends Fruit> {
+
+    private static final float THRESHOLD = 0.000001f;
     private List<T> fruitsInBox;
     private int capacity;
     private String boxID = UUID.randomUUID().toString();
@@ -34,11 +41,9 @@ public class Box<T extends Fruit> {
      * @throws NoItemInBox - если в ячейке нет фрукта
      */
     public T getItem(int index) throws NoItemInBox {
-        try {
+        if (index <= getItemsCount())
             return fruitsInBox.get(index);
-        } catch (NoSuchElementException err) {
-            throw new NoItemInBox("Ячейка " + index + " ящика пуста");
-        }
+        throw new NoItemInBox("Ячейка " + index + " ящика пуста");
     }
 
     /**
@@ -138,7 +143,6 @@ public class Box<T extends Fruit> {
         return (0 == getItemsCount()) ?
                 0.0f :
                 getItemsCount() * fruitsInBox.get(0).getWeight();
-
     }
 
     /**
@@ -149,7 +153,7 @@ public class Box<T extends Fruit> {
      * @return - TRUE|FALSE Одинаковы ли ящики по весу
      */
     public boolean compareTo(Box box) {
-        return box.getWeight() == getWeight();
+        return Math.abs(box.getWeight() - getWeight()) <= THRESHOLD;
     }
 
     /**
