@@ -8,6 +8,7 @@
     <artifactId>JavaCouse</artifactId>
     <version>0.1</version>
     <modules>
+        <module>lesson_6</module>
         <module>lesson_5</module>
         <module>lesson_4</module>
         <module>lesson_3</module>
