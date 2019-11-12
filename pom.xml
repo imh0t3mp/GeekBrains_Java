@@ -9,8 +9,14 @@
     <version>0.1</version>
     <modules>
 <<<<<<< HEAD
+<<<<<<< HEAD
         <module>lesson_2</module>
 =======
+=======
+        <module>lesson_6</module>
+        <module>lesson_5</module>
+        <module>lesson_4</module>
+>>>>>>> 76eb9eadb6746bd3566e71e77b9a9c9f13c3a76f
         <module>lesson_3</module>
         <module>lesson_2</module>
         <module>lesson_1</module>
@@ -52,5 +58,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>
