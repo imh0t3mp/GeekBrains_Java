@@ -4,8 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.CyclicBarrier;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.Semaphore;
 
 /**
  * Описание гонки
@@ -17,6 +16,8 @@ public class Race {
 
     private CyclicBarrier startLine;
     private CountDownLatch finishedCars;
+
+    private Semaphore carInTunnel = new Semaphore(1);
 
     public ArrayList<Stage> getStages() {
         return stages;
@@ -53,35 +54,55 @@ public class Race {
     }
 
     /**
-     * ДОбавить финишера в рейтинг
-     *
-     * @param car - объект машина
-     */
-    public synchronized void raceFinished(Car car) {
-//        this.carsRank.add(car);
-        finishedCars.countDown();
-        System.out.println(car.getName() + " финишировал");
-    }
-
-    /**
-     * Получить список участников гонки в порядке их финиширования
+     * Получить семафор для работы в туннеле
+     * TODO: а может тут проще Lock?
      *
      * @return
      */
-    public ArrayList<Car> getCarsRank() {
-        return carsRank;
+    public void setCarInTunnel() {
+        try {
+            this.carInTunnel.acquire();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
-    /**
-     * Получить указатель на автомобиль победитель
-     *
-     * @return - первую запись из таблицы финиша
-     */
-    public Car getWinner() {
-        return 0 != carsRank.size() ? carsRank.get(0) : null;
+    public void setCarIsNotInTunnel() {
+        this.carInTunnel.release();
     }
 
-    public void waitAllFinished() throws InterruptedException {
-        this.finishedCars.await();
-    }
+
+//
+//    /**
+//     * ДОбавить финишера в рейтинг
+//     *
+//     * @param car - объект машина
+//     */
+//    public synchronized void raceFinished(Car car) {
+////        this.carsRank.add(car);
+//        finishedCars.countDown();
+//        System.out.println(car.getName() + " финишировал");
+//    }
+//
+//    /**
+//     * Получить список участников гонки в порядке их финиширования
+//     *
+//     * @return
+//     */
+//    public ArrayList<Car> getCarsRank() {
+//        return carsRank;
+//    }
+//
+//    /**
+//     * Получить указатель на автомобиль победитель
+//     *
+//     * @return - первую запись из таблицы финиша
+//     */
+//    public Car getWinner() {
+//        return 0 != carsRank.size() ? carsRank.get(0) : null;
+//    }
+//
+//    public void waitAllFinished() throws InterruptedException {
+//        this.finishedCars.await();
+//    }
 }
