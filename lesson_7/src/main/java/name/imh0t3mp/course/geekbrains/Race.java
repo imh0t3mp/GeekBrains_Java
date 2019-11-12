@@ -15,7 +15,10 @@ public class Race {
     private ArrayList<Stage> stages;
 
     private CyclicBarrier startLine;
+
+    private CountDownLatch readyCars;
     private CountDownLatch finishedCars;
+
 
     private Semaphore carInTunnel = new Semaphore(1);
 
@@ -28,20 +31,22 @@ public class Race {
     public Race(Stage... stages) {
         this.stages = new ArrayList<>(Arrays.asList(stages));
         this.startLine = new CyclicBarrier(DEFAULT_CARS);
+        this.readyCars = new CountDownLatch(DEFAULT_CARS);
         this.finishedCars = new CountDownLatch(DEFAULT_CARS);
         this.carsRank = new ArrayList<>(DEFAULT_CARS);
         this.carsInRace = DEFAULT_CARS;
 
-        System.out.println("Подготовка к гонке. Ждём должно быть готово машин " + DEFAULT_CARS);
+        System.out.println("Подготовка к гонке. Ждём должно быть готово машин:" + DEFAULT_CARS);
     }
 
-    public Race(int carsOnBarier, Stage... stages) {
+    public Race(int carsInRace, Stage... stages) {
         this.stages = new ArrayList<>(Arrays.asList(stages));
-        this.startLine = new CyclicBarrier(carsOnBarier);
-        this.finishedCars = new CountDownLatch(carsOnBarier);
-        this.carsRank = new ArrayList<>(carsOnBarier);
-        this.carsInRace = carsOnBarier;
-        System.out.println("Подготовка к гонке. Ждём должно быть готово машин " + carsOnBarier);
+        this.startLine = new CyclicBarrier(carsInRace);
+        this.readyCars = new CountDownLatch(carsInRace);
+        this.finishedCars = new CountDownLatch(carsInRace);
+        this.carsRank = new ArrayList<>(carsInRace);
+        this.carsInRace = carsInRace;
+        System.out.println("Подготовка к гонке. Ждём должно бы ть готово машин:" + carsInRace);
     }
 
     /**
@@ -54,22 +59,40 @@ public class Race {
     }
 
     /**
-     * Получить семафор для работы в туннеле
-     * TODO: а может тут проще Lock?
+     * Счётчик машин готовых к гонке
      *
      * @return
      */
-    public void setCarInTunnel() {
-        try {
-            this.carInTunnel.acquire();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+    public CountDownLatch getReadyCars() {
+        return readyCars;
     }
 
-    public void setCarIsNotInTunnel() {
-        this.carInTunnel.release();
+    /**
+     * Счётчик машин закончивших гонку
+     *
+     * @return
+     */
+    public CountDownLatch getFinishedCars() {
+        return finishedCars;
     }
+
+    //    /**
+//     * Получить семафор для работы в туннеле
+//     * TODO: а может тут проще Lock?
+//     *
+//     * @return
+//     */
+//    public void setCarInTunnel() {
+//        try {
+//            this.carInTunnel.acquire();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//    }
+//
+//    public void setCarIsNotInTunnel() {
+//        this.carInTunnel.release();
+//    }
 
 
 //

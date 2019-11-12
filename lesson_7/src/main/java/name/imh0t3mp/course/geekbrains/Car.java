@@ -1,13 +1,12 @@
 package name.imh0t3mp.course.geekbrains;
 
-import java.util.concurrent.Semaphore;
-
 /**
  * Машина
  * Субьект гонки
  */
 public class Car implements Runnable {
     private static int CARS_COUNT;
+
     static {
         CARS_COUNT = 0;
     }
@@ -40,6 +39,8 @@ public class Car implements Runnable {
             System.out.println(this.name + " готовится");
             Thread.sleep(500 + (int) (Math.random() * 800));
             System.out.println(this.name + " готов к старту");
+//            Добавим машину в очередь готовых к гонке
+            race.getReadyCars().countDown();
 //            Ожидаем готовности других водителей
             race.getStartLine().await();
             System.out.println(name + " стартовал на скорости " + speed);
@@ -49,16 +50,17 @@ public class Car implements Runnable {
         for (int i = 0; i < race.getStages().size(); i++) {
             race.getStages().get(i).go(this);
         }
-//        Машина закончила гонку
-//        race.raceFinished(this);
+//        Машина прошла все этапы и закончила гонку
+        race.getFinishedCars().countDown();
     }
 
-    public void setCarInTunnel(){
-        race.setCarInTunnel();
-    }
-    public void setCarNotInInTunnel(){
-        race.setCarIsNotInTunnel();
-    }
+//    public void setCarInTunnel() {
+//        race.setCarInTunnel();
+//    }
+//
+//    public void setCarNotInInTunnel() {
+//        race.setCarIsNotInTunnel();
+//    }
 
 
     @Override
