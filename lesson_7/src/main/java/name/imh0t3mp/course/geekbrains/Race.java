@@ -11,35 +11,44 @@ import java.util.concurrent.Semaphore;
  */
 public class Race {
     private static final int DEFAULT_CARS = 2;
-    private int carsInRace;
     private ArrayList<Stage> stages;
 
+    //    Барьер для запуска всех машин сразу
     private CyclicBarrier startLine;
 
+    //    Счетчики готовых к заезду машин и машин пришедших на финиш
     private CountDownLatch readyCars;
     private CountDownLatch finishedCars;
+
+    //    Семафор для ограниченияпропускной способности участка дороги
     private Semaphore semaphore;
 
-
-    private Semaphore carInTunnel = new Semaphore(1);
-
-    public ArrayList<Stage> getStages() {
-        return stages;
-    }
-
+    //    Список машин пришедших на финиш в порядке их финишированиЯ
     private ArrayList<Car> carsRank;
 
+    /**
+     * Конструктор гонки по умолчанию
+     * По умолчанию считаем что в гонке может быть не больше двух машин
+     *
+     * @param stages - перечень этапов гонки
+     */
     public Race(Stage... stages) {
         this.stages = new ArrayList<>(Arrays.asList(stages));
         this.startLine = new CyclicBarrier(DEFAULT_CARS);
         this.readyCars = new CountDownLatch(DEFAULT_CARS);
         this.finishedCars = new CountDownLatch(DEFAULT_CARS);
         this.carsRank = new ArrayList<>(DEFAULT_CARS);
-        this.carsInRace = DEFAULT_CARS;
         this.semaphore = new Semaphore((int) Math.ceil(DEFAULT_CARS / 2));
         System.out.println("Подготовка к гонке. Ждём должно быть готово машин:" + DEFAULT_CARS);
     }
 
+    /**
+     * Конструктор гонки.
+     * Подготавливает гонку для соревнования carsInRace машин по перечню этапов
+     *
+     * @param carsInRace - количество машин которые будут участвовать в гонке
+     * @param stages     - спиок этапов гонки
+     */
     public Race(int carsInRace, Stage... stages) {
         this.stages = new ArrayList<>(Arrays.asList(stages));
         this.startLine = new CyclicBarrier(carsInRace);
@@ -47,15 +56,23 @@ public class Race {
         this.finishedCars = new CountDownLatch(carsInRace);
         this.carsRank = new ArrayList<>(carsInRace);
         this.semaphore = new Semaphore((int) Math.ceil(carsInRace / 2));
-        System.out.println("Ёмкость туннеля:"+semaphore.availablePermits());
-        this.carsInRace = carsInRace;
+        System.out.println("Ёмкость туннеля:" + semaphore.availablePermits());
         System.out.println("Подготовка к гонке. Ждём должно бы ть готово машин:" + carsInRace);
+    }
+
+    /**
+     * Список этапов гонки
+     *
+     * @return - список этапов гонки
+     */
+    public ArrayList<Stage> getStages() {
+        return stages;
     }
 
     /**
      * Получить ссылку на объект синхронизации потоков
      *
-     * @return - обект барьер, который будет ждать готовность потоков
+     * @return - объект барьер, который будет ждать готовность потоков
      */
     public CyclicBarrier getStartLine() {
         return startLine;
@@ -64,7 +81,7 @@ public class Race {
     /**
      * Счётчик машин готовых к гонке
      *
-     * @return
+     * @return - указатель на счетчик
      */
     public CountDownLatch getReadyCars() {
         return readyCars;
@@ -73,14 +90,14 @@ public class Race {
     /**
      * Счётчик машин закончивших гонку
      *
-     * @return
+     * @return - указатель на счётчик
      */
     public CountDownLatch getFinishedCars() {
         return finishedCars;
     }
 
     /**
-     * Получить семафор
+     * Получить семафор для управления возможностью прохождения этапа
      *
      * @return - объект семафор
      */
@@ -90,6 +107,8 @@ public class Race {
 
     /**
      * ДОбавить финишера в рейтинг
+     * Метод синхронизируется для того, чтобы в рейтинг попадали
+     * машины по порядку финиширования
      *
      * @param car - объект машина
      */
@@ -108,7 +127,7 @@ public class Race {
     }
 
     /**
-     * Получить указатель на автомобиль победитель
+     * Получить автомобиль победитель
      *
      * @return - первую запись из таблицы финиша
      */

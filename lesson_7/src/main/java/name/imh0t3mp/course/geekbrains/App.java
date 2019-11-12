@@ -8,6 +8,7 @@ public class App {
 
     public static void main(String[] args) {
         System.out.println("ВАЖНОЕ ОБЪЯВЛЕНИЕ >>> Подготовка!!!");
+//        Подготовим трассу для гонки
         Race race = new Race(CARS_COUNT,
                 new Road(60),
                 new Tunnel(),
@@ -17,9 +18,11 @@ public class App {
                 new Tunnel(),
                 new Road(40));
         Car[] cars = new Car[CARS_COUNT];
+//        Подготовим машины к гонке
         for (int i = 0; i < cars.length; i++) {
             cars[i] = new Car(race, 20 + (int) (Math.random() * 100));
         }
+//        Стартуем подготовку к гонке
         for (int i = 0; i < cars.length; i++) {
             new Thread(cars[i]).start();
         }

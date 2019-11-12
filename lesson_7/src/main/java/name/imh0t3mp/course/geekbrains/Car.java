@@ -39,7 +39,7 @@ public class Car implements Runnable {
             System.out.println(this.name + " готовится");
             Thread.sleep(500 + (int) (Math.random() * 800));
             System.out.println(this.name + " готов к старту");
-//            Добавим машину в очередь готовых к гонке
+//            Добавим машину в очередь готовых к гонке для вывода сообщения о старте гонки
             race.getReadyCars().countDown();
 //            Ожидаем готовности других водителей
             race.getStartLine().await();
@@ -51,6 +51,7 @@ public class Car implements Runnable {
             race.getStages().get(i).go(this);
         }
 //        Машина прошла все этапы и закончила гонку
+//        Сообщим что машина закончила гонку и добавим ее в таблицу рейтинга
         race.getFinishedCars().countDown();
         race.raceFinished(this);
     }
