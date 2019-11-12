@@ -52,6 +52,7 @@ public class Car implements Runnable {
         }
 //        Машина прошла все этапы и закончила гонку
         race.getFinishedCars().countDown();
+        race.raceFinished(this);
     }
 
 //    public void setCarInTunnel() {

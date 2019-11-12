@@ -19,13 +19,13 @@ public class Tunnel extends Stage {
                 System.out.println(c.getName() + " начал этап: " + description);
                 System.out.println(c.getName() + " расчётное время прохождения " + description + ":" + ((length * 1000) / c.getSpeed()));
 //                TODO: разобраться, как сделать блокировку туннеля только для одной машиы.
-                c.setCarInTunnel();
+//                c.setCarInTunnel();
                 Thread.sleep((length * 1000) / c.getSpeed());
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } finally {
                 System.out.println(c.getName() + " закончил этап: " + description);
-                c.setCarNotInInTunnel();
+//                c.setCarNotInInTunnel();
             }
         } catch (Exception e) {
             e.printStackTrace();

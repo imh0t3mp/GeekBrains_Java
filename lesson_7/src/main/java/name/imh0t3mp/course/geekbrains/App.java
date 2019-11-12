@@ -4,7 +4,7 @@ package name.imh0t3mp.course.geekbrains;
  * Основной класс приложения
  */
 public class App {
-    public static final int CARS_COUNT = 3;
+    public static final int CARS_COUNT = 10;
 
     public static void main(String[] args) {
         System.out.println("ВАЖНОЕ ОБЪЯВЛЕНИЕ >>> Подготовка!!!");
@@ -21,13 +21,13 @@ public class App {
             race.getReadyCars().await();
             System.out.println("ОБЪЯВЛЕНИЕ >>> ГОНКА НАЧАТА!!!!");
             race.getFinishedCars().await();
-            System.out.println("ОБЪЯВЛЕНИЕ >>> ГОНКА ОКОНЧЕНА!!!!");
+            System.out.println("ОБЪЯВЛЕНИЕ >>> ГОНКА ЗАКОНЧЕНА!!!!");
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-//        System.out.println("Рейтинг победителей");
-//        System.out.println(race.getCarsRank());
-//        System.out.println("Победитель гонки:");
-//        System.out.println(race.getWinner());
+        System.out.println("Рейтинг победителей");
+        System.out.println(race.getCarsRank());
+        System.out.println("Победитель гонки:");
+        System.out.println(race.getWinner());
     }
 }

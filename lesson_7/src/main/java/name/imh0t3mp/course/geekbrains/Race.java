@@ -96,36 +96,33 @@ public class Race {
 
 
 //
-//    /**
-//     * ДОбавить финишера в рейтинг
-//     *
-//     * @param car - объект машина
-//     */
-//    public synchronized void raceFinished(Car car) {
-////        this.carsRank.add(car);
-//        finishedCars.countDown();
-//        System.out.println(car.getName() + " финишировал");
-//    }
-//
-//    /**
-//     * Получить список участников гонки в порядке их финиширования
-//     *
-//     * @return
-//     */
-//    public ArrayList<Car> getCarsRank() {
-//        return carsRank;
-//    }
-//
-//    /**
-//     * Получить указатель на автомобиль победитель
-//     *
-//     * @return - первую запись из таблицы финиша
-//     */
-//    public Car getWinner() {
-//        return 0 != carsRank.size() ? carsRank.get(0) : null;
-//    }
-//
-//    public void waitAllFinished() throws InterruptedException {
-//        this.finishedCars.await();
-//    }
+
+    /**
+     * ДОбавить финишера в рейтинг
+     *
+     * @param car - объект машина
+     */
+    public synchronized void raceFinished(Car car) {
+        this.carsRank.add(car);
+        System.out.println(car.getName() + " финишировал");
+    }
+
+    /**
+     * Получить список участников гонки в порядке их финиширования
+     *
+     * @return
+     */
+    public ArrayList<Car> getCarsRank() {
+        return carsRank;
+    }
+
+    /**
+     * Получить указатель на автомобиль победитель
+     *
+     * @return - первую запись из таблицы финиша
+     */
+    public Car getWinner() {
+        return 0 != carsRank.size() ? carsRank.get(0) : null;
+    }
+
 }
