@@ -1,5 +1,8 @@
 package name.imh0t3mp.course.geekbrains;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 /**
  * Основной класс приложения
  */
@@ -8,6 +11,7 @@ public class App {
 
     public static void main(String[] args) {
         System.out.println("ВАЖНОЕ ОБЪЯВЛЕНИЕ >>> Подготовка!!!");
+        ExecutorService executorService = Executors.newFixedThreadPool(CARS_COUNT);
 //        Подготовим трассу для гонки
         Race race = new Race(CARS_COUNT,
                 new Road(60),
@@ -23,8 +27,8 @@ public class App {
             cars[i] = new Car(race, 20 + (int) (Math.random() * 100));
         }
 //        Стартуем подготовку к гонке
-        for (int i = 0; i < cars.length; i++) {
-            new Thread(cars[i]).start();
+        for (Car car : cars) {
+            executorService.execute(car);
         }
         try {
             race.getReadyCars().await();
