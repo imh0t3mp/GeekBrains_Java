@@ -23,7 +23,7 @@ public class App {
                 new Road(40));
         Car[] cars = new Car[CARS_COUNT];
 //        Подготовим машины к гонке
-        for (int i = 0; i < cars.length; i++) {
+        for (int i = 0; i < CARS_COUNT; i++) {
             cars[i] = new Car(race, 20 + (int) (Math.random() * 100));
         }
 //        Стартуем подготовку к гонке
@@ -35,12 +35,13 @@ public class App {
             System.out.println("ОБЪЯВЛЕНИЕ >>> ГОНКА НАЧАТА!!!!");
             race.getFinishedCars().await();
             System.out.println("ОБЪЯВЛЕНИЕ >>> ГОНКА ЗАКОНЧЕНА!!!!");
+            System.out.println("Рейтинг победителей");
+            System.out.println(race.getCarsRank());
+            System.out.println("Победитель гонки:");
+            System.out.println(race.getWinner());
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println("Рейтинг победителей");
-        System.out.println(race.getCarsRank());
-        System.out.println("Победитель гонки:");
-        System.out.println(race.getWinner());
+
     }
 }
