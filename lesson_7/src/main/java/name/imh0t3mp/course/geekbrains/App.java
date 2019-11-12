@@ -4,12 +4,18 @@ package name.imh0t3mp.course.geekbrains;
  * Основной класс приложения
  */
 public class App {
-    public static final int CARS_COUNT = 10;
+    public static final int CARS_COUNT = 5;
 
     public static void main(String[] args) {
         System.out.println("ВАЖНОЕ ОБЪЯВЛЕНИЕ >>> Подготовка!!!");
-        Race race = new Race(CARS_COUNT, new Road(60));//, new Tunnel(), new Road(40));
-//        Race race = new Race(CARS_COUNT, new Road(60), new Road(40));
+        Race race = new Race(CARS_COUNT,
+                new Road(60),
+                new Tunnel(),
+                new Road(100),
+                new Tunnel(),
+                new Road(60),
+                new Tunnel(),
+                new Road(40));
         Car[] cars = new Car[CARS_COUNT];
         for (int i = 0; i < cars.length; i++) {
             cars[i] = new Car(race, 20 + (int) (Math.random() * 100));

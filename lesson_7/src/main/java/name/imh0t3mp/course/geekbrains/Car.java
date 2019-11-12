@@ -55,13 +55,21 @@ public class Car implements Runnable {
         race.raceFinished(this);
     }
 
-//    public void setCarInTunnel() {
-//        race.setCarInTunnel();
-//    }
-//
-//    public void setCarNotInInTunnel() {
-//        race.setCarIsNotInTunnel();
-//    }
+    /**
+     * Сообщить что машина въезжает в туннель
+     *
+     * @throws InterruptedException
+     */
+    public void setCarInTunnel() throws InterruptedException {
+        race.getSemaphore().acquire();
+    }
+
+    /**
+     * Сообщить что машина покинула туннель
+     */
+    public void setCarNotInInTunnel() {
+        race.getSemaphore().release();
+    }
 
 
     @Override

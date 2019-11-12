@@ -18,6 +18,7 @@ public class Race {
 
     private CountDownLatch readyCars;
     private CountDownLatch finishedCars;
+    private Semaphore semaphore;
 
 
     private Semaphore carInTunnel = new Semaphore(1);
@@ -35,7 +36,7 @@ public class Race {
         this.finishedCars = new CountDownLatch(DEFAULT_CARS);
         this.carsRank = new ArrayList<>(DEFAULT_CARS);
         this.carsInRace = DEFAULT_CARS;
-
+        this.semaphore = new Semaphore((int) Math.ceil(DEFAULT_CARS / 2));
         System.out.println("Подготовка к гонке. Ждём должно быть готово машин:" + DEFAULT_CARS);
     }
 
@@ -45,6 +46,8 @@ public class Race {
         this.readyCars = new CountDownLatch(carsInRace);
         this.finishedCars = new CountDownLatch(carsInRace);
         this.carsRank = new ArrayList<>(carsInRace);
+        this.semaphore = new Semaphore((int) Math.ceil(carsInRace / 2));
+        System.out.println("Ёмкость туннеля:"+semaphore.availablePermits());
         this.carsInRace = carsInRace;
         System.out.println("Подготовка к гонке. Ждём должно бы ть готово машин:" + carsInRace);
     }
@@ -76,26 +79,14 @@ public class Race {
         return finishedCars;
     }
 
-    //    /**
-//     * Получить семафор для работы в туннеле
-//     * TODO: а может тут проще Lock?
-//     *
-//     * @return
-//     */
-//    public void setCarInTunnel() {
-//        try {
-//            this.carInTunnel.acquire();
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    public void setCarIsNotInTunnel() {
-//        this.carInTunnel.release();
-//    }
-
-
-//
+    /**
+     * Получить семафор
+     *
+     * @return - объект семафор
+     */
+    public Semaphore getSemaphore() {
+        return semaphore;
+    }
 
     /**
      * ДОбавить финишера в рейтинг
