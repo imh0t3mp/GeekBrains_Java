@@ -38,7 +38,7 @@ public class Car implements Runnable {
         try {
             System.out.println(this.name + " готовится");
             Thread.sleep(500 + (int) (Math.random() * 800));
-            System.out.println(this.name + " готов");
+            System.out.println(this.name + " готов к старту");
 //            Ожидаем готовности других водителей
             race.getStartLine().await();
             System.out.println(name + " стартовал на скорости " + speed);
@@ -48,5 +48,14 @@ public class Car implements Runnable {
         for (int i = 0; i < race.getStages().size(); i++) {
             race.getStages().get(i).go(this);
         }
+//        Машина закончила гонку
+//        race.raceFinished(this);
+    }
+
+    @Override
+    public String toString() {
+        return "Car{" +
+                "name='" + name + '\'' +
+                '}';
     }
 }
