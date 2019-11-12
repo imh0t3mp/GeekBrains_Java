@@ -39,6 +39,9 @@ public class Car implements Runnable {
             System.out.println(this.name + " готовится");
             Thread.sleep(500 + (int) (Math.random() * 800));
             System.out.println(this.name + " готов");
+//            Ожидаем готовности других водителей
+            race.getStartLine().await();
+            System.out.println(name + " стартовал на скорости " + speed);
         } catch (Exception e) {
             e.printStackTrace();
         }
