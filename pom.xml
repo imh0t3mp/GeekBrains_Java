@@ -3,24 +3,17 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
     <groupId>name.imh0t3mp.geekbrains</groupId>
     <artifactId>JavaCouse</artifactId>
     <version>0.1</version>
     <modules>
-<<<<<<< HEAD
-<<<<<<< HEAD
-        <module>lesson_2</module>
-=======
-=======
+        <module>lesson_7</module>
         <module>lesson_6</module>
         <module>lesson_5</module>
         <module>lesson_4</module>
->>>>>>> 76eb9eadb6746bd3566e71e77b9a9c9f13c3a76f
         <module>lesson_3</module>
         <module>lesson_2</module>
         <module>lesson_1</module>
->>>>>>> 395363d2ab977a88a7e44bbe7910a6290980f446
     </modules>
     <packaging>pom</packaging>
     <developers>
