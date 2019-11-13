@@ -20,8 +20,6 @@ public class Race {
     private CountDownLatch readyCars;
     private CountDownLatch finishedCars;
 
-    //    Семафор для ограниченияпропускной способности участка дороги
-    private Semaphore semaphore;
 
     //    Список машин пришедших на финиш в порядке их финишированиЯ
     private ArrayList<Car> carsRank;
@@ -38,7 +36,6 @@ public class Race {
         this.readyCars = new CountDownLatch(DEFAULT_CARS);
         this.finishedCars = new CountDownLatch(DEFAULT_CARS);
         this.carsRank = new ArrayList<>(DEFAULT_CARS);
-        this.semaphore = new Semaphore((int) Math.ceil(DEFAULT_CARS / 2));
         System.out.println("Подготовка к гонке. Ждём должно быть готово машин:" + DEFAULT_CARS);
     }
 
@@ -55,8 +52,6 @@ public class Race {
         this.readyCars = new CountDownLatch(carsInRace);
         this.finishedCars = new CountDownLatch(carsInRace);
         this.carsRank = new ArrayList<>(carsInRace);
-        this.semaphore = new Semaphore((int) Math.ceil(carsInRace / 2));
-        System.out.println("Ёмкость туннеля:" + semaphore.availablePermits());
         System.out.println("Подготовка к гонке. Ждём должно бы ть готово машин:" + carsInRace);
     }
 
@@ -94,15 +89,6 @@ public class Race {
      */
     public CountDownLatch getFinishedCars() {
         return finishedCars;
-    }
-
-    /**
-     * Получить семафор для управления возможностью прохождения этапа
-     *
-     * @return - объект семафор
-     */
-    public Semaphore getSemaphore() {
-        return semaphore;
     }
 
     /**

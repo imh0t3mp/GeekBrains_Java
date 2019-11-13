@@ -8,6 +8,7 @@ import java.util.concurrent.Executors;
  */
 public class App {
     public static final int CARS_COUNT = 5;
+    public static final int CARS_IN_TUNNEL = (int) Math.ceil(CARS_COUNT / 2);
 
     public static void main(String[] args) {
         System.out.println("ВАЖНОЕ ОБЪЯВЛЕНИЕ >>> Подготовка!!!");
@@ -15,11 +16,11 @@ public class App {
 //        Подготовим трассу для гонки
         Race race = new Race(CARS_COUNT,
                 new Road(60),
-                new Tunnel(),
+                new Tunnel(CARS_IN_TUNNEL),
                 new Road(100),
-                new Tunnel(),
-                new Road(60),
-                new Tunnel(),
+                new Tunnel(CARS_IN_TUNNEL),
+                new Road(10),
+                new Tunnel(CARS_IN_TUNNEL),
                 new Road(40));
         Car[] cars = new Car[CARS_COUNT];
 //        Подготовим машины к гонке
