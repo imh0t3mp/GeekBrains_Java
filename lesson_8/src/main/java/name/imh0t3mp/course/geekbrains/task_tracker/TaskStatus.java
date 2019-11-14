@@ -7,8 +7,8 @@ public enum TaskStatus {
     CREATED("Создана"),
     TODO("Сделать"),
     OPENED("Открыта"),
-    DECLINED("Отклонена"),
     IN_PROGRESS("В работе"),
+    DECLINED("Отклонена"),
     DONE("Сделано"),
     CLOSED("Закрыто");
 

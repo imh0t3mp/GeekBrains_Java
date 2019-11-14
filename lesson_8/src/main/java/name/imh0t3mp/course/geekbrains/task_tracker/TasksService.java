@@ -6,7 +6,11 @@ import name.imh0t3mp.course.geekbrains.task_tracker.errors.TaskNotFound;
 import name.imh0t3mp.course.geekbrains.task_tracker.repository.TaskRepository;
 import name.imh0t3mp.course.geekbrains.task_tracker.repository.impl.TaskArrayRepositoryImpl;
 
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * Унифицированный класс для работы с разными типами репозиториев
@@ -128,6 +132,15 @@ public class TasksService {
     }
 
     /**
+     * Получить список всех задач в репозитории
+     *
+     * @return - полный список задач
+     */
+    public List<Task> getAllTasks() {
+        return Arrays.asList(repository.getAllTasks());
+    }
+
+    /**
      * Выбрать все задачи с определённым статусом
      *
      * @param status - статус искомой задачи
@@ -140,5 +153,53 @@ public class TasksService {
             System.err.println(err.toString());
             return null;
         }
+    }
+
+    /**
+     * Вернуть список задач отсортированный определённым образом
+     *
+     * @param comparator - компаратор для сортировки, например:
+     *                   (o1,o2) -> -o1.getName().compareTo(o2.getName()) - отсортировать список по имени
+     *                   в обратном порядке
+     *                   (o1,o2) -> o1.getStatus().compareTo(o2.getStatus()) - отсортировать список
+     *                   по статусу
+     * @return - сортированный список
+     */
+    public List<Task> sortTasksBy(Comparator<Task> comparator) {
+        return repository.getTasksList().stream().
+                sorted(comparator).
+                collect(Collectors.toList());
+
+    }
+
+    public List<Task> sortListByStatus() {
+        return sortTasksBy(Comparator.comparing(Task::getStatus));
+    }
+
+    /**
+     * Подсчет количества задач по статусу
+     * Для подсчёта задач, обращаемся напрямую к методу репозитория
+     *
+     * @param status - статус задачи
+     * @return - количество найденных задач
+     */
+    public long getTaskCount(TaskStatus status) {
+        try {
+            return repository.getTasksByStatus(status).size();
+        } catch (TaskNotFound taskNotFound) {
+            return 0;
+        }
+    }
+
+    /**
+     * Универсальный счетчик задач по правилу
+     *
+     * @param predicate - правило подсчёта задач
+     * @return - количество найденных задач
+     */
+    public long getTaskCount(Predicate<Task> predicate) {
+        return repository.getTasksList().
+                stream().
+                filter(predicate).count();
     }
 }
