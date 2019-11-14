@@ -179,7 +179,12 @@ public class TaskArrayListRepositoryImpl implements TaskRepository {
      */
     @Override
     public List<Task> getTasksByStatus(TaskStatus status) {
-        return null;
+        List<Task> tasks = new ArrayList<>();
+        for (Task task : taskList) {
+            if (task.getStatus() == status)
+                tasks.add(task);
+        }
+        return tasks;
     }
     // ***************************************************************************************** //
 

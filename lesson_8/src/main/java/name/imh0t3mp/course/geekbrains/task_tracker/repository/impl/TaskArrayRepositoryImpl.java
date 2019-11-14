@@ -7,6 +7,7 @@ import name.imh0t3mp.course.geekbrains.task_tracker.errors.TaskAlreadyExists;
 import name.imh0t3mp.course.geekbrains.task_tracker.errors.TaskNotFound;
 import name.imh0t3mp.course.geekbrains.task_tracker.repository.TaskRepository;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -186,7 +187,12 @@ public class TaskArrayRepositoryImpl implements TaskRepository {
      */
     @Override
     public List<Task> getTasksByStatus(TaskStatus status) {
-        return null;
+        List<Task> tasks = new ArrayList<>();
+        for (Task task : taskList) {
+            if (task.getStatus() == status)
+                tasks.add(task);
+        }
+        return tasks;
     }
     // ***************************************************************************************** //
 
