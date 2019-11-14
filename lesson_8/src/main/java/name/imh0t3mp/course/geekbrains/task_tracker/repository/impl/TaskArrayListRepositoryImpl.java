@@ -1,6 +1,7 @@
 package name.imh0t3mp.course.geekbrains.task_tracker.repository.impl;
 
 import name.imh0t3mp.course.geekbrains.task_tracker.Task;
+import name.imh0t3mp.course.geekbrains.task_tracker.TaskStatus;
 import name.imh0t3mp.course.geekbrains.task_tracker.errors.RepositoryIsFull;
 import name.imh0t3mp.course.geekbrains.task_tracker.errors.TaskAlreadyExists;
 import name.imh0t3mp.course.geekbrains.task_tracker.errors.TaskNotFound;
@@ -35,7 +36,7 @@ public class TaskArrayListRepositoryImpl implements TaskRepository {
         if (taskList.size() == CAPACITY) {
             throw new RepositoryIsFull("Репозиторий заполнен. " +
                     " Максимально допустимое количество записей: " + CAPACITY);
-        } else if (this.taskList.contains(task)) {
+        } else if (taskList.contains(task)) {
             throw new TaskAlreadyExists("Задача " + task.getShortDescription() + " уже есть в списке");
         } else {
             taskList.add(task);
@@ -63,7 +64,7 @@ public class TaskArrayListRepositoryImpl implements TaskRepository {
      */
     @Override
     public void deleteTask(int taskId) throws TaskNotFound {
-        int index = this.getIndex(taskId);
+        int index = getIndex(taskId);
         if (-1 != index) {
             taskList.remove(index);
         } else {
@@ -78,7 +79,7 @@ public class TaskArrayListRepositoryImpl implements TaskRepository {
      */
     @Override
     public void deleteTask(String taskName) throws TaskNotFound {
-        int index = this.getIndex(taskName);
+        int index = getIndex(taskName);
         if (-1 != index) {
             taskList.remove(index);
         } else {
@@ -94,7 +95,7 @@ public class TaskArrayListRepositoryImpl implements TaskRepository {
      */
     @Override
     public Task getTask(int taskId) throws TaskNotFound {
-        int index = this.getIndex(taskId);
+        int index = getIndex(taskId);
         if (0 > index)
             throw new TaskNotFound("Задача с ID:" + taskId + " не найдена в списке");
         return taskList.get(index);
@@ -108,7 +109,7 @@ public class TaskArrayListRepositoryImpl implements TaskRepository {
      */
     @Override
     public Task getTask(String taskName) throws TaskNotFound {
-        int index = this.getIndex(taskName);
+        int index = getIndex(taskName);
         if (0 > index)
             throw new TaskNotFound("Задача с имемен:" + taskName + " не найдена в списке");
         return taskList.get(index);
@@ -124,7 +125,7 @@ public class TaskArrayListRepositoryImpl implements TaskRepository {
      */
     @Override
     public boolean hasTask(int taskId) {
-        return -1 != this.getIndex(taskId);
+        return -1 != getIndex(taskId);
     }
 
     /**
@@ -135,7 +136,7 @@ public class TaskArrayListRepositoryImpl implements TaskRepository {
      */
     @Override
     public boolean hasTask(String taskName) {
-        return -1 != this.getIndex(taskName);
+        return -1 != getIndex(taskName);
     }
 
     /**
@@ -154,8 +155,31 @@ public class TaskArrayListRepositoryImpl implements TaskRepository {
      *
      * @return - массив со списком задач
      */
+    @Deprecated(forRemoval = true)
+    @Override
     public Task[] getAllTasks() {
         return taskList.toArray(Task[]::new);
+    }
+
+    /**
+     * Поучить список задач
+     *
+     * @return - List задач
+     */
+    @Override
+    public List<Task> getTasksList() {
+        return taskList;
+    }
+
+    /**
+     * Получить список задач, который имеют определённый статус
+     *
+     * @param status - статус задачи
+     * @return - список найденных задач
+     */
+    @Override
+    public List<Task> getTasksByStatus(TaskStatus status) {
+        return null;
     }
     // ***************************************************************************************** //
 
