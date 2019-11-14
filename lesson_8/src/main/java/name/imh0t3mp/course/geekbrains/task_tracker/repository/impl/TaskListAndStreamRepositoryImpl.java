@@ -65,9 +65,8 @@ public class TaskListAndStreamRepositoryImpl implements TaskRepository {
      */
     @Override
     public void deleteTask(int taskId) throws TaskNotFound {
-        int index = getIndex(taskId);
-        if (-1 != index) {
-            taskList.remove(index);
+        if (hasTask(taskId)) {
+            taskList.remove(getTask(taskId));
         } else {
             throw new TaskNotFound("Задача с ID:" + taskId + " не найдена в списке");
         }
@@ -80,9 +79,8 @@ public class TaskListAndStreamRepositoryImpl implements TaskRepository {
      */
     @Override
     public void deleteTask(String taskName) throws TaskNotFound {
-        int index = getIndex(taskName);
-        if (-1 != index) {
-            taskList.remove(index);
+        if (hasTask(taskName)) {
+            taskList.remove(getTask(taskName));
         } else {
             throw new TaskNotFound("Задача с именем:" + taskName + " не найдена в списке");
         }
@@ -96,10 +94,13 @@ public class TaskListAndStreamRepositoryImpl implements TaskRepository {
      */
     @Override
     public Task getTask(int taskId) throws TaskNotFound {
-        int index = getIndex(taskId);
-        if (0 > index)
+        Task task = taskList.stream().
+                filter(x -> x.getId() == taskId).
+                findAny().
+                orElse(null);
+        if (null == task)
             throw new TaskNotFound("Задача с ID:" + taskId + " не найдена в списке");
-        return taskList.get(index);
+        return task;
     }
 
     /**
@@ -110,10 +111,13 @@ public class TaskListAndStreamRepositoryImpl implements TaskRepository {
      */
     @Override
     public Task getTask(String taskName) throws TaskNotFound {
-        int index = getIndex(taskName);
-        if (0 > index)
+        Task task = taskList.stream().
+                filter(x -> x.getName().equals(taskName)).
+                findAny().
+                orElse(null);
+        if (null == task)
             throw new TaskNotFound("Задача с имемен:" + taskName + " не найдена в списке");
-        return taskList.get(index);
+        return task;
 
     }
 
@@ -126,7 +130,7 @@ public class TaskListAndStreamRepositoryImpl implements TaskRepository {
      */
     @Override
     public boolean hasTask(int taskId) {
-        return -1 != getIndex(taskId);
+        return taskList.stream().anyMatch(x -> x.getId() == taskId);
     }
 
     /**
@@ -137,7 +141,7 @@ public class TaskListAndStreamRepositoryImpl implements TaskRepository {
      */
     @Override
     public boolean hasTask(String taskName) {
-        return -1 != getIndex(taskName);
+        return taskList.stream().anyMatch(x -> x.getName().equals(taskName));
     }
 
     /**
@@ -183,45 +187,14 @@ public class TaskListAndStreamRepositoryImpl implements TaskRepository {
      */
     @Override
     public List<Task> getTasksByStatus(TaskStatus status) throws TaskNotFound {
-        List<Task> tasks =  taskList.stream().filter(x -> {
-            return x.getStatus().equals(status);
-        }).collect(Collectors.toList());
-        if(0==tasks.size())
+        List<Task> tasks = taskList.stream().
+                filter(x -> {
+                    return x.getStatus().equals(status);
+                }).
+                collect(Collectors.toList());
+        if (0 == tasks.size())
             throw new TaskNotFound("Задач со статусом:" + status + " нет в списке");
         return tasks;
     }
 
-    // ***************************************************************************************** //
-
-    /**
-     * Получить индекс задачи в списке по её ID
-     *
-     * @param taskId - ID искомой задачи
-     * @return - индекс ячейки где хранится задача
-     */
-    private int getIndex(int taskId) {
-        for (int index = 0; index < taskList.size(); index++) {
-            Task task = taskList.get(index);
-            if (null != task && task.getId() == taskId) {
-                return index;
-            }
-        }
-        return -1;
-    }
-
-    /**
-     * Получить индекс задачи в списке по имени задачи
-     *
-     * @param taskName - имя задачи
-     * @return - индекс ячейки в которой хранится запись задаи
-     */
-    private int getIndex(String taskName) {
-        for (int index = 0; index < taskList.size(); index++) {
-            Task task = taskList.get(index);
-            if (null != task && task.getName().equals(taskName)) {
-                return index;
-            }
-        }
-        return -1;
-    }
 }
