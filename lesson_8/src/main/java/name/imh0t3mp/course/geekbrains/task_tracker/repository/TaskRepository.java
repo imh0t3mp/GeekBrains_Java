@@ -34,5 +34,5 @@ public interface TaskRepository {
 
     List<Task> getTasksList();
 
-    List<Task> getTasksByStatus(TaskStatus status);
+    List<Task> getTasksByStatus(TaskStatus status) throws TaskNotFound;
 }

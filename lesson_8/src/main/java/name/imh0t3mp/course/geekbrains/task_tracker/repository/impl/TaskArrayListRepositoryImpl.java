@@ -176,14 +176,17 @@ public class TaskArrayListRepositoryImpl implements TaskRepository {
      *
      * @param status - статус задачи
      * @return - список найденных задач
+     * @throws TaskNotFound - задачи не найдены
      */
     @Override
-    public List<Task> getTasksByStatus(TaskStatus status) {
+    public List<Task> getTasksByStatus(TaskStatus status) throws TaskNotFound {
         List<Task> tasks = new ArrayList<>();
         for (Task task : taskList) {
             if (task.getStatus().equals(status))
                 tasks.add(task);
         }
+        if (0 == tasks.size())
+            throw new TaskNotFound("Задач со статусом:" + status + " нет в списке");
         return tasks;
     }
     // ***************************************************************************************** //

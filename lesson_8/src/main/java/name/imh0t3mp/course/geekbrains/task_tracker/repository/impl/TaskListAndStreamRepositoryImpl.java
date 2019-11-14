@@ -9,6 +9,7 @@ import name.imh0t3mp.course.geekbrains.task_tracker.repository.TaskRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Реализация репозитория задач на коллекции List
@@ -178,10 +179,16 @@ public class TaskListAndStreamRepositoryImpl implements TaskRepository {
      *
      * @param status - статус задачи
      * @return - список найденных задач
+     * @throws TaskNotFound - задачи не найдены
      */
     @Override
-    public List<Task> getTasksByStatus(TaskStatus status) {
-        return null;
+    public List<Task> getTasksByStatus(TaskStatus status) throws TaskNotFound {
+        List<Task> tasks =  taskList.stream().filter(x -> {
+            return x.getStatus().equals(status);
+        }).collect(Collectors.toList());
+        if(0==tasks.size())
+            throw new TaskNotFound("Задач со статусом:" + status + " нет в списке");
+        return tasks;
     }
 
     // ***************************************************************************************** //

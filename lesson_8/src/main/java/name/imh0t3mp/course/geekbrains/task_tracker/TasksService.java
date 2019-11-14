@@ -134,6 +134,11 @@ public class TasksService {
      * @return - список найденных задач
      */
     public List<Task> searchByStatus(TaskStatus status) {
-        return repository.getTasksByStatus(status);
+        try {
+            return repository.getTasksByStatus(status);
+        } catch (TaskNotFound err) {
+            System.err.println(err.toString());
+            return null;
+        }
     }
 }

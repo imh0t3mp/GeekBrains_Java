@@ -28,15 +28,19 @@ public class App {
         System.out.println("CHANGE TASK ID=2 STATUS");
         tt1.setStatus(TaskStatus.DECLINED);
         System.out.println("TASK LIST: \n" + tasksServiceTracker);
-        System.out.println("DELETE TASK ID=2");
-        tasksServiceTracker.deleteTask(tt1);
-        System.out.println("SEARCH TASK ID=2");
-        System.out.println("FOUND TASK ID=2 : " + tasksServiceTracker.getTask(2));
-        System.out.println("FOUND TASK ID=3 : " + tasksServiceTracker.getTask(3));
-        System.out.println("TASK LIST: \n" + tasksServiceTracker);
-        System.out.println("ADD NEW TASK");
-        tasksServiceTracker.addTask(new Task("T5", "Owner5", "Executor5", "Descr5"));
-        System.out.println("TASK LIST: \n" + tasksServiceTracker);
+        System.out.println("Все задачи со статусом "+TaskStatus.DECLINED);
+        System.out.println(tasksServiceTracker.searchByStatus(TaskStatus.DECLINED));
+        System.out.println("Все задачи со статусом "+TaskStatus.DONE);
+        System.out.println(tasksServiceTracker.searchByStatus(TaskStatus.DONE));
+//        System.out.println("DELETE TASK ID=2");
+//        tasksServiceTracker.deleteTask(tt1);
+//        System.out.println("SEARCH TASK ID=2");
+//        System.out.println("FOUND TASK ID=2 : " + tasksServiceTracker.getTask(2));
+//        System.out.println("FOUND TASK ID=3 : " + tasksServiceTracker.getTask(3));
+//        System.out.println("TASK LIST: \n" + tasksServiceTracker);
+//        System.out.println("ADD NEW TASK");
+//        tasksServiceTracker.addTask(new Task("T5", "Owner5", "Executor5", "Descr5"));
+//        System.out.println("TASK LIST: \n" + tasksServiceTracker);
     }
 
 }
