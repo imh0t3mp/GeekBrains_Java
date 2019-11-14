@@ -189,7 +189,7 @@ public class TaskArrayRepositoryImpl implements TaskRepository {
     public List<Task> getTasksByStatus(TaskStatus status) {
         List<Task> tasks = new ArrayList<>();
         for (Task task : taskList) {
-            if (task.getStatus() == status)
+            if (task.getStatus().equals(status))
                 tasks.add(task);
         }
         return tasks;
