@@ -8,6 +8,13 @@
     <version>0.1</version>
     <modules>
         <module>lesson_8</module>
+        <module>lesson_7</module>
+        <module>lesson_6</module>
+        <module>lesson_5</module>
+        <module>lesson_4</module>
+        <module>lesson_3</module>
+        <module>lesson_2</module>
+        <module>lesson_1</module>
     </modules>
     <packaging>pom</packaging>
     <developers>
