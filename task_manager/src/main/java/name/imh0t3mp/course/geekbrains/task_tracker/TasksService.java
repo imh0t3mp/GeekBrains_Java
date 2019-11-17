@@ -6,6 +6,7 @@ import name.imh0t3mp.course.geekbrains.task_tracker.errors.TaskNotFound;
 import name.imh0t3mp.course.geekbrains.task_tracker.repository.TaskRepository;
 import name.imh0t3mp.course.geekbrains.task_tracker.repository.impl.TaskArrayRepositoryImpl;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -151,7 +152,7 @@ public class TasksService {
             return repository.getTasksByStatus(status);
         } catch (TaskNotFound err) {
             System.err.println(err.toString());
-            return null;
+            return new ArrayList<>();
         }
     }
 
