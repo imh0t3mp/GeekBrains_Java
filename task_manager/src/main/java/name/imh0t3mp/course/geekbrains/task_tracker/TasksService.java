@@ -3,6 +3,8 @@ package name.imh0t3mp.course.geekbrains.task_tracker;
 import name.imh0t3mp.course.geekbrains.task_tracker.errors.RepositoryIsFull;
 import name.imh0t3mp.course.geekbrains.task_tracker.errors.TaskAlreadyExists;
 import name.imh0t3mp.course.geekbrains.task_tracker.errors.TaskNotFound;
+import name.imh0t3mp.course.geekbrains.task_tracker.errors.TaskStorageError;
+import name.imh0t3mp.course.geekbrains.task_tracker.repository.RepositoryStorage;
 import name.imh0t3mp.course.geekbrains.task_tracker.repository.TaskRepository;
 import name.imh0t3mp.course.geekbrains.task_tracker.repository.impl.TaskArrayRepositoryImpl;
 
@@ -202,5 +204,38 @@ public class TasksService {
         return repository.getTasksList().
                 stream().
                 filter(predicate).count();
+    }
+
+    /**
+     * Записать задачи в хранилище
+     * Будет выполнено только если объект реализует интерфейс RepositoryStorage
+     */
+    public void saveTasks() {
+        if (repository instanceof RepositoryStorage) {
+            try {
+                ((RepositoryStorage) repository).saveTasks();
+            } catch (TaskStorageError e) {
+                System.err.println(e.getMessage());
+            }
+        } else {
+            System.err.println("Класс " + repository.getClass().getSimpleName() + " не реализует " +
+                    "методы класса RepositoryStorage. Сохранение невозможно");
+        }
+    }
+
+    /**
+     * Загрузить задачи из хранилища
+     */
+    public void loadTasks() {
+        if (repository instanceof RepositoryStorage) {
+            try {
+                ((RepositoryStorage) repository).loadTasks();
+            } catch (TaskStorageError e) {
+                System.err.println(e.getMessage());
+            }
+        } else {
+            System.err.println("Класс " + repository.getClass().getSimpleName() + " не реализует " +
+                    "методы класса RepositoryStorage. Загрузка невозможна");
+        }
     }
 }
