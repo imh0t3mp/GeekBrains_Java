@@ -1,6 +1,8 @@
 package name.imh0t3mp.course.geekbrains.task_tracker;
 
-public class Task {
+import java.io.Serializable;
+
+public class Task implements Serializable {
 
     private static int count;
     private int id;
@@ -96,6 +98,8 @@ public class Task {
                 "владелец:" + this.ownerName + "\n" +
                 "исполнитель:" + this.ownerName;
     }
+
+
 
     @Override
     public boolean equals(Object o) {
