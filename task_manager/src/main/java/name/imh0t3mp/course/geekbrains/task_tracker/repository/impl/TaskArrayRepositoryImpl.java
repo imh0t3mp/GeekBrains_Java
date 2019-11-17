@@ -17,7 +17,7 @@ import java.util.List;
 public class TaskArrayRepositoryImpl implements TaskRepository {
 
     private Task[] taskList;
-    private final static int CAPACITY = 10;
+    private final static int CAPACITY = 1024;
     private int freePos;
 
     /**

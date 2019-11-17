@@ -8,7 +8,6 @@ import name.imh0t3mp.course.geekbrains.task_tracker.errors.TaskNotFound;
 import name.imh0t3mp.course.geekbrains.task_tracker.repository.TaskRepository;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,9 +16,8 @@ import java.util.stream.Collectors;
  */
 public class TaskListAndStreamRepositoryImpl implements TaskRepository {
 
-    private List<Task> taskList;
-    private final static int CAPACITY = 10;
-    private int freePos;
+    protected List<Task> taskList;
+    private final static int CAPACITY = 1024;
 
     /**
      * Конструктор класса

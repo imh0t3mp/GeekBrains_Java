@@ -15,8 +15,8 @@ import java.util.List;
  */
 public class TaskArrayListRepositoryImpl implements TaskRepository {
 
-    private List<Task> taskList;
-    private final static int CAPACITY = 10;
+    protected List<Task> taskList;
+    private final static int CAPACITY = 10204;
     private int freePos;
 
     /**
