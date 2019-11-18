@@ -72,4 +72,39 @@ public class TaskListInFileRepoImpl extends TaskListAndStreamRepositoryImpl
             throw new TaskStorageError(e.toString());
         }
     }
+
+
+    /**
+     * Такой себе метод для сравнения эквивалентности объектов
+     *
+     * @param o - объект для сравнения
+     * @return - TRUE|FALSE
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof TaskListInFileRepoImpl)) return false;
+
+        TaskListInFileRepoImpl that = (TaskListInFileRepoImpl) o;
+
+//        Нууу, немного странный способ сравнения конечно, но пусть
+        return taskList.size() == that.getTasksList().size() && this.hashCode() == that.hashCode();
+
+    }
+
+    /**
+     * Вычисление HASH для объекта
+     * При вычислении, берём HASH от каждого элемента списка и добавляем HASH для статуса
+     *
+     * @return - Значения HASH для объекта
+     */
+    @Override
+    public int hashCode() {
+        int result = taskList.size();
+//        При вычислении хеша будем учитывать статус задачи
+        for (Task task : taskList) {
+            result = 31 * result + task.hashCode() + task.getStatus().hashCode();
+        }
+        return result;
+    }
 }
