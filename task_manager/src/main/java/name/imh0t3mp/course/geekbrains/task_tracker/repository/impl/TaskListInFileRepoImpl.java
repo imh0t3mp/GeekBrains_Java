@@ -9,12 +9,16 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
-public class TaskListAndStreamInFileReporitoryImpl extends TaskListAndStreamRepositoryImpl
+/**
+ * Новый тип репозитория.
+ * Расширяет класа TaskListAndStreamRepositoryImpl методами для сохранения данных и чтения данных
+ */
+public class TaskListInFileRepoImpl extends TaskListAndStreamRepositoryImpl
         implements RepositoryStorage {
     private String filePath;
     private String fileName;
 
-    public TaskListAndStreamInFileReporitoryImpl(String filePath, String fileName) {
+    public TaskListInFileRepoImpl(String filePath, String fileName) {
         super();
         this.filePath = filePath;
         this.fileName = fileName;
