@@ -26,6 +26,7 @@ public class Task implements Serializable {
         this.executorName = executorName;
         this.description = description;
         this.taskStatus = TaskStatus.CREATED;
+//        TODO: пересмотреть способ генерации ID при десериализации данных
         this.id = (++count);
     }
 
