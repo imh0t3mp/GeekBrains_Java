@@ -29,8 +29,10 @@ public class TaskId {
      */
     private static int getStoredId() {
         File idFile = new File(".lastid");
+
         if (!idFile.exists())
             return (int) Instant.now().getEpochSecond();
+
         try (RandomAccessFile raf = new RandomAccessFile(idFile, "r")) {
             return raf.readInt();
         } catch (IOException e) {
@@ -44,12 +46,11 @@ public class TaskId {
      */
     public static void flushRecord() {
         File idFile = new File(".lastid");
-        if (idFile.isFile() && idFile.canWrite()) {
-            try (RandomAccessFile raf = new RandomAccessFile(idFile, "rw")) {
-                raf.writeInt(nextId);
-            } catch (IOException e) {
-                System.err.println(e);
-            }
+        try (RandomAccessFile raf = new RandomAccessFile(idFile, "rw")) {
+            raf.writeInt(nextId);
+        } catch (IOException e) {
+            System.err.println(e);
         }
     }
 }
+
