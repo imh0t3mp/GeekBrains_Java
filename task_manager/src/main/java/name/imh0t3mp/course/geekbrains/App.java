@@ -24,15 +24,24 @@ public class App {
         System.out.println("TASK LIST: \n" + tasksServiceTracker);
         System.out.println("Записать список в файл:");
         tasksServiceTracker.saveTasks();
+
+
         System.out.println("Прочитать данные из файла");
         TasksService tasksServiceTracker1 =
                 new TasksService(new TaskListInFileRepoImpl("data", "task_list.dat"));
         System.out.println("Перед чтением, список задач в репозитории:");
-        System.out.println(tasksServiceTracker1.getAllTasks());
+        System.out.println(tasksServiceTracker1);
         System.out.println("Читаем данные из файла:");
         tasksServiceTracker1.loadTasks();
-        System.out.println("Полученные данные:");
-        System.out.println(tasksServiceTracker1.getAllTasks());
+
+        System.out.println("Полученные данные");
+        System.out.println(tasksServiceTracker1);
+        System.out.println("Добавляем в список ещё одну задачу");
+        tasksServiceTracker1.addTask(new Task("TT0", "Task7", "Owner4", "Exec5"));
+        tasksServiceTracker1.addTask(new Task("TT1", "Task8", "Owner4", "Exec5"));
+        tasksServiceTracker1.addTask(new Task("TT2", "Task9", "Owner4", "Exec5"));
+        System.out.println("Новый список");
+        System.out.println(tasksServiceTracker1);
     }
 
 }

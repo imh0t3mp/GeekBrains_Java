@@ -1,8 +1,11 @@
 package name.imh0t3mp.course.geekbrains.task_tracker;
 
-import java.io.Serializable;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
-public class Task implements Serializable {
+public class Task implements Externalizable {
 
     private static int count;
     private int id;
@@ -27,6 +30,9 @@ public class Task implements Serializable {
         this.description = description;
         this.taskStatus = TaskStatus.CREATED;
         this.id = (++count);
+    }
+
+    public Task() {
     }
 
     /************************************** НАБОР GET-теров **************************************/
@@ -100,7 +106,6 @@ public class Task implements Serializable {
     }
 
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -123,5 +128,40 @@ public class Task implements Serializable {
         result = 31 * result + executorName.hashCode();
         result = 31 * result + description.hashCode();
         return result;
+    }
+
+    /**
+     * Сериализация объекта
+     *
+     * @param out - поток вывода данных
+     * @throws IOException
+     */
+    @Override
+    public void writeExternal(ObjectOutput out) throws IOException {
+        out.writeInt(id);
+        out.writeInt(count);
+        out.writeObject(name);
+        out.writeObject(ownerName);
+        out.writeObject(executorName);
+        out.writeObject(description);
+        out.writeObject(taskStatus);
+    }
+
+    /**
+     * Десериализация объекта
+     *
+     * @param in - входной поток данных
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
+    @Override
+    public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+        id = in.readInt();
+        count = in.readInt();
+        name = (String) in.readObject();
+        ownerName = (String) in.readObject();
+        executorName = (String) in.readObject();
+        description = (String) in.readObject();
+        taskStatus = (TaskStatus) in.readObject();
     }
 }
