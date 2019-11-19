@@ -31,9 +31,9 @@ public interface TaskRepository {
 
     boolean hasTask(String taskName);
 
-    Task[] getAllTasks();
+    Task[] getAllTasks() throws RepositoryError;
 
-    List<Task> getTasksList();
+    List<Task> getTasksList() throws RepositoryError;
 
     List<Task> getTasksByStatus(TaskStatus status) throws TaskNotFound, RepositoryError;
 }
