@@ -80,6 +80,34 @@ public class TasksService {
     }
 
     /**
+     * Обнсвить статус задачи
+     *
+     * @param taskId - ID задачи
+     * @param status - статус задачи
+     */
+    public void changeTaskStatus(int taskId, TaskStatus status) {
+        try {
+            repository.changeTaskStatus(taskId, status);
+        } catch (TaskNotFound | RepositoryError err) {
+            System.err.println(err.toString());
+        }
+    }
+
+    /**
+     * Обновить статус задачи
+     *
+     * @param taskName - имя задачи
+     * @param status   - статус задачи
+     */
+    public void changeTaskStatus(String taskName, TaskStatus status) {
+        try {
+            repository.changeTaskStatus(taskName, status);
+        } catch (TaskNotFound | RepositoryError err) {
+            System.err.println(err.toString());
+        }
+    }
+
+    /**
      * Удалить задачу из списка
      *
      * @param task - объект задачи для удаления

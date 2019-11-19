@@ -25,6 +25,10 @@ public interface TaskRepository {
 
     Task getTask(String taskName) throws TaskNotFound, RepositoryError;
 
+    void changeTaskStatus(int taskId, TaskStatus status) throws TaskNotFound, RepositoryError;
+
+    void changeTaskStatus(String taskName, TaskStatus status) throws TaskNotFound, RepositoryError;
+
     boolean hasTask(Task task);
 
     boolean hasTask(int taskId);

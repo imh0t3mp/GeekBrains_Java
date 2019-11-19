@@ -79,7 +79,7 @@ public class TaskDatabaseRepoImpl implements TaskRepository {
     public void deleteTask(int taskId) throws TaskNotFound, RepositoryError {
         if (!hasTask(taskId))
             throw new TaskNotFound("Задача c ID:" + taskId + " не найдена в базе");
-        String sql = "DELETE FROM task_tepo WHERE id=?";
+        String sql = "DELETE FROM task_repo WHERE id=?";
         try (PreparedStatement stm = connection.prepareStatement(sql)) {
             stm.setInt(1, taskId);
             stm.executeUpdate();
@@ -99,7 +99,7 @@ public class TaskDatabaseRepoImpl implements TaskRepository {
     public void deleteTask(String taskName) throws TaskNotFound, RepositoryError {
         if (!hasTask(taskName))
             throw new TaskNotFound("Задача c NAME:" + taskName + " не найдена в базе");
-        String sql = "DELETE FROM task_tepo WHERE task_name=?";
+        String sql = "DELETE FROM task_repo WHERE task_name=?";
         try (PreparedStatement stm = connection.prepareStatement(sql)) {
             stm.setString(1, taskName);
             stm.executeUpdate();
@@ -152,6 +152,50 @@ public class TaskDatabaseRepoImpl implements TaskRepository {
                 throw new TaskNotFound("Задача с NAME:" + taskName + " не найдена в " +
                         "базе");
             return taskList.get(0);
+        } catch (SQLException e) {
+            throw new RepositoryError(e.getMessage());
+        }
+    }
+
+    /**
+     * Изменить статус задачи по ID
+     *
+     * @param taskId - ID задачи
+     * @param status - статус задачи
+     * @throws TaskNotFound
+     * @throws RepositoryError
+     */
+    @Override
+    public void changeTaskStatus(int taskId, TaskStatus status) throws TaskNotFound, RepositoryError {
+        if (!hasTask(taskId))
+            throw new TaskNotFound("Задача с ID:" + taskId + " не найдена в базе");
+        String sql = "UPDATE task_repo SET task_status = ? WHERE id=?";
+        try (PreparedStatement stm = connection.prepareStatement(sql)) {
+            stm.setString(1, status.name());
+            stm.setInt(2, taskId);
+            stm.executeUpdate();
+        } catch (SQLException e) {
+            throw new RepositoryError(e.getMessage());
+        }
+    }
+
+    /**
+     * Обновить статус задачи по  её имени
+     *
+     * @param taskName - имя задачи
+     * @param status   - статус задачи
+     * @throws TaskNotFound
+     * @throws RepositoryError
+     */
+    @Override
+    public void changeTaskStatus(String taskName, TaskStatus status) throws TaskNotFound, RepositoryError {
+        if (!hasTask(taskName))
+            throw new TaskNotFound("Задача с NAME:" + taskName + " не найдена в базе");
+        String sql = "UPDATE task_repo SET task_status = ? WHERE task_name=?";
+        try (PreparedStatement stm = connection.prepareStatement(sql)) {
+            stm.setString(1, status.name());
+            stm.setString(2, taskName);
+            stm.executeUpdate();
         } catch (SQLException e) {
             throw new RepositoryError(e.getMessage());
         }
