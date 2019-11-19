@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 public class Task implements Serializable {
 
-    private static int count;
     private int id;
     private String name;
     private String ownerName;
@@ -26,7 +25,7 @@ public class Task implements Serializable {
         this.executorName = executorName;
         this.description = description;
         this.taskStatus = TaskStatus.CREATED;
-        this.id = (++count);
+        this.id = TaskId.getNextId();
     }
 
     /**
