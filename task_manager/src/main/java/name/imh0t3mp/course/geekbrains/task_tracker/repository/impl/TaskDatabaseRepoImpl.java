@@ -36,7 +36,7 @@ public class TaskDatabaseRepoImpl implements TaskRepository {
      */
     @Override
     public void addTask(Task task) throws TaskAlreadyExists, RepositoryError {
-        String sql = "INSERT INTO task_repo (id,name,owner_name,executor_name," +
+        String sql = "INSERT INTO task_repo (id,task_name,owner_name,executor_name," +
                 "description,task_status) VALUES (?,?,?,?,?,?)";
         if (hasTask(task.getName()) || hasTask(task.getId()))
             throw new TaskAlreadyExists("Задача: " + task + " уже есть в базе");
