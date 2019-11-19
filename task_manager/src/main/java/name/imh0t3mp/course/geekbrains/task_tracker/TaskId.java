@@ -42,7 +42,7 @@ public class TaskId {
     /**
      * Сбросить запись в файл
      */
-    private static void flushRecord() {
+    public static void flushRecord() {
         File idFile = new File(".lastid");
         if (idFile.isFile() && idFile.canWrite()) {
             try (RandomAccessFile raf = new RandomAccessFile(idFile, "rw")) {

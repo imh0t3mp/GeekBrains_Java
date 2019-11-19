@@ -1,16 +1,20 @@
 package name.imh0t3mp.course.geekbrains;
 
 import name.imh0t3mp.course.geekbrains.task_tracker.Task;
+import name.imh0t3mp.course.geekbrains.task_tracker.TaskId;
 import name.imh0t3mp.course.geekbrains.task_tracker.TasksService;
 import name.imh0t3mp.course.geekbrains.task_tracker.repository.impl.TaskListInFileRepoImpl;
 
+import java.time.Instant;
+
 public class App {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
+
         testRepository();
     }
 
-    private static void testRepository() {
+    private static void testRepository() throws InterruptedException {
 //        System.out.println("Трекер задач на массиве с исключениями и обрабокой оныхъ");
 //        TasksService tasksServiceTracker =
 //                new TasksService(new TaskListInFileRepoImpl("data", "task_list.dat"));
@@ -33,6 +37,12 @@ public class App {
 //        tasksServiceTracker1.loadTasks();
 //        System.out.println("Полученные данные:");
 //        System.out.println(tasksServiceTracker1.getAllTasks());
+
+        System.out.println(TaskId.getNextId());
+        System.out.println(TaskId.getNextId());
+        System.out.println(TaskId.getNextId());
+        System.out.println(TaskId.getNextId());
+        TaskId.flushRecord();
     }
 
 }
