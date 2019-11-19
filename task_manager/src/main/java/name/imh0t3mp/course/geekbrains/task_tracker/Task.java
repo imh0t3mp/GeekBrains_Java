@@ -29,6 +29,25 @@ public class Task implements Serializable {
         this.id = (++count);
     }
 
+    /**
+     * Конструктор класса
+     *
+     * @param id           - id задачи
+     * @param name         - наименование задачи
+     * @param ownerName    - владелец задачи
+     * @param executorName - исполнитель задачи
+     * @param description  - описание задачи
+     * @param taskStatus   - статус задачи±
+     */
+    public Task(int id, String name, String ownerName, String executorName, String description, TaskStatus taskStatus) {
+        this.id = id;
+        this.name = name;
+        this.ownerName = ownerName;
+        this.executorName = executorName;
+        this.description = description;
+        this.taskStatus = taskStatus;
+    }
+
     /************************************** НАБОР GET-теров **************************************/
     public int getId() {
         return id;
@@ -98,7 +117,6 @@ public class Task implements Serializable {
                 "владелец:" + this.ownerName + "\n" +
                 "исполнитель:" + this.ownerName;
     }
-
 
 
     @Override
