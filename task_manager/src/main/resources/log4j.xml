@@ -19,7 +19,12 @@
             <param name="ConversionPattern" value="%d{yyyy-MM-dd/HH:mm:ss} %5p [%t] %c{1} - %m%n"/>
         </layout>
     </appender>
-
+    <category name="org.hibernate">
+        <priority value="INFO"/>
+    </category>
+    <category name="java.sql">
+        <priority value="WARN"/>
+    </category>
     <!--Корневой logger-->
     <root>
         <priority value="DEBUG"/>
