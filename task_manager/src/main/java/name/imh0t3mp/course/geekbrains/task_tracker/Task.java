@@ -7,7 +7,7 @@ import java.io.Serializable;
 @Entity
 @Table(name = "task_repo")
 public class Task implements Serializable {
-    private static final long serialVersionUID = -2750973356670718107L;
+    private static final long serialVersionUID = -31415926535L;
 
     @Id
     @Column(name = "id", unique = true, nullable = false)
