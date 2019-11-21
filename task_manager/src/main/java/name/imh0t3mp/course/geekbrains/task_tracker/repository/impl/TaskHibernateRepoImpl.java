@@ -6,14 +6,16 @@ import name.imh0t3mp.course.geekbrains.task_tracker.errors.RepositoryError;
 import name.imh0t3mp.course.geekbrains.task_tracker.errors.TaskAlreadyExists;
 import name.imh0t3mp.course.geekbrains.task_tracker.errors.TaskNotFound;
 import name.imh0t3mp.course.geekbrains.task_tracker.repository.TaskRepository;
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 import java.util.List;
 
 public class TaskHibernateRepoImpl implements TaskRepository {
-
+    private static Logger log = Logger.getLogger(TaskHibernateRepoImpl.class);
     private SessionFactory factory;
 
     public TaskHibernateRepoImpl(SessionFactory factory) {
@@ -125,9 +127,30 @@ public class TaskHibernateRepoImpl implements TaskRepository {
         }
     }
 
+    /**
+     * Получить задачу по имени
+     *
+     * @param taskName - имя задачи
+     * @return - найденная запись
+     * @throws TaskNotFound    - задача не найдена
+     * @throws RepositoryError - ошибка при работе с репозиторием
+     */
     @Override
     public Task getTask(String taskName) throws TaskNotFound, RepositoryError {
-        return null;
+        try (Session session = factory.getCurrentSession()) {
+            Transaction transaction = session.beginTransaction();
+            Query query = session.
+                    createQuery("SELECT t FROM Task t WHERE t.taskName = :task_name",
+                            Task.class);
+            query.setParameter("task_name", taskName);
+            Task task = (Task) query.uniqueResult();
+            transaction.commit();
+            if (null == task)
+                throw new TaskNotFound("Задача NAME:" + taskName + " не найдена");
+            return task;
+        } catch (Exception e) {
+            throw new RepositoryError(e.getMessage());
+        }
     }
 
     @Override
@@ -140,33 +163,102 @@ public class TaskHibernateRepoImpl implements TaskRepository {
 
     }
 
+    /**
+     * Есть такая запись в базе ?
+     *
+     * @param task - запись о задаче
+     * @return TRUE|FALSE
+     */
     @Override
     public boolean hasTask(Task task) {
-        return false;
+        return hasTask(task.getId());
     }
 
+    /**
+     * Есть такая запись в базе по ID
+     *
+     * @param taskId - ID задачи
+     * @return - TRUE|FALSE
+     */
     @Override
     public boolean hasTask(int taskId) {
-        return false;
+        try {
+            getTask(taskId);
+            return true;
+        } catch (TaskNotFound e) {
+            return false;
+        } catch (RepositoryError e) {
+            log.error(e.getMessage(), e);
+            return false;
+        }
     }
 
+    /**
+     * Есть такая запись в базе по имени задачи
+     *
+     * @param taskName - имя задачи
+     * @return - TRUE|FALSE
+     */
     @Override
     public boolean hasTask(String taskName) {
-        return false;
+        try {
+            getTask(taskName);
+            return true;
+        } catch (TaskNotFound e) {
+            return false;
+        } catch (RepositoryError e) {
+            log.error(e.getMessage(), e);
+            return false;
+        }
     }
 
+    /**
+     * Получить список задач
+     *
+     * @return - список задач
+     * @throws RepositoryError - если возникла ошибка
+     */
     @Override
     public Task[] getAllTasks() throws RepositoryError {
-        return new Task[0];
+        return getTasksList().toArray(Task[]::new);
     }
 
+    /**
+     * Получит список задач
+     *
+     * @return - список задач
+     * @throws RepositoryError - возникла ошибка при работе
+     */
     @Override
     public List<Task> getTasksList() throws RepositoryError {
-        return null;
+        try (Session session = factory.getCurrentSession()) {
+            Query query = session.createQuery("from Task", Task.class);
+            return query.getResultList();
+        } catch (Exception e) {
+            throw new RepositoryError(e.getMessage());
+        }
     }
 
+    /**
+     * Получить список задач с определённым статусом
+     *
+     * @param status - статус задачи
+     * @return - список найденных задач
+     * @throws TaskNotFound    - задачи с таким статусом не найдены в базе
+     * @throws RepositoryError - возникла ошибка
+     */
     @Override
     public List<Task> getTasksByStatus(TaskStatus status) throws TaskNotFound, RepositoryError {
-        return null;
+        try (Session session = factory.getCurrentSession()) {
+            Query query = session.
+                    createQuery("SELECT t FROM Task t WHERE t.status=:status ", Task.class);
+            query.setParameter("status", status.name());
+            List<Task> tasks = query.getResultList();
+            if (0 == tasks.size())
+                throw new TaskNotFound("Задачи со статусом " + status + " не найдены ");
+            return tasks;
+        } catch (Exception e) {
+            throw new RepositoryError(e.getMessage());
+        }
     }
 }
