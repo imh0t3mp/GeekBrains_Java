@@ -27,39 +27,34 @@ public class TaskHibernateRepoImpl implements TaskRepository {
      *
      * @param task - задача для добавления
      * @throws TaskAlreadyExists - если такая запись уже есть в базе
-     * @throws RepositoryError   - возникла ошибка при работе
      */
     @Override
     public void addTask(Task task) throws TaskAlreadyExists, RepositoryError {
-        try (Session session = factory.getCurrentSession()) {
+        try (Session session = factory.openSession()) {
             if (hasTask(task))
                 throw new TaskAlreadyExists("Запись " + task + " уже есть в базе");
-            Transaction transaction = session.beginTransaction();
-            session.save(task);
-            transaction.commit();
-        } catch (Exception e) {
+            saveOrUpdate(session, task);
+        } catch (IllegalStateException e) {
             log.error(e.getMessage(), e);
             throw new RepositoryError(e.getMessage());
         }
-
     }
 
     /**
      * Удалить запись из базы
      *
      * @param task - запись
-     * @throws TaskNotFound    - задача не найдена
-     * @throws RepositoryError - ошибка при работе с репозиторием
+     * @throws TaskNotFound - задача не найдена
      */
     @Override
     public void deleteTask(Task task) throws TaskNotFound, RepositoryError {
-        try (Session session = factory.getCurrentSession()) {
+        try (Session session = factory.openSession()) {
             if (!hasTask(task))
                 throw new TaskNotFound("Запись " + task + " не найдена в базе");
             Transaction transaction = session.beginTransaction();
             session.delete(task);
             transaction.commit();
-        } catch (Exception e) {
+        } catch (IllegalStateException e) {
             log.error(e.getMessage(), e);
             throw new RepositoryError(e.getMessage());
         }
@@ -69,19 +64,18 @@ public class TaskHibernateRepoImpl implements TaskRepository {
      * Удалить запись по ID
      *
      * @param taskId - ID записи
-     * @throws TaskNotFound    - запись не найдена
-     * @throws RepositoryError - ошибка в репозитории
+     * @throws TaskNotFound - запись не найдена
      */
     @Override
     public void deleteTask(int taskId) throws TaskNotFound, RepositoryError {
-        try (Session session = factory.getCurrentSession()) {
+        try (Session session = factory.openSession()) {
             if (!hasTask(taskId))
                 throw new TaskNotFound("Задача с ID:" + taskId + " не найдена");
             Transaction transaction = session.beginTransaction();
             Task task = getTask(taskId);
             deleteTask(task);
             transaction.commit();
-        } catch (Exception e) {
+        } catch (IllegalStateException e) {
             log.error(e.getMessage(), e);
             throw new RepositoryError(e.getMessage());
         }
@@ -91,19 +85,18 @@ public class TaskHibernateRepoImpl implements TaskRepository {
      * Удалить запись по наименованию задачи
      *
      * @param taskName - название задачи
-     * @throws TaskNotFound    - задача не найдена
-     * @throws RepositoryError - ошибка при работе с репозиторием
+     * @throws TaskNotFound - задача не найдена
      */
     @Override
     public void deleteTask(String taskName) throws TaskNotFound, RepositoryError {
-        try (Session session = factory.getCurrentSession()) {
+        try (Session session = factory.openSession()) {
             if (!hasTask(taskName))
                 throw new TaskNotFound("Задача с NAME:" + taskName + " не найдена в базе");
             Transaction transaction = session.beginTransaction();
             Task task = getTask(taskName);
             session.delete(task);
             transaction.commit();
-        } catch (Exception e) {
+        } catch (IllegalStateException e) {
             log.error(e.getMessage(), e);
             throw new RepositoryError(e.getMessage());
         }
@@ -114,19 +107,19 @@ public class TaskHibernateRepoImpl implements TaskRepository {
      *
      * @param taskId - ID задачи
      * @return - найденная задача
-     * @throws TaskNotFound    - задача не найдена
-     * @throws RepositoryError - ошибка при работе
+     * @throws TaskNotFound - задача не найдена
      */
     @Override
     public Task getTask(int taskId) throws TaskNotFound, RepositoryError {
-        try (Session session = factory.getCurrentSession()) {
+        try (Session session = factory.openSession()) {
             Transaction transaction = session.beginTransaction();
             Task task = session.get(Task.class, taskId);
+
             transaction.commit();
             if (null == task)
                 throw new TaskNotFound("Задача с ID:" + taskId + " не найдена в базе");
             return task;
-        } catch (Exception e) {
+        } catch (IllegalStateException e) {
             log.error(e.getMessage(), e);
             throw new RepositoryError(e.getMessage());
         }
@@ -137,15 +130,14 @@ public class TaskHibernateRepoImpl implements TaskRepository {
      *
      * @param taskName - имя задачи
      * @return - найденная запись
-     * @throws TaskNotFound    - задача не найдена
-     * @throws RepositoryError - ошибка при работе с репозиторием
+     * @throws TaskNotFound - задача не найдена
      */
     @Override
     public Task getTask(String taskName) throws TaskNotFound, RepositoryError {
-        try (Session session = factory.getCurrentSession()) {
+        try (Session session = factory.openSession()) {
             Transaction transaction = session.beginTransaction();
             Query query = session.
-                    createQuery("SELECT t FROM Task t WHERE t.taskName = :task_name",
+                    createQuery("SELECT t FROM Task t WHERE t.name = :task_name",
                             Task.class);
             query.setParameter("task_name", taskName);
             Task task = (Task) query.uniqueResult();
@@ -153,7 +145,7 @@ public class TaskHibernateRepoImpl implements TaskRepository {
             if (null == task)
                 throw new TaskNotFound("Задача NAME:" + taskName + " не найдена");
             return task;
-        } catch (Exception e) {
+        } catch (IllegalStateException e) {
             log.error(e.getMessage(), e);
             throw new RepositoryError(e.getMessage());
         }
@@ -164,44 +156,35 @@ public class TaskHibernateRepoImpl implements TaskRepository {
      *
      * @param taskId - ID задачи
      * @param status - новый статус задачи
-     * @throws TaskNotFound    - задача не найдена
-     * @throws RepositoryError - ошибка при работе с репозиторием
+     * @throws TaskNotFound - задача не найдена
      */
     @Override
     public void changeTaskStatus(int taskId, TaskStatus status) throws TaskNotFound, RepositoryError {
-        try (Session session = factory.getCurrentSession()) {
-            if (!hasTask(taskId))
-                throw new TaskNotFound("Задча с ID: " + taskId + " не найдена");
-            Transaction transaction = session.beginTransaction();
+        try (Session session = factory.openSession()) {
             Task task = getTask(taskId);
             task.setStatus(status);
-            session.flush();
-            transaction.commit();
-        } catch (Exception e) {
+            saveOrUpdate(session, task);
+        } catch (IllegalStateException e) {
             log.error(e.getMessage(), e);
             throw new RepositoryError(e.getMessage());
         }
     }
+
 
     /**
      * Обновить статус задачи
      *
      * @param taskName - имя задачи
      * @param status   - нвый статус у задачи
-     * @throws TaskNotFound    - задача не найдена в базе
-     * @throws RepositoryError - ошибка при раьботе с репозиторем
+     * @throws TaskNotFound - задача не найдена в базе
      */
     @Override
     public void changeTaskStatus(String taskName, TaskStatus status) throws TaskNotFound, RepositoryError {
-        try (Session session = factory.getCurrentSession()) {
-            if (!hasTask(taskName))
-                throw new TaskNotFound("Задча с NAME: " + taskName + " не найдена");
-            Transaction transaction = session.beginTransaction();
+        try (Session session = factory.openSession()) {
             Task task = getTask(taskName);
             task.setStatus(status);
-            session.flush();
-            transaction.commit();
-        } catch (Exception e) {
+            saveOrUpdate(session, task);
+        } catch (IllegalStateException e) {
             log.error(e.getMessage(), e);
             throw new RepositoryError(e.getMessage());
         }
@@ -260,7 +243,6 @@ public class TaskHibernateRepoImpl implements TaskRepository {
      * Получить список задач
      *
      * @return - список задач
-     * @throws RepositoryError - если возникла ошибка
      */
     @Override
     public Task[] getAllTasks() throws RepositoryError {
@@ -271,14 +253,16 @@ public class TaskHibernateRepoImpl implements TaskRepository {
      * Получит список задач
      *
      * @return - список задач
-     * @throws RepositoryError - возникла ошибка при работе
      */
     @Override
     public List<Task> getTasksList() throws RepositoryError {
-        try (Session session = factory.getCurrentSession()) {
+        try (Session session = factory.openSession()) {
+            Transaction transaction = session.beginTransaction();
             Query query = session.createQuery("from Task", Task.class);
-            return query.getResultList();
-        } catch (Exception e) {
+            List<Task> tasks = query.getResultList();
+            transaction.commit();
+            return tasks;
+        } catch (IllegalStateException e) {
             log.error(e.getMessage(), e);
             throw new RepositoryError(e.getMessage());
         }
@@ -289,22 +273,38 @@ public class TaskHibernateRepoImpl implements TaskRepository {
      *
      * @param status - статус задачи
      * @return - список найденных задач
-     * @throws TaskNotFound    - задачи с таким статусом не найдены в базе
-     * @throws RepositoryError - возникла ошибка
+     * @throws TaskNotFound - задачи с таким статусом не найдены в базе
      */
     @Override
     public List<Task> getTasksByStatus(TaskStatus status) throws TaskNotFound, RepositoryError {
-        try (Session session = factory.getCurrentSession()) {
+        try (Session session = factory.openSession()) {
+            Transaction transaction = session.beginTransaction();
             Query query = session.
-                    createQuery("SELECT t FROM Task t WHERE t.status=:status ", Task.class);
-            query.setParameter("status", status.name());
+                    createQuery("SELECT t FROM Task t WHERE t.taskStatus=:status ", Task.class);
+            query.setParameter("status", status);
             List<Task> tasks = query.getResultList();
+            transaction.commit();
             if (0 == tasks.size())
                 throw new TaskNotFound("Задачи со статусом " + status + " не найдены ");
             return tasks;
-        } catch (Exception e) {
+        } catch (IllegalStateException e) {
             log.error(e.getMessage(), e);
             throw new RepositoryError(e.getMessage());
         }
     }
+
+    /* ****************************************************************************************** */
+
+    /**
+     * Вспомогательный метод для обновления/добавления задачи.
+     *
+     * @param session - сессия
+     * @param task    - задача
+     */
+    private void saveOrUpdate(Session session, Task task) {
+        Transaction transaction = session.beginTransaction();
+        session.saveOrUpdate(task);
+        transaction.commit();
+    }
+
 }

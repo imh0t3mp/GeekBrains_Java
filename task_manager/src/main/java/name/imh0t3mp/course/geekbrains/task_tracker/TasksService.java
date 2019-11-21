@@ -81,6 +81,19 @@ public class TasksService {
         }
     }
 
+
+    public boolean hasTask(Task task) {
+        return repository.hasTask(task);
+    }
+
+    public boolean hasTask(int tasKId) {
+        return repository.hasTask(tasKId);
+    }
+
+    public boolean hasTask(String taskName) {
+        return hasTask(taskName);
+    }
+
     /**
      * Обнсвить статус задачи
      *

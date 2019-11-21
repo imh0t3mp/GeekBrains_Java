@@ -1,6 +1,9 @@
 package name.imh0t3mp.course.geekbrains;
 
 import name.imh0t3mp.course.geekbrains.task_tracker.Task;
+import name.imh0t3mp.course.geekbrains.task_tracker.TaskStatus;
+import name.imh0t3mp.course.geekbrains.task_tracker.TasksService;
+import name.imh0t3mp.course.geekbrains.task_tracker.repository.impl.TaskHibernateRepoImpl;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -21,12 +24,31 @@ public class App {
         try (SessionFactory factory = new Configuration()
                 .configure("config/hibernate.cfg.xml")
                 .buildSessionFactory()) {
-//            REad data
-            session = factory.getCurrentSession();
-            session.beginTransaction();
-            System.out.println(session.get(Task.class, 1574184062));
-            session.getTransaction().commit();
-
+            TasksService service = new TasksService(new TaskHibernateRepoImpl(factory));
+            System.out.println("TASK LIST:");
+            System.out.println(service.getAllTasks());
+            System.out.println("GET TASK 'T1'");
+            System.out.println(service.getTask("T1"));
+            Task tt = new Task("TT1",
+                    "ANOTHER_ONE_TASK1",
+                    "SomeOwner",
+                    "SomeExecutor");
+            if (!service.hasTask(tt)) {
+                System.out.println("ADD TASK: " + tt);
+                service.addTask(tt);
+            } else {
+                System.out.println("Задача " + tt + " уже есть в базе");
+                System.out.println("Удалить задачу " + tt);
+                service.deleteTask(tt);
+            }
+            System.out.println("TASK LIST:");
+            System.out.println(service.getAllTasks().toString());
+            System.out.println("Изменить данные задачи T1");
+            service.changeTaskStatus("T1", TaskStatus.CLOSED);
+            System.out.println("TASK LIST:");
+            System.out.println(service.getAllTasks());
+            System.out.println("Задачи со статусом " + TaskStatus.CLOSED);
+            System.out.println(service.searchByStatus(TaskStatus.CLOSED));
         } catch (Exception e) {
             e.printStackTrace();
         }
