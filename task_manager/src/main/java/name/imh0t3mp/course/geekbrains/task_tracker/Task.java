@@ -10,28 +10,32 @@ import java.io.Serializable;
 @Entity
 @Table(name = "task_repo")
 public class Task implements Serializable {
-
+    private static final long serialVersionUID = -2750973356670718107L;
 
     @Id
     @Column(name = "id", unique = true, nullable = false)
     private int id;
 
-    @Id
     @Column(name = "task_name", unique = true, nullable = false)
     private String name;
-    @Id
-    @Column(name = "owner_name")
+
+    @Column(name = "owner_name", nullable = false)
     private String ownerName;
-    @Id
-    @Column(name = "executor_name")
+
+    @Column(name = "executor_name", nullable = false)
     private String executorName;
-    @Id
-    @Column(name = "description_name")
+
+    @Column(name = "description", nullable = false)
     private String description;
 
-    @Id
-    @Column(name = "task_status")
+    @Column(name = "task_status", nullable = false)
     private TaskStatus taskStatus;
+
+    /**
+     * Дефолтный конструктор
+     */
+    public Task() {
+    }
 
     /**
      * Конструктор класса

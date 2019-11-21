@@ -20,7 +20,7 @@
         </layout>
     </appender>
     <category name="org.hibernate">
-        <priority value="INFO"/>
+        <priority value="WARN"/>
     </category>
     <category name="java.sql">
         <priority value="WARN"/>
