@@ -38,6 +38,7 @@ public class TaskHibernateRepoImpl implements TaskRepository {
             session.save(task);
             transaction.commit();
         } catch (Exception e) {
+            log.error(e.getMessage(), e);
             throw new RepositoryError(e.getMessage());
         }
 
@@ -59,6 +60,7 @@ public class TaskHibernateRepoImpl implements TaskRepository {
             session.delete(task);
             transaction.commit();
         } catch (Exception e) {
+            log.error(e.getMessage(), e);
             throw new RepositoryError(e.getMessage());
         }
     }
@@ -80,6 +82,7 @@ public class TaskHibernateRepoImpl implements TaskRepository {
             deleteTask(task);
             transaction.commit();
         } catch (Exception e) {
+            log.error(e.getMessage(), e);
             throw new RepositoryError(e.getMessage());
         }
     }
@@ -101,6 +104,7 @@ public class TaskHibernateRepoImpl implements TaskRepository {
             session.delete(task);
             transaction.commit();
         } catch (Exception e) {
+            log.error(e.getMessage(), e);
             throw new RepositoryError(e.getMessage());
         }
     }
@@ -123,6 +127,7 @@ public class TaskHibernateRepoImpl implements TaskRepository {
                 throw new TaskNotFound("Задача с ID:" + taskId + " не найдена в базе");
             return task;
         } catch (Exception e) {
+            log.error(e.getMessage(), e);
             throw new RepositoryError(e.getMessage());
         }
     }
@@ -149,6 +154,7 @@ public class TaskHibernateRepoImpl implements TaskRepository {
                 throw new TaskNotFound("Задача NAME:" + taskName + " не найдена");
             return task;
         } catch (Exception e) {
+            log.error(e.getMessage(), e);
             throw new RepositoryError(e.getMessage());
         }
     }
@@ -273,6 +279,7 @@ public class TaskHibernateRepoImpl implements TaskRepository {
             Query query = session.createQuery("from Task", Task.class);
             return query.getResultList();
         } catch (Exception e) {
+            log.error(e.getMessage(), e);
             throw new RepositoryError(e.getMessage());
         }
     }
@@ -296,6 +303,7 @@ public class TaskHibernateRepoImpl implements TaskRepository {
                 throw new TaskNotFound("Задачи со статусом " + status + " не найдены ");
             return tasks;
         } catch (Exception e) {
+            log.error(e.getMessage(), e);
             throw new RepositoryError(e.getMessage());
         }
     }
