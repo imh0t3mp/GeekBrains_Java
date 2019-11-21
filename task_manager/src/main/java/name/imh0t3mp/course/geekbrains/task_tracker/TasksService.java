@@ -1,9 +1,6 @@
 package name.imh0t3mp.course.geekbrains.task_tracker;
 
-import name.imh0t3mp.course.geekbrains.task_tracker.errors.RepositoryIsFull;
-import name.imh0t3mp.course.geekbrains.task_tracker.errors.TaskAlreadyExists;
-import name.imh0t3mp.course.geekbrains.task_tracker.errors.TaskNotFound;
-import name.imh0t3mp.course.geekbrains.task_tracker.errors.TaskStorageError;
+import name.imh0t3mp.course.geekbrains.task_tracker.errors.*;
 import name.imh0t3mp.course.geekbrains.task_tracker.repository.RepositoryStorage;
 import name.imh0t3mp.course.geekbrains.task_tracker.repository.TaskRepository;
 import name.imh0t3mp.course.geekbrains.task_tracker.repository.impl.TaskArrayRepositoryImpl;
@@ -46,7 +43,7 @@ public class TasksService {
     public void addTask(Task task) {
         try {
             repository.addTask(task);
-        } catch (RepositoryIsFull | TaskAlreadyExists err) {
+        } catch (RepositoryIsFull | TaskAlreadyExists | RepositoryError err) {
             System.err.println(err.toString());
         }
 
@@ -61,7 +58,7 @@ public class TasksService {
     public Task getTask(int id) {
         try {
             return repository.getTask(id);
-        } catch (TaskNotFound err) {
+        } catch (TaskNotFound | RepositoryError err) {
             System.err.println(err.toString());
             return null;
         }
@@ -76,9 +73,37 @@ public class TasksService {
     public Task getTask(String taskName) {
         try {
             return repository.getTask(taskName);
-        } catch (TaskNotFound err) {
+        } catch (TaskNotFound | RepositoryError err) {
             System.err.println(err.toString());
             return null;
+        }
+    }
+
+    /**
+     * Обнсвить статус задачи
+     *
+     * @param taskId - ID задачи
+     * @param status - статус задачи
+     */
+    public void changeTaskStatus(int taskId, TaskStatus status) {
+        try {
+            repository.changeTaskStatus(taskId, status);
+        } catch (TaskNotFound | RepositoryError err) {
+            System.err.println(err.toString());
+        }
+    }
+
+    /**
+     * Обновить статус задачи
+     *
+     * @param taskName - имя задачи
+     * @param status   - статус задачи
+     */
+    public void changeTaskStatus(String taskName, TaskStatus status) {
+        try {
+            repository.changeTaskStatus(taskName, status);
+        } catch (TaskNotFound | RepositoryError err) {
+            System.err.println(err.toString());
         }
     }
 
@@ -90,7 +115,7 @@ public class TasksService {
     public void deleteTask(Task task) {
         try {
             repository.deleteTask(task);
-        } catch (TaskNotFound err) {
+        } catch (TaskNotFound | RepositoryError err) {
             System.err.println(err.toString());
         }
     }
@@ -103,7 +128,7 @@ public class TasksService {
     public void deleteTask(int id) {
         try {
             repository.deleteTask(id);
-        } catch (TaskNotFound err) {
+        } catch (TaskNotFound | RepositoryError err) {
             System.err.println(err.toString());
         }
     }
@@ -116,7 +141,7 @@ public class TasksService {
     public void deleteTask(String taskName) {
         try {
             repository.deleteTask(taskName);
-        } catch (TaskNotFound err) {
+        } catch (TaskNotFound | RepositoryError err) {
             System.err.println(err.toString());
         }
     }
@@ -127,11 +152,17 @@ public class TasksService {
      * @return - строковое представление списка задач
      */
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        for (Task task : repository.getAllTasks()) {
-            sb.append(task).append("\n");
+        try {
+            StringBuilder sb = new StringBuilder();
+            for (Task task : repository.getAllTasks()) {
+                sb.append(task).append("\n");
+            }
+            return sb.toString();
+        } catch (RepositoryError err) {
+            System.err.println(err.getMessage());
+            return "";
         }
-        return sb.toString();
+
     }
 
     /**
@@ -140,7 +171,12 @@ public class TasksService {
      * @return - полный список задач
      */
     public List<Task> getAllTasks() {
-        return Arrays.asList(repository.getAllTasks());
+        try {
+            return Arrays.asList(repository.getAllTasks());
+        } catch (RepositoryError err) {
+            System.err.println(err.getMessage());
+            return new ArrayList<>();
+        }
     }
 
     /**
@@ -153,6 +189,8 @@ public class TasksService {
         try {
             return repository.getTasksByStatus(status);
         } catch (TaskNotFound err) {
+            return new ArrayList<>();
+        } catch (RepositoryError err) {
             System.err.println(err.toString());
             return new ArrayList<>();
         }
@@ -169,9 +207,14 @@ public class TasksService {
      * @return - сортированный список
      */
     public List<Task> sortTasksBy(Comparator<Task> comparator) {
-        return repository.getTasksList().stream().
-                sorted(comparator).
-                collect(Collectors.toList());
+        try {
+            return repository.getTasksList().stream().
+                    sorted(comparator).
+                    collect(Collectors.toList());
+        } catch (RepositoryError err) {
+            System.err.println(err);
+            return new ArrayList<>();
+        }
 
     }
 
@@ -189,7 +232,10 @@ public class TasksService {
     public long getTaskCount(TaskStatus status) {
         try {
             return repository.getTasksByStatus(status).size();
-        } catch (TaskNotFound taskNotFound) {
+        } catch (TaskNotFound err) {
+            return 0;
+        } catch (RepositoryError err) {
+            System.err.println(err);
             return 0;
         }
     }
@@ -201,9 +247,14 @@ public class TasksService {
      * @return - количество найденных задач
      */
     public long getTaskCount(Predicate<Task> predicate) {
-        return repository.getTasksList().
-                stream().
-                filter(predicate).count();
+        try {
+            return repository.getTasksList().
+                    stream().
+                    filter(predicate).count();
+        } catch (RepositoryError err) {
+            System.err.println(err.getMessage());
+            return 0;
+        }
     }
 
     /**

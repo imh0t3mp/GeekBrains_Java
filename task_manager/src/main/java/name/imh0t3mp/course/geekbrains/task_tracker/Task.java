@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 public class Task implements Serializable {
 
-    private static int count;
     private int id;
     private String name;
     private String ownerName;
@@ -26,7 +25,26 @@ public class Task implements Serializable {
         this.executorName = executorName;
         this.description = description;
         this.taskStatus = TaskStatus.CREATED;
-        this.id = (++count);
+        this.id = TaskId.getNextId();
+    }
+
+    /**
+     * Конструктор класса
+     *
+     * @param id           - id задачи
+     * @param name         - наименование задачи
+     * @param ownerName    - владелец задачи
+     * @param executorName - исполнитель задачи
+     * @param description  - описание задачи
+     * @param taskStatus   - статус задачи±
+     */
+    public Task(int id, String name, String ownerName, String executorName, String description, TaskStatus taskStatus) {
+        this.id = id;
+        this.name = name;
+        this.ownerName = ownerName;
+        this.executorName = executorName;
+        this.description = description;
+        this.taskStatus = taskStatus;
     }
 
     /************************************** НАБОР GET-теров **************************************/
@@ -98,7 +116,6 @@ public class Task implements Serializable {
                 "владелец:" + this.ownerName + "\n" +
                 "исполнитель:" + this.ownerName;
     }
-
 
 
     @Override

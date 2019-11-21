@@ -2,6 +2,7 @@ package name.imh0t3mp.course.geekbrains.task_tracker.repository.impl;
 
 import name.imh0t3mp.course.geekbrains.task_tracker.Task;
 import name.imh0t3mp.course.geekbrains.task_tracker.TaskStatus;
+import name.imh0t3mp.course.geekbrains.task_tracker.errors.RepositoryError;
 import name.imh0t3mp.course.geekbrains.task_tracker.errors.RepositoryIsFull;
 import name.imh0t3mp.course.geekbrains.task_tracker.errors.TaskAlreadyExists;
 import name.imh0t3mp.course.geekbrains.task_tracker.errors.TaskNotFound;
@@ -124,6 +125,31 @@ public class TaskArrayRepositoryImpl implements TaskRepository {
 
     }
 
+    /**
+     * Изменить статус задачи по ID
+     *
+     * @param taskId
+     * @param status
+     * @throws TaskNotFound
+     * @throws RepositoryError
+     */
+    @Override
+    public void changeTaskStatus(int taskId, TaskStatus status) throws TaskNotFound {
+        getTask(taskId).setStatus(status);
+    }
+
+    /**
+     * Изменить статус задачи по её имени
+     *
+     * @param taskName
+     * @param status
+     * @throws TaskNotFound
+     * @throws RepositoryError
+     */
+    @Override
+    public void changeTaskStatus(String taskName, TaskStatus status) throws TaskNotFound {
+        getTask(taskName).setStatus(status);
+    }
 
     /**
      * Проверка, есть ли такая задача в спискке по ID задачи
@@ -193,7 +219,7 @@ public class TaskArrayRepositoryImpl implements TaskRepository {
             if (task.getStatus().equals(status))
                 tasks.add(task);
         }
-        if(0==tasks.size())
+        if (0 == tasks.size())
             throw new TaskNotFound("Задач со статусом:" + status + " нет в списке");
         return tasks;
     }

@@ -116,6 +116,29 @@ public class TaskArrayListRepositoryImpl implements TaskRepository {
 
     }
 
+    /**
+     * Изменить статус задачи по ID
+     *
+     * @param taskId
+     * @param status
+     * @throws TaskNotFound
+     */
+    @Override
+    public void changeTaskStatus(int taskId, TaskStatus status) throws TaskNotFound {
+        getTask(taskId).setStatus(status);
+    }
+
+    /**
+     * Изменить статус задачи по её имени
+     *
+     * @param taskName
+     * @param status
+     * @throws TaskNotFound
+     */
+    @Override
+    public void changeTaskStatus(String taskName, TaskStatus status) throws TaskNotFound {
+        getTask(taskName).setStatus(status);
+    }
 
     /**
      * Проверка, есть ли такая задача в спискке по ID задачи
