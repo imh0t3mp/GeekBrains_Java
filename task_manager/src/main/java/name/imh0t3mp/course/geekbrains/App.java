@@ -1,40 +1,28 @@
 package name.imh0t3mp.course.geekbrains;
 
+import org.apache.log4j.Logger;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+
 public class App {
+    private static Logger log = Logger.getLogger(App.class);
 
     public static void main(String[] args) throws InterruptedException {
-
-        testRepository();
+        log.debug(">>>> START");
+        testHibernateRepo();
+        log.debug("<<<< STOP");
     }
 
-    private static void testRepository() throws InterruptedException {
-        System.out.println("Трекер задач на в БД с Hibername");
+    private static void testHibernateRepo() throws InterruptedException {
+        log.debug("Трекер задач на в БД с Hibername");
+        try (SessionFactory factory = new Configuration()
+                .configure("config/hibernate.cfg.xml")
+                .buildSessionFactory()) {
+            log.debug(factory);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-//        try {
-//            Class.forName("org.sqlite.JDBC");
-//            try (Connection connection = DriverManager.getConnection("jdbc:sqlite:main.db")) {
-//                TasksService tasksServiceTracker =
-//                        new TasksService(new TaskDatabaseRepoImpl(connection));
-////                Task t1 = new Task("T1", "Task1", "Owner1", "Exec1");
-////                tasksServiceTracker.addTask(t1);
-////                tasksServiceTracker.addTask(new Task("T2", "Task2", "Owner2", "Exec2"));
-////                tasksServiceTracker.addTask(new Task("T3", "Task3", "Owner3", "Exec3"));
-////                tasksServiceTracker.addTask(new Task("T4", "Task4", "Owner4", "Exec4"));
-////                tasksServiceTracker.addTask(new Task("T5", "Task5", "Owner2", "Exec1"));
-////                tasksServiceTracker.addTask(new Task("T6", "Task6", "Owner3", "Exec2"));
-//                System.out.println("TASK LIST: \n" + tasksServiceTracker);
-//                System.out.println("Получить задачу T2 из базы");
-//                System.out.println(tasksServiceTracker.getTask("T2"));
-//                System.out.println("Изменить статус задачи T2");
-//                tasksServiceTracker.changeTaskStatus("T2", TaskStatus.DECLINED);
-//                System.out.println("TASK LIST: \n" + tasksServiceTracker);
-//                System.out.println("Удалить задачу T2");
-//                tasksServiceTracker.deleteTask("T2");
-//                System.out.println("TASK LIST: \n" + tasksServiceTracker);
-//            }
-//        } catch (ClassNotFoundException | SQLException e) {
-//            e.printStackTrace();
-//        }
     }
 
 }
