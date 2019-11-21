@@ -153,14 +153,52 @@ public class TaskHibernateRepoImpl implements TaskRepository {
         }
     }
 
+    /**
+     * Обновить статус задачи
+     *
+     * @param taskId - ID задачи
+     * @param status - новый статус задачи
+     * @throws TaskNotFound    - задача не найдена
+     * @throws RepositoryError - ошибка при работе с репозиторием
+     */
     @Override
     public void changeTaskStatus(int taskId, TaskStatus status) throws TaskNotFound, RepositoryError {
-
+        try (Session session = factory.getCurrentSession()) {
+            if (!hasTask(taskId))
+                throw new TaskNotFound("Задча с ID: " + taskId + " не найдена");
+            Transaction transaction = session.beginTransaction();
+            Task task = getTask(taskId);
+            task.setStatus(status);
+            session.flush();
+            transaction.commit();
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw new RepositoryError(e.getMessage());
+        }
     }
 
+    /**
+     * Обновить статус задачи
+     *
+     * @param taskName - имя задачи
+     * @param status   - нвый статус у задачи
+     * @throws TaskNotFound    - задача не найдена в базе
+     * @throws RepositoryError - ошибка при раьботе с репозиторем
+     */
     @Override
     public void changeTaskStatus(String taskName, TaskStatus status) throws TaskNotFound, RepositoryError {
-
+        try (Session session = factory.getCurrentSession()) {
+            if (!hasTask(taskName))
+                throw new TaskNotFound("Задча с NAME: " + taskName + " не найдена");
+            Transaction transaction = session.beginTransaction();
+            Task task = getTask(taskName);
+            task.setStatus(status);
+            session.flush();
+            transaction.commit();
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw new RepositoryError(e.getMessage());
+        }
     }
 
     /**
