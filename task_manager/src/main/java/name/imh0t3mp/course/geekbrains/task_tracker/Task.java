@@ -1,14 +1,36 @@
 package name.imh0t3mp.course.geekbrains.task_tracker;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
 
+
+@Entity
+@Table(name = "task_repo")
 public class Task implements Serializable {
 
+
+    @Id
+    @Column(name = "id", unique = true, nullable = false)
     private int id;
+
+    @Id
+    @Column(name = "task_name", unique = true, nullable = false)
     private String name;
+    @Id
+    @Column(name = "owner_name")
     private String ownerName;
+    @Id
+    @Column(name = "executor_name")
     private String executorName;
+    @Id
+    @Column(name = "description_name")
     private String description;
+
+    @Id
+    @Column(name = "task_status")
     private TaskStatus taskStatus;
 
     /**
