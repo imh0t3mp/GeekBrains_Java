@@ -2,9 +2,9 @@ package name.imh0t3mp.course.geekbrains.task_tracker.repository.impl;
 
 import name.imh0t3mp.course.geekbrains.task_tracker.Task;
 import name.imh0t3mp.course.geekbrains.task_tracker.TaskStatus;
-import name.imh0t3mp.course.geekbrains.task_tracker.errors.RepositoryIsFull;
-import name.imh0t3mp.course.geekbrains.task_tracker.errors.TaskAlreadyExists;
-import name.imh0t3mp.course.geekbrains.task_tracker.errors.TaskNotFound;
+import name.imh0t3mp.course.geekbrains.errors.RepositoryIsFull;
+import name.imh0t3mp.course.geekbrains.errors.TaskAlreadyExists;
+import name.imh0t3mp.course.geekbrains.errors.TaskNotFound;
 import name.imh0t3mp.course.geekbrains.task_tracker.repository.TaskRepository;
 
 import java.util.ArrayList;

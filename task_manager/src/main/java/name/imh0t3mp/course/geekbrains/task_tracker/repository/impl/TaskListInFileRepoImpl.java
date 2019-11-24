@@ -1,7 +1,7 @@
 package name.imh0t3mp.course.geekbrains.task_tracker.repository.impl;
 
 import name.imh0t3mp.course.geekbrains.task_tracker.Task;
-import name.imh0t3mp.course.geekbrains.task_tracker.errors.TaskStorageError;
+import name.imh0t3mp.course.geekbrains.errors.TaskStorageError;
 import name.imh0t3mp.course.geekbrains.task_tracker.repository.RepositoryStorage;
 
 import java.io.*;
