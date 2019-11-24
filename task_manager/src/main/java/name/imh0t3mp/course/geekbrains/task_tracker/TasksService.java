@@ -1,11 +1,13 @@
 package name.imh0t3mp.course.geekbrains.task_tracker;
 
 import name.imh0t3mp.course.geekbrains.errors.*;
-import name.imh0t3mp.course.geekbrains.task_tracker.errors.*;
 import name.imh0t3mp.course.geekbrains.task_tracker.repository.RepositoryStorage;
 import name.imh0t3mp.course.geekbrains.task_tracker.repository.TaskRepository;
 import name.imh0t3mp.course.geekbrains.task_tracker.repository.impl.TaskArrayRepositoryImpl;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,6 +19,7 @@ import java.util.stream.Collectors;
 /**
  * Унифицированный класс для работы с разными типами репозиториев
  */
+@Service
 public class TasksService {
     private static Logger log = Logger.getLogger(TasksService.class);
 
@@ -36,6 +39,17 @@ public class TasksService {
      */
     TasksService() {
         this.repository = new TaskArrayRepositoryImpl();
+    }
+
+    /**
+     * Инициализатор репозитория
+     *
+     * @param repository - репозиторий для сервиса
+     */
+    @Autowired
+    @Qualifier(value = "taskArrayListRepositoryImpl")
+    public void setRepository(TaskRepository repository) {
+        this.repository = repository;
     }
 
     /**

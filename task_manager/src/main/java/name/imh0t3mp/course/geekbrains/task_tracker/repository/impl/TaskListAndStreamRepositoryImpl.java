@@ -6,6 +6,7 @@ import name.imh0t3mp.course.geekbrains.errors.RepositoryIsFull;
 import name.imh0t3mp.course.geekbrains.errors.TaskAlreadyExists;
 import name.imh0t3mp.course.geekbrains.errors.TaskNotFound;
 import name.imh0t3mp.course.geekbrains.task_tracker.repository.TaskRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.stream.Collectors;
 /**
  * Реализация репозитория задач на коллекции List
  */
+@Repository
 public class TaskListAndStreamRepositoryImpl implements TaskRepository {
 
     protected List<Task> taskList;
@@ -186,9 +188,9 @@ public class TaskListAndStreamRepositoryImpl implements TaskRepository {
      * @return - массив со списком задач
      */
     @Override
-    @Deprecated(forRemoval = true)
+    @Deprecated
     public Task[] getAllTasks() {
-        return taskList.toArray(Task[]::new);
+        return taskList.toArray(new Task[taskList.size()]);
     }
 
     /**

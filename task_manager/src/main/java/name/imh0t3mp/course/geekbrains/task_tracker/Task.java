@@ -1,32 +1,23 @@
 package name.imh0t3mp.course.geekbrains.task_tracker;
 
-import javax.persistence.*;
+import org.springframework.stereotype.Component;
+
 import java.io.Serializable;
 
-
-@Entity
-@Table(name = "task_repo")
+@Component
 public class Task implements Serializable {
     private static final long serialVersionUID = -31415926535L;
 
-    @Id
-    @Column(name = "id", unique = true, nullable = false)
     private int id;
 
-    @Column(name = "task_name", unique = true, nullable = false)
     private String name;
 
-    @Column(name = "owner_name", nullable = false)
     private String ownerName;
 
-    @Column(name = "executor_name", nullable = false)
     private String executorName;
 
-    @Column(name = "description", nullable = false)
     private String description;
 
-    @Column(name = "task_status", nullable = false)
-    @Convert(converter = StatusConverter.class)
     private TaskStatus taskStatus;
 
     /**

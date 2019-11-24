@@ -7,6 +7,7 @@ import name.imh0t3mp.course.geekbrains.errors.RepositoryIsFull;
 import name.imh0t3mp.course.geekbrains.errors.TaskAlreadyExists;
 import name.imh0t3mp.course.geekbrains.errors.TaskNotFound;
 import name.imh0t3mp.course.geekbrains.task_tracker.repository.TaskRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,6 +16,7 @@ import java.util.List;
 /**
  * Реализация репозитория задач на массиве
  */
+@Repository
 public class TaskArrayRepositoryImpl implements TaskRepository {
 
     private Task[] taskList;
@@ -190,7 +192,7 @@ public class TaskArrayRepositoryImpl implements TaskRepository {
      * @return - массив со списком задач
      */
     @Override
-    @Deprecated(forRemoval = true)
+    @Deprecated
     public Task[] getAllTasks() {
         return taskList;
     }
@@ -214,7 +216,7 @@ public class TaskArrayRepositoryImpl implements TaskRepository {
      */
     @Override
     public List<Task> getTasksByStatus(TaskStatus status) throws TaskNotFound {
-        List<Task> tasks = new ArrayList<>();
+        List<Task> tasks = new ArrayList<Task>();
         for (Task task : taskList) {
             if (task.getStatus().equals(status))
                 tasks.add(task);
