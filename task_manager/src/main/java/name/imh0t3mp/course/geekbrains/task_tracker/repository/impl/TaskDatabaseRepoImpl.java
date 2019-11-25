@@ -1,11 +1,14 @@
 package name.imh0t3mp.course.geekbrains.task_tracker.repository.impl;
 
+import name.imh0t3mp.course.geekbrains.errors.RepositoryError;
+import name.imh0t3mp.course.geekbrains.errors.TaskAlreadyExists;
+import name.imh0t3mp.course.geekbrains.errors.TaskNotFound;
 import name.imh0t3mp.course.geekbrains.task_tracker.Task;
 import name.imh0t3mp.course.geekbrains.task_tracker.TaskStatus;
-import name.imh0t3mp.course.geekbrains.task_tracker.errors.RepositoryError;
-import name.imh0t3mp.course.geekbrains.task_tracker.errors.TaskAlreadyExists;
-import name.imh0t3mp.course.geekbrains.task_tracker.errors.TaskNotFound;
 import name.imh0t3mp.course.geekbrains.task_tracker.repository.TaskRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,6 +17,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class TaskDatabaseRepoImpl implements TaskRepository {
 
     private Connection connection;
@@ -25,6 +29,17 @@ public class TaskDatabaseRepoImpl implements TaskRepository {
      */
     public TaskDatabaseRepoImpl(Connection con) {
         this.connection = con;
+    }
+
+    /**
+     * Инициализатор соединения с БД
+     *
+     * @param connection - соединение
+     */
+    @Autowired
+    @Qualifier(value = "jdbcConnection")
+    public void setConnection(Connection connection) {
+        this.connection = connection;
     }
 
     /**

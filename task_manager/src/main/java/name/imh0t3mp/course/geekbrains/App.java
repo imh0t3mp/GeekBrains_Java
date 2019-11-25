@@ -1,70 +1,57 @@
 package name.imh0t3mp.course.geekbrains;
 
-import name.imh0t3mp.course.geekbrains.task_tracker.Task;
+import name.imh0t3mp.course.geekbrains.config.TaskTrackerConfig;
 import name.imh0t3mp.course.geekbrains.task_tracker.TaskStatus;
 import name.imh0t3mp.course.geekbrains.task_tracker.TasksService;
-import name.imh0t3mp.course.geekbrains.task_tracker.repository.impl.TaskDatabaseRepoImpl;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import name.imh0t3mp.course.geekbrains.task_tracker.repository.impl.TaskHibernateRepoImpl;
+import org.apache.log4j.Logger;
+import org.hibernate.SessionFactory;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class App {
+    private static Logger log = Logger.getLogger(App.class);
 
     public static void main(String[] args) throws InterruptedException {
-
-        testRepository();
+        log.debug(">>>> START");
+        testSpringDatabase();
+        log.debug("<<<< STOP");
     }
 
-    private static void testRepository() throws InterruptedException {
-        System.out.println("Трекер задач на в БД с исключениями и обрабокой оныхъ");
+    private static void testSpringDatabase() {
+        try (AnnotationConfigApplicationContext context =
+                     new AnnotationConfigApplicationContext(TaskTrackerConfig.class)) {
+//            Connection con = context.getBean("jdbcConnection", Connection.class);
 
-        try {
-            Class.forName("org.sqlite.JDBC");
-            try (Connection connection = DriverManager.getConnection("jdbc:sqlite:main.db")) {
-                TasksService tasksServiceTracker =
-                        new TasksService(new TaskDatabaseRepoImpl(connection));
-//                Task t1 = new Task("T1", "Task1", "Owner1", "Exec1");
-//                tasksServiceTracker.addTask(t1);
-//                tasksServiceTracker.addTask(new Task("T2", "Task2", "Owner2", "Exec2"));
-//                tasksServiceTracker.addTask(new Task("T3", "Task3", "Owner3", "Exec3"));
-//                tasksServiceTracker.addTask(new Task("T4", "Task4", "Owner4", "Exec4"));
-//                tasksServiceTracker.addTask(new Task("T5", "Task5", "Owner2", "Exec1"));
-//                tasksServiceTracker.addTask(new Task("T6", "Task6", "Owner3", "Exec2"));
-                System.out.println("TASK LIST: \n" + tasksServiceTracker);
-                System.out.println("Получить задачу T2 из базы");
-                System.out.println(tasksServiceTracker.getTask("T2"));
-                System.out.println("Изменить статус задачи T2");
-                tasksServiceTracker.changeTaskStatus("T2", TaskStatus.DECLINED);
-                System.out.println("TASK LIST: \n" + tasksServiceTracker);
-                System.out.println("Удалить задачу T2");
-                tasksServiceTracker.deleteTask("T2");
-                System.out.println("TASK LIST: \n" + tasksServiceTracker);
-            }
-        } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
+            SessionFactory factory = context.getBean("hibernateFactory",
+                    SessionFactory.class);
+
+            TasksService service = context.getBean("tasksService", TasksService.class);
+            log.info("SERVICE:" + service);
+//            service.setRepository(new TaskDatabaseRepoImpl(con));
+            service.setRepository(new TaskHibernateRepoImpl(factory));
+//
+//            service.addTask(new Task("T1", "Task1", "Owner1", "Executor1"));
+//            service.addTask(new Task("T2", "Task2", "Owner1", "Executor2"));
+//            service.addTask(new Task("T3", "Task3", "Owner2", "Executor1"));
+//            service.addTask(new Task("T4", "Task4", "Owner2", "Executor2"));
+//
+            log.info("ALL TASKS:");
+            log.info(service.getAllTasks());
+//
+            log.info("CHANGE TASK STATUS");
+            service.changeTaskStatus("T6", TaskStatus.DECLINED);
+
+            log.info("ALL TASKS:");
+            log.info(service.getAllTasks());
+
+            log.info("ALL TASKS WITH STATUS:" + TaskStatus.DECLINED);
+            log.info(service.searchByStatus(TaskStatus.DECLINED));
+
+            log.info("DELETE TASK:" + service.getTask("T5"));
+            service.deleteTask("T5");
+
+            log.info("ALL TASKS:");
+            log.info(service.getAllTasks());
         }
-//        TasksService tasksServiceTracker =
-//                new TasksService(new TaskListInFileRepoImpl("data", "task_list.dat"));
-//        Task t1 = new Task("T1", "Task1", "Owner1", "Exec1");
-//        tasksServiceTracker.addTask(t1);
-//        tasksServiceTracker.addTask(new Task("T2", "Task2", "Owner2", "Exec2"));
-//        tasksServiceTracker.addTask(new Task("T3", "Task3", "Owner3", "Exec3"));
-//        tasksServiceTracker.addTask(new Task("T4", "Task4", "Owner4", "Exec4"));
-//        tasksServiceTracker.addTask(new Task("T5", "Task5", "Owner2", "Exec1"));
-//        tasksServiceTracker.addTask(new Task("T6", "Task6", "Owner3", "Exec2"));
-//        System.out.println("TASK LIST: \n" + tasksServiceTracker);
-//        System.out.println("Записать список в файл:");
-//        tasksServiceTracker.saveTasks();
-//        System.out.println("Прочитать данные из файла");
-//        TasksService tasksServiceTracker1 =
-//                new TasksService(new TaskListInFileRepoImpl("data", "task_list.dat"));
-//        System.out.println("Перед чтением, список задач в репозитории:");
-//        System.out.println(tasksServiceTracker1.getAllTasks());
-//        System.out.println("Читаем данные из файла:");
-//        tasksServiceTracker1.loadTasks();
-//        System.out.println("Полученные данные:");
-//        System.out.println(tasksServiceTracker1.getAllTasks());
     }
-
 }

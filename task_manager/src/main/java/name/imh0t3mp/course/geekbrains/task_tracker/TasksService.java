@@ -1,9 +1,13 @@
 package name.imh0t3mp.course.geekbrains.task_tracker;
 
-import name.imh0t3mp.course.geekbrains.task_tracker.errors.*;
+import name.imh0t3mp.course.geekbrains.errors.*;
 import name.imh0t3mp.course.geekbrains.task_tracker.repository.RepositoryStorage;
 import name.imh0t3mp.course.geekbrains.task_tracker.repository.TaskRepository;
 import name.imh0t3mp.course.geekbrains.task_tracker.repository.impl.TaskArrayRepositoryImpl;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,7 +19,9 @@ import java.util.stream.Collectors;
 /**
  * Унифицированный класс для работы с разными типами репозиториев
  */
+@Service
 public class TasksService {
+    private static Logger log = Logger.getLogger(TasksService.class);
 
     private TaskRepository repository;
 
@@ -36,6 +42,17 @@ public class TasksService {
     }
 
     /**
+     * Инициализатор репозитория
+     *
+     * @param repository - репозиторий для сервиса
+     */
+    @Autowired
+    @Qualifier(value = "taskArrayListRepositoryImpl")
+    public void setRepository(TaskRepository repository) {
+        this.repository = repository;
+    }
+
+    /**
      * Добавить задачу в список
      *
      * @param task - задача для добавления
@@ -44,7 +61,7 @@ public class TasksService {
         try {
             repository.addTask(task);
         } catch (RepositoryIsFull | TaskAlreadyExists | RepositoryError err) {
-            System.err.println(err.toString());
+            log.warn(err.getMessage(), err);
         }
 
     }
@@ -59,7 +76,7 @@ public class TasksService {
         try {
             return repository.getTask(id);
         } catch (TaskNotFound | RepositoryError err) {
-            System.err.println(err.toString());
+            log.warn(err.getMessage(), err);
             return null;
         }
     }
@@ -74,9 +91,22 @@ public class TasksService {
         try {
             return repository.getTask(taskName);
         } catch (TaskNotFound | RepositoryError err) {
-            System.err.println(err.toString());
+            log.warn(err.getMessage(), err);
             return null;
         }
+    }
+
+
+    public boolean hasTask(Task task) {
+        return repository.hasTask(task);
+    }
+
+    public boolean hasTask(int tasKId) {
+        return repository.hasTask(tasKId);
+    }
+
+    public boolean hasTask(String taskName) {
+        return hasTask(taskName);
     }
 
     /**
@@ -89,7 +119,7 @@ public class TasksService {
         try {
             repository.changeTaskStatus(taskId, status);
         } catch (TaskNotFound | RepositoryError err) {
-            System.err.println(err.toString());
+            log.warn(err.getMessage(), err);
         }
     }
 
@@ -103,7 +133,7 @@ public class TasksService {
         try {
             repository.changeTaskStatus(taskName, status);
         } catch (TaskNotFound | RepositoryError err) {
-            System.err.println(err.toString());
+            log.warn(err.getMessage(), err);
         }
     }
 
@@ -116,7 +146,7 @@ public class TasksService {
         try {
             repository.deleteTask(task);
         } catch (TaskNotFound | RepositoryError err) {
-            System.err.println(err.toString());
+            log.warn(err.getMessage(), err);
         }
     }
 
@@ -129,7 +159,7 @@ public class TasksService {
         try {
             repository.deleteTask(id);
         } catch (TaskNotFound | RepositoryError err) {
-            System.err.println(err.toString());
+            log.warn(err.getMessage(), err);
         }
     }
 
@@ -142,7 +172,7 @@ public class TasksService {
         try {
             repository.deleteTask(taskName);
         } catch (TaskNotFound | RepositoryError err) {
-            System.err.println(err.toString());
+            log.warn(err.getMessage(), err);
         }
     }
 
@@ -159,7 +189,7 @@ public class TasksService {
             }
             return sb.toString();
         } catch (RepositoryError err) {
-            System.err.println(err.getMessage());
+            log.warn(err.getMessage(), err);
             return "";
         }
 
@@ -174,7 +204,7 @@ public class TasksService {
         try {
             return Arrays.asList(repository.getAllTasks());
         } catch (RepositoryError err) {
-            System.err.println(err.getMessage());
+            log.warn(err.getMessage(), err);
             return new ArrayList<>();
         }
     }
@@ -191,7 +221,7 @@ public class TasksService {
         } catch (TaskNotFound err) {
             return new ArrayList<>();
         } catch (RepositoryError err) {
-            System.err.println(err.toString());
+            log.warn(err.getMessage(), err);
             return new ArrayList<>();
         }
     }
@@ -212,7 +242,7 @@ public class TasksService {
                     sorted(comparator).
                     collect(Collectors.toList());
         } catch (RepositoryError err) {
-            System.err.println(err);
+            log.warn(err.getMessage(), err);
             return new ArrayList<>();
         }
 
@@ -235,7 +265,7 @@ public class TasksService {
         } catch (TaskNotFound err) {
             return 0;
         } catch (RepositoryError err) {
-            System.err.println(err);
+            log.warn(err.getMessage(), err);
             return 0;
         }
     }
@@ -252,7 +282,7 @@ public class TasksService {
                     stream().
                     filter(predicate).count();
         } catch (RepositoryError err) {
-            System.err.println(err.getMessage());
+            log.warn(err.getMessage(), err);
             return 0;
         }
     }
@@ -265,11 +295,11 @@ public class TasksService {
         if (repository instanceof RepositoryStorage) {
             try {
                 ((RepositoryStorage) repository).saveTasks();
-            } catch (TaskStorageError e) {
-                System.err.println(e.getMessage());
+            } catch (TaskStorageError err) {
+                log.warn(err.getMessage(), err);
             }
         } else {
-            System.err.println("Класс " + repository.getClass().getSimpleName() + " не реализует " +
+            log.error("Класс " + repository.getClass().getSimpleName() + " не реализует " +
                     "методы класса RepositoryStorage. Сохранение невозможно");
         }
     }
@@ -281,11 +311,11 @@ public class TasksService {
         if (repository instanceof RepositoryStorage) {
             try {
                 ((RepositoryStorage) repository).loadTasks();
-            } catch (TaskStorageError e) {
-                System.err.println(e.getMessage());
+            } catch (TaskStorageError err) {
+                log.warn(err.getMessage(), err);
             }
         } else {
-            System.err.println("Класс " + repository.getClass().getSimpleName() + " не реализует " +
+            log.error("Класс " + repository.getClass().getSimpleName() + " не реализует " +
                     "методы класса RepositoryStorage. Загрузка невозможна");
         }
     }
