@@ -17,7 +17,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-//@Repository
+@Repository
 public class TaskHibernateRepoImpl implements TaskRepository {
     private static Logger log = Logger.getLogger(TaskHibernateRepoImpl.class);
     private SessionFactory factory;
@@ -29,11 +29,11 @@ public class TaskHibernateRepoImpl implements TaskRepository {
     public TaskHibernateRepoImpl() {
     }
 
-//    @Autowired
-//    @Qualifier(value = "hibernateFactory")
-//    public void setFactory(SessionFactory factory) {
-//        this.factory = factory;
-//    }
+    @Autowired
+    @Qualifier(value = "hibernateFactory")
+    public void setFactory(SessionFactory factory) {
+        this.factory = factory;
+    }
 
     /**
      * Добавить задачу в хранилище

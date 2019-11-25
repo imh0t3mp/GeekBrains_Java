@@ -1,5 +1,7 @@
 package name.imh0t3mp.course.geekbrains.config;
 
+import org.hibernate.HibernateException;
+import org.hibernate.SessionFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -19,21 +21,10 @@ public class TaskTrackerConfig {
         return con;
     }
 
-//    @Bean(name = "hibernateFactory")
-//    public SessionFactory hibernateFactory() throws NoClassDefFoundError, HibernateException {
-//        try {
-//            return new org.hibernate.cfg.Configuration()
-//                    .configure("config/hibernate_h2db.cfg.xml")
-//                    .buildSessionFactory();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return null;
-//        }
-//    }
-//    @Bean(name = "hibernateFactory")
-//    public EntityManagerFactory entityManagerFactory() {
-//        return new org.hibernate.cfg.Configuration()
-//                .configure("config/hibernate_sqlite.cfg.xml")
-//                .buildSessionFactory();
-//    }
+    @Bean(name = "hibernateFactory")
+    public SessionFactory hibernateFactory() throws NoClassDefFoundError, HibernateException {
+        return new org.hibernate.cfg.Configuration()
+                .configure("config/hibernate_sqlite.cfg.xml")
+                .buildSessionFactory();
+    }
 }
