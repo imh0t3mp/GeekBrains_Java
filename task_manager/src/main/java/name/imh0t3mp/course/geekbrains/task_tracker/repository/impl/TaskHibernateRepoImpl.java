@@ -6,11 +6,12 @@ import name.imh0t3mp.course.geekbrains.exceptions.TaskNotFound;
 import name.imh0t3mp.course.geekbrains.task_tracker.Task;
 import name.imh0t3mp.course.geekbrains.task_tracker.TaskStatus;
 import name.imh0t3mp.course.geekbrains.task_tracker.repository.TaskRepository;
-import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
@@ -19,7 +20,7 @@ import java.util.List;
 
 @Repository
 public class TaskHibernateRepoImpl implements TaskRepository {
-    private static Logger log = Logger.getLogger(TaskHibernateRepoImpl.class);
+    private static Logger log = LoggerFactory.getLogger(TaskHibernateRepoImpl.class);
     private SessionFactory factory;
 
     public TaskHibernateRepoImpl(SessionFactory factory) {

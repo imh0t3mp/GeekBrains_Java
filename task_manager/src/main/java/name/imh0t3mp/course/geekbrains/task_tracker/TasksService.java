@@ -3,7 +3,8 @@ package name.imh0t3mp.course.geekbrains.task_tracker;
 import name.imh0t3mp.course.geekbrains.exceptions.*;
 import name.imh0t3mp.course.geekbrains.task_tracker.repository.RepositoryStorage;
 import name.imh0t3mp.course.geekbrains.task_tracker.repository.TaskRepository;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,7 @@ import java.util.stream.Collectors;
  */
 @Service
 public class TasksService {
-    private static Logger log = Logger.getLogger(TasksService.class);
+    private static Logger log = LoggerFactory.getLogger(TasksService.class);
 
     private TaskRepository repository;
 

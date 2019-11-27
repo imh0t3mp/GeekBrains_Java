@@ -6,12 +6,12 @@
         <param name="Threshold" value="DEBUG"/>
         <param name="Target" value="System.out"/>
         <layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern" value="%d{HH:mm:ss} %c %p: %m%n"/>
+            <param name="ConversionPattern" value="%d{HH:mm:ss.SSS} %-5p %c{36} - %m%n"/>
         </layout>
     </appender>
 
     <appender name="file" class="org.apache.log4j.RollingFileAppender">
-        <param name="File" value="log/tester.log"/>
+        <param name="File" value="log/app.log"/>
         <param name="MaxFileSize" value="10MB"/>
         <param name="MaxBackupIndex" value="2"/>
         <param name="Append" value="true"/>
@@ -19,16 +19,23 @@
             <param name="ConversionPattern" value="%d{yyyy-MM-dd/HH:mm:ss} %5p [%t] %c{1} - %m%n"/>
         </layout>
     </appender>
-    <category name="org.hibernate">
-        <priority value="WARN"/>
+    <category name="org.hibernate" additivity="false">
+        <priority value="WARn"/>
+        <appender-ref ref="console"/>
+        <appender-ref ref="file"/>
     </category>
-    <category name="java.sql">
+    <category name="java.sql" additivity="false">
         <priority value="WARN"/>
+        <appender-ref ref="console"/>
+    </category>
+    <category name="name.imh0t3mp.course" additivity="false">
+        <priority value="DEBUG"/>
+        <appender-ref ref="console"/>
     </category>
     <!--Корневой logger-->
     <root>
-        <priority value="DEBUG"/>
+        <priority value="WARN"/>
         <appender-ref ref="console"/>
-        <!--        <appender-ref ref="file"/>-->
+        <appender-ref ref="file"/>
     </root>
 </log4j:configuration>
