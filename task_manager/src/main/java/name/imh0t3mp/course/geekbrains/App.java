@@ -1,7 +1,6 @@
 package name.imh0t3mp.course.geekbrains;
 
 import name.imh0t3mp.course.geekbrains.config.TaskTrackerConfig;
-import name.imh0t3mp.course.geekbrains.task_tracker.Task;
 import name.imh0t3mp.course.geekbrains.task_tracker.TaskStatus;
 import name.imh0t3mp.course.geekbrains.task_tracker.TasksService;
 import name.imh0t3mp.course.geekbrains.task_tracker.repository.impl.TaskHibernateRepoImpl;
@@ -12,12 +11,6 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 
 public class App {
     private static Logger log = LoggerFactory.getLogger(App.class);
-
-    public static void main(String[] args) throws InterruptedException {
-        log.debug(">>>> START");
-        testSpringDatabase();
-        log.debug("<<<< STOP");
-    }
 
     private static void testSpringDatabase() {
         try (AnnotationConfigApplicationContext context =
