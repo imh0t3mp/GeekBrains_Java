@@ -1,6 +1,6 @@
 package name.imh0t3mp.course.geekbrains.task_tracker;
 
-import name.imh0t3mp.course.geekbrains.errors.*;
+import name.imh0t3mp.course.geekbrains.exceptions.*;
 import name.imh0t3mp.course.geekbrains.task_tracker.repository.RepositoryStorage;
 import name.imh0t3mp.course.geekbrains.task_tracker.repository.TaskRepository;
 import org.apache.log4j.Logger;
