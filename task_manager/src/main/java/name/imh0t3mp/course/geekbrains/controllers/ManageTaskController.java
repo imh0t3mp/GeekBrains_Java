@@ -7,16 +7,18 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/task")
-public class AddTaskController {
-    private static Logger logger = LoggerFactory.getLogger(AddTaskController.class);
+public class ManageTaskController {
+    private static Logger logger = LoggerFactory.getLogger(ManageTaskController.class);
     @Autowired
     private TasksService tasksService;
 
@@ -31,21 +33,24 @@ public class AddTaskController {
     }
 
     @GetMapping("/add")
-    public String addTask(@ModelAttribute("task") @Valid Task task,
-//                          BindingResult result,
+    public String addTask(@ModelAttribute @Valid Task task,
+                          BindingResult result,
                           Model model) {
         logger.info("FORM_TASK:{}", task);
-//        logger.info("RESULT:{}", result.getModel().toString());
+        logger.info("RESULT:{}", result.getModel().toString());
+
+        if (result.hasErrors()) {
+            return "add_task";
+        }
 //        tasksService.addTask(task);
-        return "add_task";
+        return "redirect:/";
     }
-//
-//    @GetMapping("/delete")
-//    public String deleteTask(@RequestParam(name = "id", required = true) int taskId,
-//                             Model model) {
-//        tasksService.deleteTask(taskId);
-//        return "redirect:/";
-//    }
+
+    @GetMapping("/delete/{id}")
+    public String deleteTask(@PathVariable("id") int taskId, Model model) {
+        tasksService.deleteTask(tasksService.getTask(taskId));
+        return "redirect:/";
+    }
 //
 //    @GetMapping("/change")
 //    public String changeTaskStatus(

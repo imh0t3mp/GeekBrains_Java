@@ -27,6 +27,11 @@
             <artifactId>spring-boot-starter-web</artifactId>
             <version>${spring.boot.version}</version>
         </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>org.springframework.boot</groupId>-->
+        <!--            <artifactId>spring-boot-starter-data-jpa</artifactId>-->
+        <!--            <version>${spring.boot.version}</version>-->
+        <!--        </dependency>-->
 
         <!-- thymeleaf -->
         <dependency>
@@ -51,13 +56,13 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- hot swapping, disable cache for template, enable live reload -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <version>${spring.boot.version}</version>
-            <optional>true</optional>
-        </dependency>
+        <!--        &lt;!&ndash; hot swapping, disable cache for template, enable live reload &ndash;&gt;-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.springframework.boot</groupId>-->
+        <!--            <artifactId>spring-boot-devtools</artifactId>-->
+        <!--            <version>${spring.boot.version}</version>-->
+        <!--            <optional>true</optional>-->
+        <!--        </dependency>-->
 
         <!-- Optional, for bootstrap -->
         <dependency>
