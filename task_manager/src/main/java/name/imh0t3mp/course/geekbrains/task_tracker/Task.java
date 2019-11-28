@@ -1,6 +1,7 @@
 package name.imh0t3mp.course.geekbrains.task_tracker;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
 @Entity
@@ -12,12 +13,15 @@ public class Task implements Serializable {
     @Column(name = "id", unique = true, nullable = false)
     private int id;
 
+//    @NotBlank(message = "Имя задачи обязательно")
     @Column(name = "task_name", unique = true, nullable = false)
     private String name;
 
+//    @NotBlank(message = "Владелец обязателен")
     @Column(name = "owner_name", nullable = false)
     private String ownerName;
 
+//    @NotBlank(message = "Исполнитель обязателен")
     @Column(name = "executor_name", nullable = false)
     private String executorName;
 

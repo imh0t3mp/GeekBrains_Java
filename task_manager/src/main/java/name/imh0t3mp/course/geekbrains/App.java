@@ -1,6 +1,7 @@
 package name.imh0t3mp.course.geekbrains;
 
 import name.imh0t3mp.course.geekbrains.config.TaskTrackerConfig;
+import name.imh0t3mp.course.geekbrains.task_tracker.Task;
 import name.imh0t3mp.course.geekbrains.task_tracker.TaskStatus;
 import name.imh0t3mp.course.geekbrains.task_tracker.TasksService;
 import name.imh0t3mp.course.geekbrains.task_tracker.repository.impl.TaskHibernateRepoImpl;
@@ -12,6 +13,10 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 public class App {
     private static Logger log = LoggerFactory.getLogger(App.class);
 
+    public static void main(String[] args) {
+        testSpringDatabase();
+    }
+
     private static void testSpringDatabase() {
         try (AnnotationConfigApplicationContext context =
                      new AnnotationConfigApplicationContext(TaskTrackerConfig.class)) {
@@ -21,7 +26,7 @@ public class App {
             TasksService service = context.getBean("tasksService", TasksService.class);
             log.info("SERVICE:" + service);
             service.setRepository(new TaskHibernateRepoImpl(factory));
-//
+
 //            service.addTask(new Task("T1", "Task1", "Owner1", "Executor1"));
 //            service.addTask(new Task("T2", "Task2", "Owner1", "Executor2"));
 //            service.addTask(new Task("T3", "Task3", "Owner2", "Executor1"));
