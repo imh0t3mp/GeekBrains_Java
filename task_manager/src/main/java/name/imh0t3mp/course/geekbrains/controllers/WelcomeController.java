@@ -20,7 +20,7 @@ public class WelcomeController {
     @GetMapping("/")
     public String welcome(Model model) {
         model.addAttribute("message", message);
-        model.addAttribute("tasks", tasks);
+        model.addAttribute("tasks.html", tasks);
 
         return "welcome";
     }
