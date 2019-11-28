@@ -1,6 +1,7 @@
 package name.imh0t3mp.course.geekbrains.task_tracker;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
 @Entity
@@ -12,15 +13,15 @@ public class Task implements Serializable {
     @Column(name = "id", unique = true, nullable = false)
     private int id;
 
-    //    @NotBlank(message = "Имя задачи обязательно")
+    @NotBlank(message = "Имя задачи обязательно")
     @Column(name = "task_name", unique = true, nullable = false)
     private String name;
 
-    //    @NotBlank(message = "Владелец обязателен")
+    @NotBlank(message = "Владелец обязателен")
     @Column(name = "owner_name", nullable = false)
     private String ownerName;
 
-    //    @NotBlank(message = "Исполнитель обязателен")
+    @NotBlank(message = "Исполнитель обязателен")
     @Column(name = "executor_name", nullable = false)
     private String executorName;
 
@@ -35,6 +36,8 @@ public class Task implements Serializable {
      * Дефолтный конструктор
      */
     public Task() {
+        this.taskStatus = TaskStatus.CREATED;
+        this.id = TaskId.getNextId();
     }
 
     /**
@@ -170,5 +173,24 @@ public class Task implements Serializable {
         result = 31 * result + executorName.hashCode();
         result = 31 * result + description.hashCode();
         return result;
+    }
+
+    /*
+     * Сеттеры ну ооочень нужны для spring-mvc
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setOwnerName(String ownerName) {
+        this.ownerName = ownerName;
+    }
+
+    public void setExecutorName(String executorName) {
+        this.executorName = executorName;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

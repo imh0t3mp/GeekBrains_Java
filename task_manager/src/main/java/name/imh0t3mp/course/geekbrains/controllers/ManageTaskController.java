@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -19,31 +20,21 @@ public class ManageTaskController {
     @Autowired
     private TasksService tasksService;
 
-//    @ModelAttribute
-//    public Task formBackingObject() {
-//        return new Task();
-//    }
 
-    @GetMapping("/")
-    public String taskForm(Model model) {
-        model.addAttribute("task", new Task());
+    @GetMapping("/add")
+    public String taskForm(@ModelAttribute("task") Task task, Model model) {
+        model.addAttribute("task", task);
         return "add_task";
     }
 
     @PostMapping("/add")
-    public String addTask(@ModelAttribute("task") @Valid Task task
-//                          BindingResult result,
-//                          Model model
-    ) {
-        logger.info("FORM_TASK:{}", task);
-//        logger.info("RESULT:{}", result.getModel().toString());
-//
-//        if (result.hasErrors()) {
-//            return "add_task";
-//        }
-//        tasksService.addTask(task);
-//        return "redirect:/";
-        return "add_task";
+    public String addTask(@Valid Task task, BindingResult result, Model model) {
+        logger.debug("FORM_TASK:{}", task);
+        if (result.hasErrors()) {
+            return "add_task";
+        }
+        tasksService.addTask(task);
+        return "redirect:/";
     }
 
     @GetMapping("/delete/{id}")
@@ -67,9 +58,6 @@ public class ManageTaskController {
     public String updateStatus(@PathVariable(value = "id", required = true) int taskId,
                                @RequestParam(value = "taskStatus", required = true) String taskStatus,
                                Model model) {
-        logger.info("NEW STATUS:{}", taskStatus);
-        logger.info("MODEL:{}", model);
-        logger.info("MODEL:{}", TaskStatus.valueOf(taskStatus));
         tasksService.changeTaskStatus(taskId, TaskStatus.valueOf(taskStatus));
         return "redirect:/";
     }
