@@ -47,7 +47,7 @@
                                 <td th:text="${task.description}"></td>
                                 <td th:text="${task.ownerName}"></td>
                                 <td th:text="${task.executorName}"></td>
-                                <td></td>
+                                <td th:text="${task.getStatusDescription()}"></td>
                                 <td>
                                     <a href="#" class="btn btn-primary">
                                         <i class="fas fa-user-edit ml-2"></i></a>
