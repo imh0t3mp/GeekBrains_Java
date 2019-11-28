@@ -20,7 +20,7 @@
     <div class="card">
         <div class="card-body">
             <div class="col-md-10">
-                <form action="#" th:action="@{/task/add}" th:object="${task}" method="get">
+                <form th:action="@{/task/add}" th:object="${task}" method="POST">
                     <div class="row">
                         <div class="form-group col-md-8">
                             <label for="name" class="col-form-label">Название</label>
@@ -38,7 +38,7 @@
                             <input type="text" th:field="*{ownerName}" class="form-control"
                                    id="ownerName" placeholder="Владелец"> <span
                                 th:if="${#fields.hasErrors('ownerName')}"
-                                th:errors="*{taskOwner}"
+                                th:errors="*{ownerName}"
                                 class="text-danger"></span>
                         </div>
 
@@ -49,7 +49,7 @@
                                     id="executorName"
                                     placeholder="Исполнитель"> <span
                                 th:if="${#fields.hasErrors('executorName')}"
-                                th:errors="*{taskExecutor}"
+                                th:errors="*{executorName}"
                                 class="text-danger"></span>
                         </div>
                         <div class="form-group col-md-8">
@@ -63,7 +63,8 @@
                                     th:errors="*{description}"
                                     class="text-danger"></span>
                         </div>
-
+                        <input type="hidden" th:field="*{id}" id="id">
+                        <input type="hidden" th:field="*{taskStatus}" id="taskStatus">
                         <div class="col-md-6">
                             <input type="submit" class="btn btn-primary" value="Добавить задачу">
                         </div>

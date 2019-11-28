@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -48,6 +49,7 @@ public class TasksService {
      *
      * @param task - задача для добавления
      */
+    @Transactional
     public void addTask(Task task) {
         try {
             repository.addTask(task);
@@ -106,6 +108,7 @@ public class TasksService {
      * @param taskId - ID задачи
      * @param status - статус задачи
      */
+    @Transactional
     public void changeTaskStatus(int taskId, TaskStatus status) {
         try {
             repository.changeTaskStatus(taskId, status);
@@ -120,6 +123,7 @@ public class TasksService {
      * @param taskName - имя задачи
      * @param status   - статус задачи
      */
+    @Transactional
     public void changeTaskStatus(String taskName, TaskStatus status) {
         try {
             repository.changeTaskStatus(taskName, status);
@@ -133,6 +137,7 @@ public class TasksService {
      *
      * @param task - объект задачи для удаления
      */
+    @Transactional
     public void deleteTask(Task task) {
         try {
             repository.deleteTask(task);
@@ -146,6 +151,7 @@ public class TasksService {
      *
      * @param id - ID удаляемой задачи
      */
+    @Transactional
     public void deleteTask(int id) {
         try {
             repository.deleteTask(id);
@@ -159,6 +165,7 @@ public class TasksService {
      *
      * @param taskName - имя задачи для удаления
      */
+    @Transactional
     public void deleteTask(String taskName) {
         try {
             repository.deleteTask(taskName);

@@ -101,6 +101,10 @@ public class Task implements Serializable {
         return taskStatus.toString();
     }
 
+    public TaskStatus getTaskStatus() {
+        return taskStatus;
+    }
+
     public TaskStatus getStatus() {
         return taskStatus;
     }

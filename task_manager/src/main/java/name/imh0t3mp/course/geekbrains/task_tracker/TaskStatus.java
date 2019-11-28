@@ -1,7 +1,5 @@
 package name.imh0t3mp.course.geekbrains.task_tracker;
 
-import org.springframework.stereotype.Component;
-
 /**
  * Перечень возможных статусов задачи
  */
