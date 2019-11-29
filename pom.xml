@@ -9,6 +9,7 @@
     <modules>
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         <module>lesson_13</module>
         <module>lesson_12</module>
         <module>lesson_11</module>
@@ -28,6 +29,9 @@
 =======
         <module>lesson_10</module>
 >>>>>>> lesson-10
+=======
+        <module>lesson_12</module>
+>>>>>>> lesson-12
     </modules>
     <packaging>pom</packaging>
     <developers>
