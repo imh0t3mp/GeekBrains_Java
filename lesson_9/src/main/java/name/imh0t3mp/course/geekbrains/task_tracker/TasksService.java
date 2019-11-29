@@ -319,4 +319,24 @@ public class TasksService {
                     "методы класса RepositoryStorage. Загрузка невозможна");
         }
     }
+
+    /**
+     * Получить ссылку на объек репозиторий
+     *
+     * @return - ссылка на объект
+     */
+    public TaskRepository getRepository() {
+        return repository;
+    }
+
+    /**
+     * Сравнить два репозитория
+     *
+     * @param thatRepository - ссылка на объект для сравнения
+     * @return - TRUE|FALSE
+     */
+    public boolean repositoryEquals(TaskRepository thatRepository) {
+        return repository.equals(thatRepository);
+
+    }
 }

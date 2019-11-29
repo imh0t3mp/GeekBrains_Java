@@ -51,6 +51,7 @@ public class Task implements Serializable {
         this.executorName = executorName;
         this.description = description;
         this.taskStatus = TaskStatus.CREATED;
+<<<<<<< HEAD:task_manager/src/main/java/name/imh0t3mp/course/geekbrains/task_tracker/Task.java
         this.id = TaskId.getNextId();
     }
 
@@ -71,6 +72,10 @@ public class Task implements Serializable {
         this.executorName = executorName;
         this.description = description;
         this.taskStatus = taskStatus;
+=======
+//        TODO: пересмотреть способ генерации ID при десериализации данных
+        this.id = (++count);
+>>>>>>> lesson-9:lesson_9/src/main/java/name/imh0t3mp/course/geekbrains/task_tracker/Task.java
     }
 
     /************************************** НАБОР GET-теров **************************************/
