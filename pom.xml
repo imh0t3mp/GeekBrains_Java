@@ -7,9 +7,6 @@
     <artifactId>JavaCouse</artifactId>
     <version>0.13</version>
     <modules>
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
         <module>lesson_13</module>
         <module>lesson_12</module>
         <module>lesson_11</module>
@@ -23,15 +20,6 @@
         <module>lesson_3</module>
         <module>lesson_2</module>
         <module>lesson_1</module>
-=======
-        <module>lesson_9</module>
->>>>>>> lesson-9
-=======
-        <module>lesson_10</module>
->>>>>>> lesson-10
-=======
-        <module>lesson_12</module>
->>>>>>> lesson-12
     </modules>
     <packaging>pom</packaging>
     <developers>
