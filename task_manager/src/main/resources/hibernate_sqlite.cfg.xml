@@ -1,0 +1,25 @@
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+        <property name="connection.driver_class">org.sqlite.JDBC</property>
+        <property name="connection.url">jdbc:sqlite:main.db</property>
+        <!--        <property name="connection.username"></property>-->
+        <!--        <property name="connection.password"></property>-->
+        <property name="connection.pool_size">4</property>
+        <property name="show_sql">false</property>
+        <property name="current_session_context_class">thread</property>
+        <property name="hibernate.connection.autocommit">true</property>
+        <property name="hibernate.show_sql">false</property>
+        <property name="hibernate.format_sql">true</property>
+        <!--        <property name="hibernate.flushMode">ALWAYS</property>-->
+        <property name="hbm2ddl.auto">update</property>
+        <property name="hibernate.dialect">
+            org.hibernate.dialect.SQLiteDialect
+        </property>
+
+        <mapping class="name.imh0t3mp.course.geekbrains.task_tracker.Task"/>
+    </session-factory>
+</hibernate-configuration>
