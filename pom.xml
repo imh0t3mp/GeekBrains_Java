@@ -8,6 +8,7 @@
     <version>0.13</version>
     <modules>
 <<<<<<< HEAD
+<<<<<<< HEAD
         <module>lesson_13</module>
         <module>lesson_12</module>
         <module>lesson_11</module>
@@ -24,6 +25,9 @@
 =======
         <module>lesson_9</module>
 >>>>>>> lesson-9
+=======
+        <module>lesson_10</module>
+>>>>>>> lesson-10
     </modules>
     <packaging>pom</packaging>
     <developers>
