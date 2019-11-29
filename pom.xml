@@ -8,7 +8,7 @@
     <artifactId>JavaCouse</artifactId>
     <version>0.12</version>
     <modules>
-        <module>task_manager</module>
+        <module>lesson_12</module>
     </modules>
     <packaging>pom</packaging>
     <developers>
