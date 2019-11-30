@@ -1,4 +1,4 @@
-package name.imh0t3mp.geekbrains.course;
+package name.imh0t3mp.course.geekbrains;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
