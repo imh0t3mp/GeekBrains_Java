@@ -11,7 +11,7 @@ public class Task implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", unique = true, nullable = false)
+    @Column(name = "id")
     private int id;
 
     @NotBlank(message = "Имя задачи обязательно")
