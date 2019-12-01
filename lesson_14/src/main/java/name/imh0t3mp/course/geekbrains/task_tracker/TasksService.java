@@ -225,6 +225,26 @@ public class TasksService {
     }
 
     /**
+     * Искать задачи по исполнителю, владельцу и статусу
+     *
+     * @param ownerName    - вледелец
+     * @param executorName - исполнитель
+     * @param status       - статус
+     * @return - список задач
+     */
+    public List<Task> searchBy(String ownerName, String executorName, TaskStatus status) {
+        try {
+            return repository.getTasksBy(ownerName, executorName, status);
+        } catch (TaskNotFound err) {
+            return new ArrayList<>();
+        } catch (RepositoryError err) {
+            log.warn(err.getMessage(), err);
+            return new ArrayList<>();
+        }
+    }
+
+
+    /**
      * Вернуть список задач отсортированный определённым образом
      *
      * @param comparator - компаратор для сортировки, например:

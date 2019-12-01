@@ -15,7 +15,7 @@ public class IndexController {
     private TasksService tasksService;
 
     @GetMapping("/")
-    public String welcome(Model model) {
+    public String index(Model model) {
         model.addAttribute("taskList", tasksService.getAllTasks());
         logger.debug("TASK LIST:{}", tasksService.getAllTasks());
 

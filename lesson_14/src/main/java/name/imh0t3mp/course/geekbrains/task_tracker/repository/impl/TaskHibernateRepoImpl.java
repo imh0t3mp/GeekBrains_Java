@@ -260,7 +260,7 @@ public class TaskHibernateRepoImpl implements TaskRepository {
      */
     @Override
     public Task[] getAllTasks() throws RepositoryError {
-        return (Task[])getTasksList().toArray();
+        return (Task[]) getTasksList().toArray();
     }
 
     /**
@@ -291,11 +291,52 @@ public class TaskHibernateRepoImpl implements TaskRepository {
      */
     @Override
     public List<Task> getTasksByStatus(TaskStatus status) throws TaskNotFound, RepositoryError {
+        return getTasksBy(null, null, status);
+    }
+
+    /**
+     * Получить список задачь по
+     *
+     * @param ownerName    - владельцу
+     * @param executorName - исполнителю
+     * @param status       - статусу
+     * @return
+     * @throws TaskNotFound
+     * @throws RepositoryError
+     */
+    @Override
+    public List<Task> getTasksBy(String ownerName, String executorName, TaskStatus status) throws TaskNotFound, RepositoryError {
         try (Session session = factory.openSession()) {
+            StringBuilder queryBuilder = new StringBuilder();
+            queryBuilder.append("SELECT t FROM Task t ");
+            if (null != ownerName || null != executorName || null != status) {
+                if (null != ownerName && !ownerName.equals("")) {
+                    queryBuilder.append(" t.ownerName =:owner AND ");
+                }
+                if (null != executorName && !executorName.equals("")) {
+                    queryBuilder.append(" t.executorName =:executor AND ");
+                }
+                if (null != status) {
+                    queryBuilder.append(" t.taskStatus =:status AND ");
+                }
+                queryBuilder.append(" 1=1 ");
+            } else {
+                return getTasksList();
+            }
+            queryBuilder.append(" ORDER BY t.id");
             Transaction transaction = session.beginTransaction();
             Query query = session.
-                    createQuery("SELECT t FROM Task t WHERE t.taskStatus=:status ", Task.class);
-            query.setParameter("status", status);
+                    createQuery(queryBuilder.toString(), Task.class);
+            if (null != ownerName && !ownerName.equals("")) {
+                query.setParameter("owner", ownerName);
+            }
+            if (null != executorName && !executorName.equals("")) {
+                query.setParameter("executor", executorName);
+            }
+            if (null != status) {
+                query.setParameter("status", status);
+            }
+
             List<Task> tasks = query.getResultList();
             transaction.commit();
             if (0 == tasks.size())

@@ -14,14 +14,7 @@ import java.sql.SQLException;
 @ComponentScan(basePackages = {"name.imh0t3mp.course.geekbrains.task_tracker"})
 public class TaskTrackerConfig {
 
-    @Bean(name = "jdbcConnection")
-    public Connection jdbcConnection() throws ClassNotFoundException, SQLException {
-        Class.forName("org.sqlite.JDBC");
-        Connection con = DriverManager.getConnection("jdbc:sqlite:main.db");
-        return con;
-    }
-
-    @Bean(name = "hibernateFactory")
+ @Bean(name = "hibernateFactory")
     public SessionFactory hibernateFactory() throws NoClassDefFoundError, HibernateException {
         return new org.hibernate.cfg.Configuration()
                 .configure("config/hibernate_sqlite.cfg.xml")
