@@ -83,15 +83,19 @@
                                 <td th:text="${task.executorName}"></td>
                                 <td th:text="${task.getStatusDescription()}"></td>
                                 <td>
-                                    <a th:href="@{/task/change/{id}(id=${task.id})}"
+                                    <a th:href="@{/task/{id}(id=${task.id})}"
                                        class="btn btn-primary">
-                                        <i class="fas fa-user-edit ml-2"></i>
+                                        <i class="fas fa-tasks ml-2"></i>
                                     </a>
-                                    <a th:href="@{/task/delete/{id}(id=${task.id})}"
-                                       class="btn btn-primary">
-                                        <i
-                                                class="fas fa-user-times ml-2"></i>
-                                    </a>
+<!--                                    <a th:href="@{/task/change/{id}(id=${task.id})}"-->
+<!--                                       class="btn btn-primary">-->
+<!--                                        <i class="fas fa-user-edit ml-2"></i>-->
+<!--                                    </a>-->
+<!--                                    <a th:href="@{/task/delete/{id}(id=${task.id})}"-->
+<!--                                       class="btn btn-primary">-->
+<!--                                        <i-->
+<!--                                                class="fas fa-user-times ml-2"></i>-->
+<!--                                    </a>-->
                                 </td>
                             </tr>
                             </tbody>

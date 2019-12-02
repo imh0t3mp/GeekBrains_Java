@@ -20,6 +20,11 @@ public class ManageTaskController {
     @Autowired
     private TasksService tasksService;
 
+    @GetMapping("/{id}")
+    public String vewTask(@PathVariable("id") int taskId, Model model) {
+        model.addAttribute("task", tasksService.getTask(taskId));
+        return "view_task";
+    }
 
     @GetMapping("/add")
     public String taskForm(@ModelAttribute("task") Task task, Model model) {
@@ -28,7 +33,7 @@ public class ManageTaskController {
     }
 
     @PostMapping("/add")
-    public String addTask(@Valid Task task, BindingResult result, Model model) {
+    public String addTask(@Valid Task task, BindingResult result) {
         logger.debug("FORM_TASK:{}", task);
         if (result.hasErrors()) {
             return "add_task";
@@ -38,7 +43,7 @@ public class ManageTaskController {
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteTask(@PathVariable("id") int taskId, Model model) {
+    public String deleteTask(@PathVariable("id") int taskId) {
         tasksService.deleteTask(tasksService.getTask(taskId));
         return "redirect:/";
     }
