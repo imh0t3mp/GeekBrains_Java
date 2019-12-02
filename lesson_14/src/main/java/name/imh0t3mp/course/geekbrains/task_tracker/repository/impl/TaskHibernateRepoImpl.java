@@ -310,20 +310,21 @@ public class TaskHibernateRepoImpl implements TaskRepository {
             StringBuilder queryBuilder = new StringBuilder();
             queryBuilder.append("SELECT t FROM Task t ");
             if (null != ownerName || null != executorName || null != status) {
+                queryBuilder.append("WHERE ");
                 if (null != ownerName && !ownerName.equals("")) {
-                    queryBuilder.append(" t.ownerName =:owner AND ");
+                    queryBuilder.append("t.ownerName =:owner AND ");
                 }
                 if (null != executorName && !executorName.equals("")) {
-                    queryBuilder.append(" t.executorName =:executor AND ");
+                    queryBuilder.append("t.executorName =:executor AND ");
                 }
                 if (null != status) {
-                    queryBuilder.append(" t.taskStatus =:status AND ");
+                    queryBuilder.append("t.taskStatus =:status AND ");
                 }
-                queryBuilder.append(" 1=1 ");
+                queryBuilder.append("1=1 ");
             } else {
                 return getTasksList();
             }
-            queryBuilder.append(" ORDER BY t.id");
+            queryBuilder.append("ORDER BY t.id");
             Transaction transaction = session.beginTransaction();
             Query query = session.
                     createQuery(queryBuilder.toString(), Task.class);
