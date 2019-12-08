@@ -23,13 +23,16 @@ public class Task implements Serializable {
     @Column(name = "task_name", unique = true, nullable = false)
     private String name;
 
-    @NotBlank(message = "Владелец обязателен")
-    @Column(name = "owner_name", nullable = false)
-    private String ownerName;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    @NotBlank(message = "Владелец обязателен")
+    @JoinColumn(name = "owner_id")
+    private User owner;
 
-    @NotBlank(message = "Исполнитель обязателен")
-    @Column(name = "executor_name", nullable = false)
-    private String executorName;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    @NotBlank(message = "Исполнитель обязателен")
+    @JoinColumn(name = "executor_id")
+    private User executor;
+
 
     @Column(name = "description", nullable = false)
     private String description;
@@ -48,18 +51,19 @@ public class Task implements Serializable {
     /**
      * Конструктор класса
      *
-     * @param name         - название задачи
-     * @param description  - описание задачи
-     * @param ownerName    - имя владельца задачи
-     * @param executorName - имя исполнителя задачи
+     * @param name        - название задачи
+     * @param description - описание задачи
+     * @param owner       - владелец задачи
+     * @param executor    - исполнитель задачи
      */
-    public Task(String name, String description, String ownerName, String executorName) {
+    public Task(String name, String description, User owner, User executor) {
         this.name = name;
-        this.ownerName = ownerName;
-        this.executorName = executorName;
+        this.owner = owner;
+        this.executor = executor;
         this.description = description;
         this.taskStatus = TaskStatus.CREATED;
     }
+
 
     /**
      * Объект в строку
@@ -71,8 +75,8 @@ public class Task implements Serializable {
         return "Task{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
-                ", ownerName='" + ownerName + '\'' +
-                ", executorName='" + executorName + '\'' +
+                ", ownerName='" + owner + '\'' +
+                ", executorName='" + executor + '\'' +
                 ", description='" + description + '\'' +
                 ", taskStatus=" + taskStatus +
                 '}';
@@ -87,8 +91,8 @@ public class Task implements Serializable {
 
         if (id != task.id) return false;
         if (!name.equals(task.name)) return false;
-        if (!ownerName.equals(task.ownerName)) return false;
-        if (!executorName.equals(task.executorName)) return false;
+        if (!owner.equals(task.owner)) return false;
+        if (!executor.equals(task.executor)) return false;
         return description.equals(task.description);
     }
 
@@ -96,8 +100,8 @@ public class Task implements Serializable {
     public int hashCode() {
         int result = id;
         result = 31 * result + name.hashCode();
-        result = 31 * result + ownerName.hashCode();
-        result = 31 * result + executorName.hashCode();
+        result = 31 * result + owner.hashCode();
+        result = 31 * result + executor.hashCode();
         result = 31 * result + description.hashCode();
         return result;
     }

@@ -1,12 +1,14 @@
 package name.imh0t3mp.course.geekbrains.task_tracker.entity;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+@NoArgsConstructor
 @Entity
 @Data
 @Table(name = "users")
@@ -32,4 +34,8 @@ public class User {
 
     @Size(max = 50)
     private String lastName;
+
+    public String getFullName() {
+        return this.firstName + " " + this.lastName;
+    }
 }

@@ -2,8 +2,10 @@ package name.imh0t3mp.course.geekbrains.controllers;
 
 import name.imh0t3mp.course.geekbrains.task_tracker.TaskStatus;
 import name.imh0t3mp.course.geekbrains.task_tracker.entity.Task;
+import name.imh0t3mp.course.geekbrains.task_tracker.services.TaskService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +17,14 @@ import java.util.List;
 public class IndexController {
     Logger logger = LoggerFactory.getLogger(IndexController.class);
 
+    private TaskService taskService;
+
+    @Autowired
+    public void setTaskService(TaskService taskService) {
+        this.taskService = taskService;
+    }
+
+
     @GetMapping({"", "/get_tasks"})
     public String index(
             @RequestParam(value = "owner", required = false) String owner,
@@ -23,22 +33,22 @@ public class IndexController {
             Model model) {
         List<Task> taskList;
         TaskStatus taskStatus = null;
-        if (!owner.isEmpty() ||
-                executor.isEmpty() ||
-                null != status) {
-            if (null != status) {
-                try {
-                    taskStatus = TaskStatus.valueOf(status);
-                } catch (IllegalArgumentException err) {
-                    logger.warn(err.getMessage(), err);
-                }
-            }
+//        if (!owner.isEmpty() ||
+//                executor.isEmpty() ||
+//                null != status) {
+//            if (null != status) {
+//                try {
+//                    taskStatus = TaskStatus.valueOf(status);
+//                } catch (IllegalArgumentException err) {
+//                    logger.warn(err.getMessage(), err);
+//                }
+//            }
 //            taskList =
-        } else {
-//            taskList = tasksService.getAllTasks();
-        }
-//        model.addAttribute("taskList", taskList);
-//        logger.debug("TASK LIST:{}", taskList);
+//        } else {
+        taskList = taskService.getAll();
+//        }
+        model.addAttribute("taskList", taskList);
+        logger.debug("TASK LIST:{}", taskList);
 
         return "index";
     }
