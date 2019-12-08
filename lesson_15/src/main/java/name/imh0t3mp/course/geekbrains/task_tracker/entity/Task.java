@@ -1,5 +1,6 @@
 package name.imh0t3mp.course.geekbrains.task_tracker.entity;
 
+import lombok.Data;
 import name.imh0t3mp.course.geekbrains.task_tracker.StatusConverter;
 import name.imh0t3mp.course.geekbrains.task_tracker.TaskStatus;
 
