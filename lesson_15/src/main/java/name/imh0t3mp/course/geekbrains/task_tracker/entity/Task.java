@@ -1,7 +1,9 @@
 package name.imh0t3mp.course.geekbrains.task_tracker.entity;
 
-import lombok.Data;
-import name.imh0t3mp.course.geekbrains.task_tracker.StatusConverter;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import name.imh0t3mp.course.geekbrains.task_tracker.TaskStatus;
 
 import javax.persistence.*;
@@ -9,7 +11,9 @@ import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
 @Entity
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 @Table(name = "task_repo")
 public class Task implements Serializable {
     private static final long serialVersionUID = -31415926535L;
@@ -25,12 +29,14 @@ public class Task implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 //    @NotBlank(message = "Владелец обязателен")
-    @JoinColumn(name = "owner_id")
+    @JoinColumn(name = "owner_id", nullable = false)
+    @JsonManagedReference
     private User owner;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 //    @NotBlank(message = "Исполнитель обязателен")
-    @JoinColumn(name = "executor_id")
+    @JoinColumn(name = "executor_id", nullable = false)
+    @JsonManagedReference
     private User executor;
 
 
@@ -38,31 +44,37 @@ public class Task implements Serializable {
     private String description;
 
     @Column(name = "task_status", nullable = false)
-    @Convert(converter = StatusConverter.class)
-    private TaskStatus taskStatus;
+    @Enumerated(EnumType.STRING)
+//    @Convert(converter = StatusConverter.class)
+    private TaskStatus taskStatus = TaskStatus.CREATED;
 
-    /**
-     * Дефолтный конструктор
-     */
-    public Task() {
-        this.taskStatus = TaskStatus.CREATED;
-    }
-
-    /**
-     * Конструктор класса
-     *
-     * @param name        - название задачи
-     * @param description - описание задачи
-     * @param owner       - владелец задачи
-     * @param executor    - исполнитель задачи
-     */
-    public Task(String name, String description, User owner, User executor) {
-        this.name = name;
+    public void setOwner(User owner) {
+        System.err.println("OWNER: ");
+        System.err.println(owner);
         this.owner = owner;
-        this.executor = executor;
-        this.description = description;
-        this.taskStatus = TaskStatus.CREATED;
     }
+
+    public void setExecutor(User executor) {
+        System.err.println("EXECUTOR");
+        System.err.println(executor);
+        this.executor = executor;
+    }
+
+    //    /**
+//     * Конструктор класса
+//     *
+//     * @param name        - название задачи
+//     * @param description - описание задачи
+//     * @param owner       - владелец задачи
+//     * @param executor    - исполнитель задачи
+//     */
+//    public Task(String name, String description, User owner, User executor) {
+//        this.name = name;
+//        this.owner = owner;
+//        this.executor = executor;
+//        this.description = description;
+//        this.taskStatus = TaskStatus.CREATED;
+//    }
 
 
     /**
@@ -75,8 +87,8 @@ public class Task implements Serializable {
         return "Task{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
-                ", ownerName='" + owner + '\'' +
-                ", executorName='" + executor + '\'' +
+                ", owner='" + owner + '\'' +
+                ", executor='" + executor + '\'' +
                 ", description='" + description + '\'' +
                 ", taskStatus=" + taskStatus +
                 '}';

@@ -1,5 +1,6 @@
 package name.imh0t3mp.course.geekbrains.controllers;
 
+import name.imh0t3mp.course.geekbrains.task_tracker.TaskStatus;
 import name.imh0t3mp.course.geekbrains.task_tracker.entity.Task;
 import name.imh0t3mp.course.geekbrains.task_tracker.services.TaskService;
 import name.imh0t3mp.course.geekbrains.task_tracker.services.UserService;
@@ -41,8 +42,9 @@ public class ManageTaskController {
     }
 
     @PostMapping("/add")
-    public String addTask(@Valid Task task, BindingResult result) {
+    public String addTask(@ModelAttribute("task") Task task, BindingResult result) {
         logger.debug("FORM_TASK:{}", task);
+        System.out.println(task);
 //        if (result.hasErrors()) {
 //            return "add_task";
 //        }
@@ -71,7 +73,7 @@ public class ManageTaskController {
     public String updateStatus(@PathVariable(value = "id", required = true) int taskId,
                                @RequestParam(value = "taskStatus", required = true) String taskStatus,
                                Model model) {
-//        taskService.changeTaskStatus(taskId, TaskStatus.valueOf(taskStatus));
+        taskService.changeTaskStatus(taskId, TaskStatus.valueOf(taskStatus));
         return "redirect:/";
     }
 }
