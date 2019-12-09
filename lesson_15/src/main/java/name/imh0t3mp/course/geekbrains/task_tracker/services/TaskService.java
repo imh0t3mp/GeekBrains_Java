@@ -36,6 +36,7 @@ public class TaskService {
 
     @Transactional
     public void addTask(Task task) {
+        System.err.println(task);
         taskRepository.save(task);
     }
 

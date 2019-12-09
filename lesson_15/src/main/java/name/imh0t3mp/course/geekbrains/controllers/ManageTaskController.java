@@ -12,8 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-
 @Controller
 @RequestMapping("/task")
 public class ManageTaskController {
@@ -44,10 +42,14 @@ public class ManageTaskController {
     @PostMapping("/add")
     public String addTask(@ModelAttribute("task") Task task, BindingResult result) {
         logger.debug("FORM_TASK:{}", task);
-        System.out.println(task);
-//        if (result.hasErrors()) {
+        logger.debug("RESULT:{}", result);
+        System.err.println(task);
+        System.err.println(result);
+//        System.out.println(task);
+        if (result.hasErrors()) {
+            logger.warn(String.valueOf(result.getAllErrors()));
 //            return "add_task";
-//        }
+        }
         taskService.addTask(task);
         return "redirect:/";
     }
