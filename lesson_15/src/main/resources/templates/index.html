@@ -27,16 +27,24 @@
                             <table class="table table-striped table-responsive-md">
                                 <tr>
                                     <td>
-                                        <input type="text" name="owner"
-                                               class="form-control"
-                                               id="owner"
-                                               placeholder="Владелец"/>
+                                        <select id="owner" name="owner">
+                                            <option value="">--Любой владелец--</option>
+                                            <option
+                                                    th:each="user : ${users}"
+                                                    th:value="${user.getId()}"
+                                                    th:text="${user.getFullName()}"
+                                                    th:attr="selected=${user.getId()==owner_id}"></option>
+                                        </select>
                                     </td>
                                     <td>
-                                        <input type="text" name="executor"
-                                               class="form-control"
-                                               id="executor"
-                                               placeholder="Исполнитель"/>
+                                        <select id="executor" name="executor">
+                                            <option value="">--Любой исполнитель--</option>
+                                            <option
+                                                    th:each="user : ${users}"
+                                                    th:value="${user.getId()}"
+                                                    th:text="${user.getFullName()}"
+                                                    th:attr="selected=${user.getId()==executor_id}"></option>
+                                        </select>
                                     </td>
                                     <td>
                                         <select name="status" id="taskStatus">
@@ -76,8 +84,8 @@
                                 <td th:text="${task.id}"></td>
                                 <td th:text="${task.name}"></td>
                                 <td th:text="${task.description}"></td>
-                                <td th:text="${task.getOwner()}"></td>
-                                <td th:text="${task.getExecutor()}"></td>
+                                <td th:text="${task.getOwner().getFullName()}"></td>
+                                <td th:text="${task.getExecutor().getFullName()}"></td>
                                 <td th:text="${task.getTaskStatus()}"></td>
                                 <td>
                                     <a th:href="@{/task/change/{id}(id=${task.id})}"

@@ -10,13 +10,13 @@ public class TaskSpecification {
                 criteriaBuilder.equal(root.get("taskStatus"), status);
     }
 
-    public static Specification<Task> ownerEq(String owner) {
+    public static Specification<Task> ownerEq(Integer userId) {
         return (root, criteriaQuery, criteriaBuilder) ->
-                criteriaBuilder.equal(root.get("owner").get("username"), owner);
+                criteriaBuilder.equal(root.get("owner"), userId);
     }
 
-    public static Specification<Task> executorEq(String executor) {
+    public static Specification<Task> executorEq(String userId) {
         return (root, criteriaQuery, criteriaBuilder) ->
-                criteriaBuilder.equal(root.get("executor").get("username"), executor);
+                criteriaBuilder.equal(root.get("executor"), userId);
     }
 }
