@@ -19,8 +19,6 @@
     <modules>
         <module>task_rest</module>
         <module>task_ui</module>
-        <module>task_gwt_ui</module>
-        <module>task_ui</module>
     </modules>
     <packaging>pom</packaging>
     <developers>
