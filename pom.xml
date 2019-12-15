@@ -5,9 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>name.imh0t3mp.geekbrains</groupId>
     <artifactId>JavaCouse</artifactId>
-    <version>0.14</version>
+
+    <version>0.15</version>
     <modules>
-	<module>lesson_14</module>
+        <module>lesson_15</module>
+	      <module>lesson_14</module>
         <module>lesson_13</module>
         <module>lesson_12</module>
         <module>lesson_11</module>
@@ -21,6 +23,7 @@
         <module>lesson_3</module>
         <module>lesson_2</module>
         <module>lesson_1</module>
+
     </modules>
     <packaging>pom</packaging>
     <developers>
@@ -32,18 +35,26 @@
     </developers>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>12</maven.compiler.source>
-        <maven.compiler.target>12</maven.compiler.target>
-        <hibernate.version>5.4.3.Final</hibernate.version>
-        <javax.el.version>2.2.4</javax.el.version>
-        <jdk.version>12</jdk.version>
-        <spring.version>5.2.0.RELEASE</spring.version>
-        <spring.boot.version>2.2.1.RELEASE</spring.boot.version>
-        <jetty.version>9.2.26.v20180806</jetty.version>
-        <slf4j.version>1.7.28</slf4j.version>
-        <logback.version>1.2.3</logback.version>
-        <bootstrap.version>4.2.1</bootstrap.version>
+        <jdk.version>11</jdk.version>
+        <maven.compiler.source>${jdk.version}</maven.compiler.source>
+        <maven.compiler.target>${jdk.version}</maven.compiler.target>
     </properties>
     <dependencies>
     </dependencies>
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.8.0</version>
+                    <configuration>
+                        <source>${jdk.version}</source>
+                        <target>${jdk.version}</target>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
 </project>
+
