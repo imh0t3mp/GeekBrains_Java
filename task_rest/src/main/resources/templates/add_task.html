@@ -1,0 +1,80 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: head"></head>
+
+<body class="bg-light">
+
+
+<div class="container my-12">
+    <div class="card">
+        <div class="card-header">
+            <div th:replace="fragments/header :: header"></div>
+        </div>
+        <div class="card-deck">
+            <div th:replace="fragments/sidebar :: sidebar" class="p-4"></div>
+        </div>
+        <div class="card-body">
+            <div class="col-md-10">
+                <form th:action="@{/task/add}" th:object="${task}" method="POST">
+                    <div class="row">
+                        <div class="form-group col-md-8">
+                            <label for="name" class="col-form-label">Название</label>
+
+                            <input type="text"
+                                   th:field="*{name}"
+                                   class="form-control"
+                                   id="name"
+                                   placeholder="Название">
+                            <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
+                                  class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-8">
+                            <label for="owner" class="col-form-label">Владелец</label>
+                            <select id="owner" th:field="*{owner}">
+                                <option value="">--Укажите владельца--</option>
+                                <option
+                                        th:each="user : ${users}"
+                                        th:value="${user.getId()}"
+                                        th:text="${user.getFullName()}"
+                                        th:attr="selected=${user.equals(task.owner)}"></option>
+                            </select>
+                        </div>
+
+                        <div class="form-group col-md-8">
+                            <label for="executor" class="col-form-label">Исполнитель</label>
+                            <select id="executor" th:field="*{executor}">
+                                <option value="">--Укажите исполнителя--</option>
+                                <option
+                                        th:each="user : ${users}"
+                                        th:value="${user.getId()}"
+                                        th:text="${user.getFullName()}"
+                                        th:attr="selected=${user.equals(task.executor)}"></option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-8">
+                            <label for="description" class="col-form-label">Описание</label>
+                            <textarea class="form-control" rows="3" cols="150"
+                                      th:field="*{description}"
+                                      placeholder="Описание..."
+                                      id="description"></textarea>
+                            <span
+                                    th:if="${#fields.hasErrors('description')}"
+                                    th:errors="*{description}"
+                                    class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="submit" class="btn btn-primary" value="Добавить задачу">
+                        </div>
+
+                        <div class="form-group col-md-8"></div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script th:replace="fragments/footer :: scripts"></script>
+
+</body>
+</html>
