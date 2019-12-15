@@ -1,0 +1,79 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Добавить задачу</title>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+          crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css"
+          integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz"
+          crossorigin="anonymous">
+
+</head>
+
+<body>
+<div class="container my-5">
+    <div class="card">
+        <div class="card-body">
+            <div class="col-md-10">
+                <form th:action="@{/task/add}" th:object="${task}" method="POST">
+                    <div class="row">
+                        <div class="form-group col-md-8">
+                            <label for="name" class="col-form-label">Название</label>
+
+                            <input type="text"
+                                   th:field="*{name}"
+                                   class="form-control"
+                                   id="name"
+                                   placeholder="Название">
+                            <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
+                                  class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-8">
+                            <label for="ownerName" class="col-form-label">Владелец</label>
+                            <input type="text" th:field="*{ownerName}" class="form-control"
+                                   id="ownerName" placeholder="Владелец"> <span
+                                th:if="${#fields.hasErrors('ownerName')}"
+                                th:errors="*{ownerName}"
+                                class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group col-md-8">
+                            <label for="executorName" class="col-form-label">Исполнитель</label>
+                            <input
+                                    type="text" th:field="*{executorName}" class="form-control"
+                                    id="executorName"
+                                    placeholder="Исполнитель"> <span
+                                th:if="${#fields.hasErrors('executorName')}"
+                                th:errors="*{executorName}"
+                                class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-8">
+                            <label for="description" class="col-form-label">Описание</label>
+                            <textarea class="form-control" rows="3" cols="150"
+                                      th:field="*{description}"
+                                      placeholder="Описание..."
+                                      id="description"></textarea>
+                            <span
+                                    th:if="${#fields.hasErrors('description')}"
+                                    th:errors="*{description}"
+                                    class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="submit" class="btn btn-primary" value="Добавить задачу">
+                        </div>
+
+                        <div class="form-group col-md-8"></div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

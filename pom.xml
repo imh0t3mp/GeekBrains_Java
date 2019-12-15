@@ -5,8 +5,25 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>name.imh0t3mp.geekbrains</groupId>
     <artifactId>JavaCouse</artifactId>
+
     <version>0.15</version>
     <modules>
+        <module>lesson_15</module>
+	      <module>lesson_14</module>
+        <module>lesson_13</module>
+        <module>lesson_12</module>
+        <module>lesson_11</module>
+        <module>lesson_10</module>
+        <module>lesson_9</module>
+        <module>lesson_8</module>
+        <module>lesson_7</module>
+        <module>lesson_6</module>
+        <module>lesson_5</module>
+        <module>lesson_4</module>
+        <module>lesson_3</module>
+        <module>lesson_2</module>
+        <module>lesson_1</module>
+
     </modules>
     <packaging>pom</packaging>
     <developers>
@@ -40,3 +57,4 @@
         </pluginManagement>
     </build>
 </project>
+
