@@ -41,14 +41,14 @@
                         </div>
 
                         <div class="form-group col-md-8">
-                            <label for="executor" class="col-form-label">Исполнитель</label>
-                            <select id="executor" th:field="*{executor}">
+                            <label for="performer" class="col-form-label">Исполнитель</label>
+                            <select id="performer" th:field="*{performer}">
                                 <option value="">--Укажите исполнителя--</option>
                                 <option
                                         th:each="user : ${users}"
                                         th:value="${user.getId()}"
                                         th:text="${user.getFullName()}"
-                                        th:attr="selected=${user.equals(task.executor)}"></option>
+                                        th:attr="selected=${user.equals(task.performer)}"></option>
                             </select>
                         </div>
                         <div class="form-group col-md-8">

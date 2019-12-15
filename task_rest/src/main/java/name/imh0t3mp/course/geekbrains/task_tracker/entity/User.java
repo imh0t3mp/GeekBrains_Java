@@ -6,12 +6,11 @@ import lombok.Data;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
-import java.util.List;
 
 @Entity
 @Data
 @Table(name = "users")
-@JsonIgnoreProperties(value = {"createdAt", "owner", "executor"}, allowGetters = true)
+@JsonIgnoreProperties(value = {"createdAt", "owner", "performer"}, allowGetters = true)
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,21 +41,21 @@ public class User {
     @Column(name = "last_name", length = 50)
     private String lastName;
 
-    @OneToMany(
-            mappedBy = "owner",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true,
-            fetch = FetchType.LAZY
-    )
-    private List<Task> owns;
-
-    @OneToMany(
-            mappedBy = "performer",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true,
-            fetch = FetchType.LAZY
-    )
-    private List<Task> performs;
+//    @OneToMany(
+//            mappedBy = "owner",
+//            cascade = CascadeType.ALL,
+//            orphanRemoval = true,
+//            fetch = FetchType.LAZY
+//    )
+//    private List<Task> owns;
+//
+//    @OneToMany(
+//            mappedBy = "performer",
+//            cascade = CascadeType.ALL,
+//            orphanRemoval = true,
+//            fetch = FetchType.LAZY
+//    )
+//    private List<Task> performs;
 
     public String getFullName() {
         return this.firstName + " " + this.lastName;

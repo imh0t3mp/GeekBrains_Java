@@ -37,13 +37,13 @@
                                         </select>
                                     </td>
                                     <td>
-                                        <select id="executor" name="executor">
+                                        <select id="performer" name="performer">
                                             <option value="">--Любой исполнитель--</option>
                                             <option
                                                     th:each="user : ${users}"
                                                     th:value="${user.getId()}"
                                                     th:text="${user.getFullName()}"
-                                                    th:attr="selected=${user.getId()==executor_id}"></option>
+                                                    th:attr="selected=${user.getId()==performer_id}"></option>
                                         </select>
                                     </td>
                                     <td>
@@ -85,7 +85,7 @@
                                 <td th:text="${task.name}"></td>
                                 <td th:text="${task.description}"></td>
                                 <td th:text="${task.getOwner().getFullName()}"></td>
-                                <td th:text="${task.getExecutor().getFullName()}"></td>
+                                <td th:text="${task.getperformer().getFullName()}"></td>
                                 <td th:text="${task.getTaskStatus()}"></td>
                                 <td>
                                     <a th:href="@{/task/change/{id}(id=${task.id})}"

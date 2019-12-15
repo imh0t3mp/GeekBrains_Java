@@ -7,7 +7,7 @@ import org.springframework.data.jpa.domain.Specification;
 public class TaskSpecification {
     public static Specification<Task> statusEq(TaskStatus status) {
         return (root, criteriaQuery, criteriaBuilder) ->
-                criteriaBuilder.equal(root.get("taskStatus"), status);
+                criteriaBuilder.equal(root.get("status"), status);
     }
 
     public static Specification<Task> ownerEq(Integer userId) {
@@ -15,8 +15,8 @@ public class TaskSpecification {
                 criteriaBuilder.equal(root.get("owner"), userId);
     }
 
-    public static Specification<Task> executorEq(String userId) {
+    public static Specification<Task> performerEq(Integer userId) {
         return (root, criteriaQuery, criteriaBuilder) ->
-                criteriaBuilder.equal(root.get("executor"), userId);
+                criteriaBuilder.equal(root.get("performer"), userId);
     }
 }

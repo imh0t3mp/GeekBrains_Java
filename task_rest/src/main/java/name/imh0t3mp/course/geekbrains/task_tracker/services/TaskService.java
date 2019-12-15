@@ -54,17 +54,4 @@ public class TaskService {
     public Page<Task> getTasks(Specification<Task> spec, Pageable pageable) {
         return taskRepository.findAll(spec, pageable);
     }
-//    public List<Task> findAllByOwner(String ownerName) {
-//        return taskRepository.findTaskByOwner_Username(ownerName);
-//    }
-//
-//    public List<Task> findAllByExecutor(String executorName) {
-//        return taskRepository.findTaskByExecutor_Username(executorName);
-//    }
-//
-//    public List<Task> findAllByStatus(TaskStatus status) {
-//        return taskRepository.findTaskByStatus(status.name());
-//    }
-
-
 }
