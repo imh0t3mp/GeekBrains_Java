@@ -16,13 +16,19 @@ create table if not exists users
 
 create table if not exists task_repo
 (
-    id          serial       not null
+    id           serial       not null
         constraint task_repo_pkey
             primary key,
-    date_add    timestamp    not null,
-    description varchar(255) not null,
-    task_name   varchar(255) not null
+    date_add     timestamp    not null,
+    description  varchar(255) not null,
+    task_name    varchar(255) not null
         constraint uk_tisr4avf3o5k3rcqwfved3vxu
             unique,
-    task_status varchar(255) not null
+    task_status  varchar(255) not null,
+    owner_id     integer      not null
+        constraint fkgmd482t5450auc2byvu172r90
+            references users,
+    performer_id integer      not null
+        constraint fkqssbx3jw0ypgb3lac74lfxjrk
+            references users
 );
