@@ -1,5 +1,7 @@
 package name.imh0t3mp.course.geekbrains.common;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import javax.persistence.Id;
@@ -9,8 +11,10 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 @Data
+@JsonIgnoreProperties(value = {"id"}, allowGetters = true)
 public class UserDTO {
     @Id
+    @JsonIgnore
     private Integer id;
 
     @NotBlank

@@ -3,7 +3,7 @@ package name.imh0t3mp.course.geekbrains.task_tracker.entity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
-import name.imh0t3mp.course.geekbrains.task_tracker.TaskStatus;
+import name.imh0t3mp.course.geekbrains.common.TaskStatus;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;

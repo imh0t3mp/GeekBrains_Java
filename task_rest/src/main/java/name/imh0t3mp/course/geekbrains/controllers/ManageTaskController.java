@@ -1,6 +1,6 @@
 package name.imh0t3mp.course.geekbrains.controllers;
 
-import name.imh0t3mp.course.geekbrains.task_tracker.TaskStatus;
+import name.imh0t3mp.course.geekbrains.common.TaskStatus;
 import name.imh0t3mp.course.geekbrains.task_tracker.entity.Task;
 import name.imh0t3mp.course.geekbrains.task_tracker.services.TaskService;
 import name.imh0t3mp.course.geekbrains.task_tracker.services.UserService;
