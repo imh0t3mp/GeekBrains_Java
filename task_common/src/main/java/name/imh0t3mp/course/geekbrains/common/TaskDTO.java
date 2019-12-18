@@ -14,7 +14,7 @@ import java.util.Calendar;
 @Data
 @JsonIgnoreProperties(value = {"createdAt", "id", "owner", "performer", "status"},
         allowGetters = true)
-public class TaskDTO {
+public class  TaskDTO {
     @Id
     @JsonIgnore
     private Integer id;

@@ -5,7 +5,6 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import name.imh0t3mp.course.geekbrains.common.TaskStatus;
-import name.imh0t3mp.course.geekbrains.controllers.IndexController;
 import name.imh0t3mp.course.geekbrains.task_tracker.entity.Task;
 import name.imh0t3mp.course.geekbrains.task_tracker.entity.specs.TaskSpecification;
 import name.imh0t3mp.course.geekbrains.task_tracker.repo.TaskRepository;
@@ -29,7 +28,7 @@ import java.util.List;
 @RequestMapping("/api/1.0/task")
 @Api(tags = "Task API")
 public class TasksController {
-    Logger logger = LoggerFactory.getLogger(IndexController.class);
+    Logger logger = LoggerFactory.getLogger(TasksController.class);
 
     @Autowired
     private TaskRepository taskRepository;
