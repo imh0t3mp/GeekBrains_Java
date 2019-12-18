@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: head"></head>
+<body class="bg-light">
+<div class="container my-12">
+    <div class="card">
+        <div class="card-header">
+            <div th:replace="fragments/header :: header"></div>
+        </div>
+        <div class="card-deck">
+            <div th:replace="fragments/sidebar :: sidebar" class="p-4"></div>
+        </div>
+        <div class="card-body">
+            <div class="col-md-10">
+                <form th:action="@{/task/update/{id}(id=${task.id})}"
+                      th:object="${task}"
+                      method="post">
+                    <div class="row">
+
+                        <div class="form-group col-md-8">
+                            <label for="status" class="col-form-label">Статус задачи</label>
+                            <select th:field="*{taskStatus}" id="status">
+                                <option
+                                        th:each="status : ${T(name.imh0t3mp.course.geekbrains.task_tracker.TaskStatus).values()}"
+                                        th:value="${status.name()}"
+                                        th:text="${status.toString()}"></option>
+                            </select>
+                            <span
+                                    th:if="${#fields.hasErrors('taskStatus')}"
+                                    th:errors="*{taskStatus}"
+                                    class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-6">
+                            <input type="submit" class="btn btn-primary" value="Изменить статус">
+                        </div>
+
+                        <div class="form-group col-md-8"></div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script th:replace="fragments/footer :: scripts"></script>
+
+</body>
+</html>
