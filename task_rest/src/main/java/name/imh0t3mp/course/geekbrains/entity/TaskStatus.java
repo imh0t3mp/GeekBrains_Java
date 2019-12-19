@@ -1,4 +1,4 @@
-package name.imh0t3mp.course.geekbrains.task_tracker.entity;
+package name.imh0t3mp.course.geekbrains.entity;
 
 /**
  * Перечень возможных статусов задачи

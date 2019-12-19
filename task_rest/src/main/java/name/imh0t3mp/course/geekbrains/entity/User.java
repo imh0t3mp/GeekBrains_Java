@@ -1,16 +1,19 @@
-package name.imh0t3mp.course.geekbrains.task_tracker.entity;
+package name.imh0t3mp.course.geekbrains.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
+import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data
 @Table(name = "users")
-@JsonIgnoreProperties(value = {"createdAt", "owner", "performer"}, allowGetters = true)
+@JsonIgnoreProperties(value = {"createdAt"}, allowGetters = true)
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,23 +44,13 @@ public class User {
     @Column(name = "last_name", length = 50)
     private String lastName;
 
-//    @OneToMany(
-//            mappedBy = "owner",
-//            cascade = CascadeType.ALL,
-//            orphanRemoval = true,
-//            fetch = FetchType.LAZY
-//    )
-//    private List<Task> owns;
-//
-//    @OneToMany(
-//            mappedBy = "performer",
-//            cascade = CascadeType.ALL,
-//            orphanRemoval = true,
-//            fetch = FetchType.LAZY
-//    )
-//    private List<Task> performs;
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "role_name", referencedColumnName = "name")})
 
-    public String getFullName() {
-        return this.firstName + " " + this.lastName;
-    }
+    @BatchSize(size = 20)
+    private Set<Role> authorities = new HashSet<>();
 }

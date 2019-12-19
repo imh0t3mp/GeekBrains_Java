@@ -1,4 +1,4 @@
-package name.imh0t3mp.course.geekbrains.task_tracker.entity;
+package name.imh0t3mp.course.geekbrains.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -8,15 +8,13 @@ import org.springframework.data.annotation.CreatedDate;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 import java.util.Calendar;
 
 @Entity
 @Data
 @Table(name = "task_repo")
 @JsonIgnoreProperties(value = {"createdAt"}, allowGetters = true)
-public class Task implements Serializable {
-    private static final long serialVersionUID = -31415926535L;
+public class Task {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,9 +1,9 @@
-package name.imh0t3mp.course.geekbrains.task_tracker.services;
+package name.imh0t3mp.course.geekbrains.services;
 
-import name.imh0t3mp.course.geekbrains.task_tracker.entity.TaskStatus;
-import name.imh0t3mp.course.geekbrains.task_tracker.entity.Task;
-import name.imh0t3mp.course.geekbrains.task_tracker.repo.TaskRepository;
-import name.imh0t3mp.course.geekbrains.task_tracker.repo.UserRepository;
+import name.imh0t3mp.course.geekbrains.entity.TaskStatus;
+import name.imh0t3mp.course.geekbrains.entity.Task;
+import name.imh0t3mp.course.geekbrains.repo.TaskRepository;
+import name.imh0t3mp.course.geekbrains.repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
