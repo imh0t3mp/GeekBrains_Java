@@ -52,5 +52,5 @@ public class User {
             inverseJoinColumns = {@JoinColumn(name = "role_name", referencedColumnName = "name")})
 
     @BatchSize(size = 20)
-    private Set<Role> authorities = new HashSet<>();
+    private Set<Role> roles = new HashSet<>();
 }

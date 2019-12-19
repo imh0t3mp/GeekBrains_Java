@@ -1,17 +1,16 @@
 package name.imh0t3mp.geekbrains.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.util.Set;
 
 @JsonIgnoreProperties(value = {"id"}, allowGetters = true)
 public class UserDTO {
 
-    @JsonIgnore
     private Integer id;
 
     @NotBlank
@@ -30,6 +29,8 @@ public class UserDTO {
     @Size(max = 50)
     private String lastName;
 
+    private Set<String> roles;
+
     /*******************************************************************************************/
     public UserDTO() {
     }
@@ -38,12 +39,14 @@ public class UserDTO {
                    @NotBlank @Pattern(regexp = "^[a-z0-9_-]*$") @Size(min = 1, max = 50) String username,
                    @NotBlank @Email @Size(max = 100) String email,
                    @Size(max = 50) String firstName,
-                   @Size(max = 50) String lastName) {
+                   @Size(max = 50) String lastName,
+                   Set<String> roles) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.roles = roles;
     }
 
 
@@ -66,6 +69,10 @@ public class UserDTO {
 
     public String getLastName() {
         return lastName;
+    }
+
+    public Set<String> getRoles() {
+        return roles;
     }
 
     /********************************************************************************************/

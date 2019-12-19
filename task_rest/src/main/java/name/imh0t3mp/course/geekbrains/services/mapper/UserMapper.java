@@ -1,11 +1,14 @@
 package name.imh0t3mp.course.geekbrains.services.mapper;
 
+import name.imh0t3mp.course.geekbrains.entity.Role;
 import name.imh0t3mp.course.geekbrains.entity.User;
 import name.imh0t3mp.geekbrains.dto.UserDTO;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -27,7 +30,10 @@ public class UserMapper {
                 user.getUsername(),
                 user.getFirstName(),
                 user.getLastName(),
-                user.getEmail());
+                user.getEmail(),
+                user.getRoles().stream()
+                        .map(Role::getName)
+                        .collect(Collectors.toSet()));
     }
 
     public List<User> toEntity(List<UserDTO> userDTOs) {
@@ -47,7 +53,24 @@ public class UserMapper {
             user.setFirstName(userDTO.getFirstName());
             user.setLastName(userDTO.getLastName());
             user.setEmail(userDTO.getEmail());
+            Set<Role> roles = this.rolesFromString(userDTO.getRoles());
+            user.setRoles(roles);
+
             return user;
         }
+    }
+
+    private Set<Role> rolesFromString(Set<String> rolesString) {
+        Set<Role> roles = new HashSet<>();
+
+        if (rolesString != null) {
+            roles = rolesString.stream().map(string -> {
+                Role role = new Role();
+                role.setName(string);
+                return role;
+            }).collect(Collectors.toSet());
+        }
+
+        return roles;
     }
 }

@@ -21,6 +21,10 @@ public class UserService {
         return this.userRepository.findById(id).map(userMapper::toDto);
     }
 
+    public Optional<UserDTO> getByUsername(String username) {
+        return this.userRepository.getUserByUsername(username).map(userMapper::toDto);
+    }
+
     public List<UserDTO> getAll() {
         Sort sort = Sort.by(Sort.Direction.DESC, "username");
         return userMapper.toDto(userRepository.findAll(sort));
