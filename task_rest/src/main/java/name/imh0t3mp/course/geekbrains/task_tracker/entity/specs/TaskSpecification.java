@@ -1,6 +1,6 @@
 package name.imh0t3mp.course.geekbrains.task_tracker.entity.specs;
 
-import name.imh0t3mp.course.geekbrains.common.TaskStatus;
+import name.imh0t3mp.course.geekbrains.task_tracker.entity.TaskStatus;
 import name.imh0t3mp.course.geekbrains.task_tracker.entity.Task;
 import org.springframework.data.jpa.domain.Specification;
 

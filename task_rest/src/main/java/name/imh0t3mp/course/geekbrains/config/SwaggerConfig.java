@@ -1,7 +1,6 @@
 package name.imh0t3mp.course.geekbrains.config;
 
 
-import com.google.common.base.Predicates;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,15 +9,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StopWatch;
 import springfox.documentation.builders.ApiInfoBuilder;
-import springfox.documentation.builders.PathSelectors;
-import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
-import springfox.documentation.service.ApiKey;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-import static com.google.common.collect.Lists.newArrayList;
 import static springfox.documentation.builders.PathSelectors.regex;
 
 @Configuration
@@ -52,15 +47,12 @@ public class SwaggerConfig {
         Docket docket = new Docket(DocumentationType.SWAGGER_2)
                 .enable(Boolean.valueOf(enabled))
                 .apiInfo(apiInfo())
-                .securitySchemes(newArrayList(apiKey()))
                 .genericModelSubstitutes(ResponseEntity.class)
                 .forCodeGeneration(true)
+                .genericModelSubstitutes(ResponseEntity.class)
                 .select()
-                .paths(Predicates.not(PathSelectors.regex("/error")))
-                .apis(RequestHandlerSelectors.basePackage("name.imh0t3mp.course"))
-                .paths(PathSelectors.any())
                 .paths(regex(DEFAULT_INCLUDE_PATTERN))
-                .build().pathMapping("/");
+                .build();
         watch.stop();
         log.debug("Started Swagger in {} ms", watch.getTotalTimeMillis());
         return docket;
@@ -75,14 +67,4 @@ public class SwaggerConfig {
                 .licenseUrl(swaggerLicenseUrl)
                 .build();
     }
-
-    private ApiKey apiKey() {
-        return new ApiKey("Authorization", "", "header");
-    }
-
-//    @Bean
-//    SecurityConfiguration security() {
-//        return new SecurityConfiguration("emailSecurity_client", "secret", "Spring", "emailSecurity", "apiKey", ApiKeyVehicle.HEADER, "api_key", ",");
-//        return new SecurityConfiguration("emailSecurity_client", "secret", "Spring", "emailSecurity", "", ApiKeyVehicle.HEADER, "", ",");
-//    }
 }
