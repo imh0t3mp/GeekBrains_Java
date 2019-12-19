@@ -18,6 +18,7 @@ public class UserDTO {
     @Size(min = 1, max = 50)
     private String username;
 
+
     @NotBlank
     @Email
     @Size(max = 100)
