@@ -1,0 +1,13 @@
+${AnsiColor.GREEN}═════════════════════════════════════════════════════════════════════════════
+
+
+${AnsiColor.RED}██████╗ ███████╗███████╗████████╗${AnsiColor.DEFAULT}
+${AnsiColor.RED}██╔══██╗██╔════╝██╔════╝╚══██╔══╝${AnsiColor.DEFAULT}
+${AnsiColor.RED}██████╔╝█████╗  ███████╗   ██║${AnsiColor.DEFAULT}
+${AnsiColor.RED}██╔══██╗██╔══╝  ╚════██║   ██║${AnsiColor.DEFAULT}
+${AnsiColor.RED}██║  ██║███████╗███████║   ██║${AnsiColor.DEFAULT}
+${AnsiColor.RED}╚═╝  ╚═╝╚══════╝╚══════╝   ╚═╝${AnsiColor.DEFAULT}
+
+${AnsiColor.BRIGHT_BLUE}:: 🖖 Imh0T3mp 🤓 learning project :: Running Spring Boot ${spring-boot.version}::${AnsiColor.DEFAULT}
+
+${AnsiColor.GREEN}═════════════════════════════════════════════════════════════════════════════
