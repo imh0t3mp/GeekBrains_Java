@@ -73,4 +73,13 @@ public class UserMapper {
 
         return roles;
     }
+
+    public User userFromId(Integer id) {
+        if (id == null) {
+            return null;
+        }
+        User user = new User();
+        user.setId(id);
+        return user;
+    }
 }
