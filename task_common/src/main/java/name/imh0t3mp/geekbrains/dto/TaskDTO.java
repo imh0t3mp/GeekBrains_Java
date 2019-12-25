@@ -1,12 +1,10 @@
 package name.imh0t3mp.geekbrains.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.Calendar;
 
 @JsonIgnoreProperties(value = {"id"}, allowGetters = true)
 public class TaskDTO {
@@ -16,20 +14,15 @@ public class TaskDTO {
     @NotBlank(message = "Имя задачи обязательно")
     private String name;
 
-    @JsonIgnore
     @NotNull(message = "Владелец обязателен")
     private Integer ownerId;
 
-    @JsonIgnore
     @NotNull(message = "Исполнитель обязателен")
     private Integer performerId;
 
-    private UserDTO owner;
-    private UserDTO performer;
-
     @CreatedDate
     @NotNull
-    private Calendar createdAt = Calendar.getInstance();
+    private String createdAt;
 
     private String description;
 
@@ -67,11 +60,11 @@ public class TaskDTO {
         this.performerId = performerId;
     }
 
-    public Calendar getCreatedAt() {
+    public String getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Calendar createdAt) {
+    public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
 
@@ -91,19 +84,7 @@ public class TaskDTO {
         this.status = status;
     }
 
-    public UserDTO getOwner() {
-        return owner;
-    }
-
-    public void setOwner(UserDTO owner) {
-        this.owner = owner;
-    }
-
-    public UserDTO getPerformer() {
-        return performer;
-    }
-
-    public void setPerformer(UserDTO performer) {
-        this.performer = performer;
+    /**********************************************************************************************/
+    public TaskDTO() {
     }
 }

@@ -33,6 +33,8 @@
         <jdk.version>1.8</jdk.version>
         <maven.compiler.source>${jdk.version}</maven.compiler.source>
         <maven.compiler.target>${jdk.version}</maven.compiler.target>
+        <mapstruct.version>1.3.0.Final</mapstruct.version>
+        <swagger.version>2.9.2</swagger.version>
     </properties>
     <dependencies>
         <!--        Spring-->
