@@ -86,6 +86,12 @@
             <artifactId>task_common</artifactId>
             <version>0.18</version>
         </dependency>
+        <!--        Common-->
+        <dependency>
+            <groupId>name.imh0t3mp.geekbrains</groupId>
+            <artifactId>task_common</artifactId>
+            <version>0.18</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
