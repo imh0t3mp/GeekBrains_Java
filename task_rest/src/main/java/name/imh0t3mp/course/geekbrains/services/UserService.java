@@ -38,4 +38,19 @@ public class UserService {
     public List<String> getRoles() {
         return rolesRepository.findAll().stream().map(Role::getName).collect(Collectors.toList());
     }
+
+    public Optional<UserDTO> updateUser(UserDTO userDTO) {
+        return Optional.of(userRepository
+                .findById(userDTO.getId()))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .map(user -> {
+                    user.setUsername(userDTO.getUsername().toLowerCase());
+                    user.setFirstName(userDTO.getFirstName());
+                    user.setLastName(userDTO.getLastName());
+                    user.setEmail(userDTO.getEmail().toLowerCase());
+                    return user;
+                })
+                .map(userMapper::toDto);
+    }
 }

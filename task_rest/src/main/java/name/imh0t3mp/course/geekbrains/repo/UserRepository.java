@@ -11,11 +11,13 @@ import java.util.Optional;
 public interface UserRepository extends CrudRepository<User, Integer>,
         JpaRepository<User, Integer> {
 
-    boolean existsByUsername(String username);
+
 
     Optional<User> getUserByUsername(String username);
 
     Optional<User> getUserByEmail(String email);
 
     Optional<User> findOneByEmailIgnoreCase(String email);
+
+    Optional<User> findOneByUsernameIgnoreCase(String username);
 }

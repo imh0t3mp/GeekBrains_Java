@@ -8,7 +8,7 @@ create table if not exists users
             unique,
     first_name varchar(50),
     last_name  varchar(50),
-    password   varchar(60) not null,
+    password   varchar(128) not null,
     username   varchar(50) not null
         constraint uk_r43af9ap4edm43mmtq01oddj6
             unique

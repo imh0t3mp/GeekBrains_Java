@@ -6,9 +6,10 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import name.imh0t3mp.course.geekbrains.config.Constants;
 import name.imh0t3mp.course.geekbrains.entity.User;
+import name.imh0t3mp.course.geekbrains.exception.EmailAlreadyUsedException;
+import name.imh0t3mp.course.geekbrains.exception.UsernameAlreadyUsedException;
 import name.imh0t3mp.course.geekbrains.repo.UserRepository;
 import name.imh0t3mp.course.geekbrains.services.UserService;
-import name.imh0t3mp.course.geekbrains.services.error.EmailAlreadyUsedException;
 import name.imh0t3mp.geekbrains.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -87,18 +88,18 @@ public class UserController {
 
     @PutMapping("")
 //    @PreAuthorize("hasRole(\"" + AuthoritiesConstants.ADMIN + "\")")
-    public ResponseEntity<UserDTO> updateUser(@Valid @RequestBody UserDTO userDTO) {
+    public ResponseEntity<?> updateUser(@Valid @RequestBody UserDTO userDTO) {
         Optional<User> existingUser = userRepository.findOneByEmailIgnoreCase(userDTO.getEmail());
         if (existingUser.isPresent() && (!existingUser.get().getId().equals(userDTO.getId()))) {
             throw new EmailAlreadyUsedException();
         }
-        existingUser = userRepository.findOneByLogin(userDTO.getLogin().toLowerCase());
+        existingUser = userRepository.findOneByUsernameIgnoreCase(userDTO.getUsername().toLowerCase());
         if (existingUser.isPresent() && (!existingUser.get().getId().equals(userDTO.getId()))) {
-            throw new LoginAlreadyUsedException();
+            throw new UsernameAlreadyUsedException();
         }
-        Optional<UserDTO> updatedUser = userService.updateUser(userDTO);
-
-        return ResponseUtil.wrapOrNotFound(updatedUser);
+        return userService.updateUser(userDTO)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
 }

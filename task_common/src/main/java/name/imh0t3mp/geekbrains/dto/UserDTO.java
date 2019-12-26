@@ -50,7 +50,6 @@ public class UserDTO {
         this.roles = roles;
     }
 
-
     /*******************************************************************************************/
     public Integer getId() {
         return id;

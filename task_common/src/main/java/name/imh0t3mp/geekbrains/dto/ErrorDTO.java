@@ -1,9 +1,9 @@
 package name.imh0t3mp.geekbrains.dto;
 
-/**
- * Для вывода сообщений об ошибках
- */
-public class ErrorDTO {
+import java.io.Serializable;
+
+public class ErrorDTO implements Serializable {
+    private static final long serialVersionUID = 6125190243149476515L;
 
     private int errorCode;
     private String message;
@@ -11,7 +11,7 @@ public class ErrorDTO {
     public ErrorDTO() {
     }
 
-    public ErrorDTO(int errorCode, String message) {
+    public ErrorDTO(int errorCode, String  message) {
         this.errorCode = errorCode;
         this.message = message;
     }

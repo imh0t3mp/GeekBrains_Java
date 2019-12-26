@@ -1,11 +1,13 @@
 package name.imh0t3mp.course.geekbrains.config;
 
-import name.imh0t3mp.course.geekbrains.exception.AccessDeniedException;
+import name.imh0t3mp.course.geekbrains.exception.EmailAlreadyUsedException;
 import name.imh0t3mp.course.geekbrains.exception.ParameterIllegalException;
 import name.imh0t3mp.course.geekbrains.exception.ResourceNotFoundException;
+import name.imh0t3mp.course.geekbrains.exception.UsernameAlreadyUsedException;
 import name.imh0t3mp.geekbrains.dto.ErrorDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -25,9 +27,24 @@ class ExceptionHandlerControllerAdvice {
 
     @ExceptionHandler(ParameterIllegalException.class)
     public ResponseEntity<?> parameterIllegalExceptionHandler(HttpServletRequest request, ParameterIllegalException e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorDTO(412,
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorDTO(400,
                 "Получили неверное начение параметра в URL."));
     }
+
+    @ExceptionHandler(UsernameAlreadyUsedException.class)
+    public ResponseEntity<?> userIllegalExceptionHandler(HttpServletRequest request,
+                                                         UsernameAlreadyUsedException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorDTO(400,
+                "Пользователь с таким логином уже зарегистрирован."));
+    }
+
+    @ExceptionHandler(EmailAlreadyUsedException.class)
+    public ResponseEntity<?> userIllegalExceptionHandler(HttpServletRequest request,
+                                                         EmailAlreadyUsedException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorDTO(400,
+                "Пользователь с таким E-Mail уже зарегистрирован."));
+    }
+
 
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<?> unauthorizedExceptionHandler(HttpServletRequest request, AccessDeniedException e) {
