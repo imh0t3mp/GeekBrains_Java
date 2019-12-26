@@ -1,6 +1,7 @@
 package name.imh0t3mp.course.geekbrains.services;
 
 import name.imh0t3mp.course.geekbrains.entity.Role;
+import name.imh0t3mp.course.geekbrains.entity.User;
 import name.imh0t3mp.course.geekbrains.repo.RolesRepository;
 import name.imh0t3mp.course.geekbrains.repo.UserRepository;
 import name.imh0t3mp.course.geekbrains.services.mapper.UserMapper;
@@ -26,9 +27,18 @@ public class UserService {
         return this.userRepository.findById(id).map(userMapper::toDto);
     }
 
+    public User getUserById(Integer id) {
+        return this.userRepository.findById(id).get();
+    }
+
     public Optional<UserDTO> getByUsername(String username) {
         return this.userRepository.getUserByUsername(username).map(userMapper::toDto);
     }
+
+    public User getUserByUsername(String username) {
+        return this.userRepository.getUserByUsername(username).get();
+    }
+
 
     public List<UserDTO> getAll() {
         Sort sort = Sort.by(Sort.Direction.DESC, "username");

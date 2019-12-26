@@ -1,8 +1,10 @@
 package name.imh0t3mp.course.geekbrains.exception;
 
-public class EmailNotFoundException extends ResourceNotFoundException{
+import name.imh0t3mp.course.geekbrains.config.ResourceName;
 
-    public EmailNotFoundException(String resourceName, String fieldName, Object fieldValue) {
-        super(resourceName, fieldName, fieldValue);
+public class EmailNotFoundException extends ResourceNotFoundException {
+
+    public EmailNotFoundException(String fieldName, Object fieldValue) {
+        super(ResourceName.USER, fieldName, fieldValue);
     }
 }
