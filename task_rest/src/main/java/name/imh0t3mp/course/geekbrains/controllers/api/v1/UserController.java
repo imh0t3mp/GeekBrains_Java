@@ -40,6 +40,7 @@ public class UserController {
     @ApiOperation("Получить список всех пользователей системы")
     @ApiResponses({
             @ApiResponse(code = 200, message = "success"),
+            @ApiResponse(code = 401, message = "The request requires user authentication or (your message)"),
     })
     @ResponseStatus(HttpStatus.OK)
     public List<UserDTO> getAll() {
@@ -51,7 +52,8 @@ public class UserController {
     @ApiOperation("Получить данные пользователя по ID")
     @ApiResponses({
             @ApiResponse(code = 200, message = "success"),
-            @ApiResponse(code = 404, message = "not found")
+            @ApiResponse(code = 404, message = "not found"),
+            @ApiResponse(code = 401, message = "The request requires user authentication or (your message)"),
     })
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<UserDTO> getById(@PathVariable("id") Integer id) {
@@ -68,7 +70,8 @@ public class UserController {
     @ApiOperation("Получить данные пользователя по ID")
     @ApiResponses({
             @ApiResponse(code = 200, message = "success"),
-            @ApiResponse(code = 404, message = "not found")
+            @ApiResponse(code = 404, message = "not found"),
+            @ApiResponse(code = 401, message = "The request requires user authentication or (your message)"),
     })
     public ResponseEntity<UserDTO> getUser(@PathVariable String login) {
         Optional<UserDTO> userDTO = userService.getByUsername(login);
@@ -83,7 +86,8 @@ public class UserController {
     @ApiOperation("Получить список ролей")
     @ApiResponses({
             @ApiResponse(code = 200, message = "success"),
-            @ApiResponse(code = 404, message = "not found")
+            @ApiResponse(code = 404, message = "not found"),
+            @ApiResponse(code = 401, message = "The request requires user authentication"),
     })
     @ResponseStatus(HttpStatus.OK)
 //    @PreAuthorize("hasRole(\"" + AuthoritiesConstants.ADMIN + "\")")
@@ -94,18 +98,26 @@ public class UserController {
     }
 
 
-    @PutMapping("")
+    @PutMapping(value = "", produces = {"application/json"}, consumes = {"application/json"})
+    @ApiOperation("Обновить пользовательские данные")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "success"),
+            @ApiResponse(code = 404, message = "not found"),
+            @ApiResponse(code = 400, message = "param error"),
+            @ApiResponse(code = 401, message = "The request requires user authentication"),
+    })
+    @ResponseStatus(HttpStatus.OK)
 //    @PreAuthorize("hasRole(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<?> updateUser(@Valid @RequestBody UserDTO userDTO) {
         log.debug("Update user data to:{}", userDTO);
         Optional<User> existingUser = userRepository.findOneByEmailIgnoreCase(userDTO.getEmail());
         if (existingUser.isPresent() && (!existingUser.get().getId().equals(userDTO.getId()))) {
-            log.error("Email {} already exists", userDTO.getEmail());
+            log.error("Email {} уже ечть в базе", userDTO.getEmail());
             throw new EmailAlreadyUsedException();
         }
         existingUser = userRepository.findOneByUsernameIgnoreCase(userDTO.getUsername().toLowerCase());
         if (existingUser.isPresent() && (!existingUser.get().getId().equals(userDTO.getId()))) {
-            log.error("Username {} already exists", userDTO.getUsername());
+            log.error("Пользователь {} уже есть в базе", userDTO.getUsername());
             throw new UsernameAlreadyUsedException();
         }
         log.debug("Update user data");
