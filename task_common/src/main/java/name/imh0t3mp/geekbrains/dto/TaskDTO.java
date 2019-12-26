@@ -87,4 +87,17 @@ public class TaskDTO {
     /**********************************************************************************************/
     public TaskDTO() {
     }
+
+    @Override
+    public String toString() {
+        return "TaskDTO{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", ownerId=" + ownerId +
+                ", performerId=" + performerId +
+                ", createdAt='" + createdAt + '\'' +
+                ", description='" + description + '\'' +
+                ", status='" + status + '\'' +
+                '}';
+    }
 }

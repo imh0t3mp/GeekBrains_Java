@@ -4,6 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import lombok.extern.slf4j.Slf4j;
 import name.imh0t3mp.course.geekbrains.config.Constants;
 import name.imh0t3mp.course.geekbrains.entity.User;
 import name.imh0t3mp.course.geekbrains.exception.EmailAlreadyUsedException;
@@ -24,6 +25,7 @@ import java.util.Optional;
 @CrossOrigin("*")
 @RequestMapping("/api/1.0/users")
 @Api(tags = "User API")
+@Slf4j
 public class UserController {
 
     @Autowired
@@ -53,7 +55,9 @@ public class UserController {
     })
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<UserDTO> getById(@PathVariable("id") Integer id) {
-        return userService.getById(id)
+        Optional<UserDTO> userDTO = userService.getById(id);
+        log.debug("UserDTO:{}", userDTO.get());
+        return userDTO
                 .map(user -> ResponseEntity.ok().body(user))
                 .orElse(ResponseEntity.notFound().build());
     }
@@ -67,7 +71,9 @@ public class UserController {
             @ApiResponse(code = 404, message = "not found")
     })
     public ResponseEntity<UserDTO> getUser(@PathVariable String login) {
-        return userService.getByUsername(login)
+        Optional<UserDTO> userDTO = userService.getByUsername(login);
+        log.debug("UserDTO:{}", userDTO.get());
+        return userDTO
                 .map(user -> ResponseEntity.ok().body(user))
                 .orElse(ResponseEntity.notFound().build());
     }
@@ -82,21 +88,27 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
 //    @PreAuthorize("hasRole(\"" + AuthoritiesConstants.ADMIN + "\")")
     public List<String> getAuthorities() {
-        return userService.getRoles();
+        List<String> roles = userService.getRoles();
+        log.debug("ROES:{}", roles);
+        return roles;
     }
 
 
     @PutMapping("")
 //    @PreAuthorize("hasRole(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<?> updateUser(@Valid @RequestBody UserDTO userDTO) {
+        log.debug("Update user data to:{}", userDTO);
         Optional<User> existingUser = userRepository.findOneByEmailIgnoreCase(userDTO.getEmail());
         if (existingUser.isPresent() && (!existingUser.get().getId().equals(userDTO.getId()))) {
+            log.error("Email {} already exists", userDTO.getEmail());
             throw new EmailAlreadyUsedException();
         }
         existingUser = userRepository.findOneByUsernameIgnoreCase(userDTO.getUsername().toLowerCase());
         if (existingUser.isPresent() && (!existingUser.get().getId().equals(userDTO.getId()))) {
+            log.error("Username {} already exists", userDTO.getUsername());
             throw new UsernameAlreadyUsedException();
         }
+        log.debug("Update user data");
         return userService.updateUser(userDTO)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());

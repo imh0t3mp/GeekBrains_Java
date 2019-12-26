@@ -20,4 +20,11 @@ public class AuthResponseDTO {
     public AuthResponseDTO(String token) {
         this.token = token;
     }
+
+    @Override
+    public String toString() {
+        return "AuthResponseDTO{" +
+                "token='" + token + '\'' +
+                '}';
+    }
 }

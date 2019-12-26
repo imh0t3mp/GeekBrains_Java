@@ -8,6 +8,7 @@ import name.imh0t3mp.geekbrains.dto.ErrorDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -52,6 +53,14 @@ class ExceptionHandlerControllerAdvice {
                 .status(HttpStatus.FORBIDDEN)
                 .body(new ErrorDTO(403,
                         "В доступе отказано."));
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<?> unauthorizedExceptionHandler(HttpServletRequest request, AuthenticationException e) {
+        return ResponseEntity
+                .status(HttpStatus.FORBIDDEN)
+                .body(new ErrorDTO(403,
+                        e.getMessage().isEmpty() ? "В доступе отказано." : e.getMessage()));
     }
 
     @ExceptionHandler(Exception.class)

@@ -4,6 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import lombok.extern.slf4j.Slf4j;
 import name.imh0t3mp.course.geekbrains.config.JwtTokenUtil;
 import name.imh0t3mp.course.geekbrains.services.JwtUserDetailsService;
 import name.imh0t3mp.geekbrains.dto.AuthRequestDTO;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/1.0/auth")
 @Api(tags = "Auth API")
 @RestController
+@Slf4j
 public class AuthController {
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -39,10 +41,13 @@ public class AuthController {
     })
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthRequestDTO authenticationRequest) {
+        log.debug("Auth user data:{}", authenticationRequest);
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword()));
         } catch (BadCredentialsException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Incorrect username or password");
+            log.warn("AUTH ERROR:{}", e.getMessage());
+            log.warn("AUTH ERROR:{}", e.getStackTrace());
+            throw new BadCredentialsException("Ошибка в имени пользователя или пароле");
         }
 
         final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());

@@ -1,6 +1,7 @@
 package name.imh0t3mp.course.geekbrains.services;
 
 
+import lombok.extern.slf4j.Slf4j;
 import name.imh0t3mp.course.geekbrains.entity.User;
 import name.imh0t3mp.course.geekbrains.repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class JwtUserDetailsService implements UserDetailsService {
     private UserRepository userRepository;
     private PasswordEncoder bcryptEncoder;
@@ -35,6 +37,7 @@ public class JwtUserDetailsService implements UserDetailsService {
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.getUserByUsername(username).get();
+        log.debug("USER:{}",user);
         if (user == null) {
             throw new UsernameNotFoundException("User not found with username: " + username);
         }

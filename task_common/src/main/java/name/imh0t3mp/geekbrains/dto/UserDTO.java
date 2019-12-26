@@ -79,4 +79,16 @@ public class UserDTO {
     public void setId(Integer id) {
         this.id = id;
     }
+
+    @Override
+    public String toString() {
+        return "UserDTO{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", roles=" + roles +
+                '}';
+    }
 }

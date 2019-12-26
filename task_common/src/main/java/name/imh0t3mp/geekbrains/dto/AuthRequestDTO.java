@@ -33,4 +33,12 @@ public class AuthRequestDTO {
         this.username = username;
         this.password = password;
     }
+
+    @Override
+    public String toString() {
+        return "AuthRequestDTO{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                '}';
+    }
 }

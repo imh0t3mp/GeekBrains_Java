@@ -108,4 +108,39 @@ public class User {
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        User user = (User) o;
+
+        if (!id.equals(user.id)) return false;
+        if (!username.equals(user.username)) return false;
+        if (!password.equals(user.password)) return false;
+        return email.equals(user.email);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id.hashCode();
+        result = 31 * result + username.hashCode();
+        result = 31 * result + password.hashCode();
+        result = 31 * result + email.hashCode();
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", roles=" + roles +
+                '}';
+    }
 }

@@ -32,4 +32,11 @@ public class ErrorDTO implements Serializable {
         this.message = message;
     }
 
+    @Override
+    public String toString() {
+        return "ErrorDTO{" +
+                "errorCode=" + errorCode +
+                ", message='" + message + '\'' +
+                '}';
+    }
 }
